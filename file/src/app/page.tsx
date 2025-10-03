@@ -552,9 +552,9 @@ export default function HomePage() {
                     <div className="relative group">
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl sm:rounded-3xl blur-lg group-hover:blur-xl transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
                       <div className="relative bg-white/95 backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-white/50 p-1.5 sm:p-2 search-glow">
-                        <div className="flex flex-col gap-3">
-                          {/* Search Icon and Input - Full width on mobile */}
-                          <div className="flex items-center flex-1 bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-lg border border-white/50">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-0">
+                          {/* Search Icon and Input */}
+                          <div className="flex items-center flex-1">
                             <div className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl text-white text-base sm:text-lg md:text-xl ml-1.5 sm:ml-2 shadow-lg search-icon-bounce flex-shrink-0">
                               🔍
                             </div>
@@ -584,10 +584,10 @@ export default function HomePage() {
                             )}
                           </div>
 
-                          {/* Search Button - Full width on mobile, moves below input */}
+                          {/* Search Button - Below on mobile, inline on desktop */}
                           <button
                             onClick={() => handleSearch(searchQuery)}
-                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl click-effect"
+                            className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-5 sm:px-6 md:px-8 py-3 sm:py-3 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl click-effect sm:mr-2"
                           >
                             Search
                           </button>
