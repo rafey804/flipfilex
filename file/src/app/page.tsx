@@ -614,7 +614,8 @@ export default function HomePage() {
                     {/* Enhanced Search Results */}
                     {searchQuery && (
                       <div className="mt-4 sm:mt-6 relative px-2">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl sm:rounded-3xl blur-sm"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl sm:rounded-3xl blur-sm">
+                        </div>
                         <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-white/50 overflow-hidden">
                           {filteredTools.length > 0 ? (
                             <div>
