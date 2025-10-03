@@ -531,61 +531,63 @@ export default function HomePage() {
             <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '4s'}}></div>
           </div>
 
-          <div className="px-4 py-24 mx-auto max-w-7xl sm:px-6 lg:px-8 relative z-10">
+          <div className="px-4 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto max-w-7xl sm:px-6 lg:px-8 relative z-10">
             <div className="text-center">
-              <div className="mb-8 animate-fade-in">
-                <div className="mb-8">
-                  <img src="/logo.png" alt="FlipFileX Logo" className="w-32 h-32 md:w-40 md:h-40 mx-auto hover:scale-110 transition-transform duration-300 animate-logo-loop" />
+              <div className="mb-6 sm:mb-8 animate-fade-in">
+                <div className="mb-6 sm:mb-8">
+                  <img src="/logo.png" alt="FlipFileX Logo" className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 mx-auto hover:scale-110 transition-transform duration-300 animate-logo-loop" />
                 </div>
-                <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6 leading-tight tracking-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-4 sm:mb-6 leading-tight tracking-tight px-2">
                   All-in-One Digital Tools Platform
                 </h1>
 
-                <p className="text-xl md:text-2xl text-gray-700 mb-10 max-w-4xl mx-auto leading-relaxed font-light">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 mb-6 sm:mb-8 md:mb-10 max-w-4xl mx-auto leading-relaxed font-light px-4">
                   Convert, Create, and Optimize - Everything You Need in One Place
                 </p>
 
                 {/* Enhanced Search Bar */}
-                <div className="max-w-3xl mx-auto mb-8">
+                <div className="max-w-3xl mx-auto mb-6 sm:mb-8 px-2">
                   <div className="relative">
                     {/* Search Input Container */}
                     <div className="relative group">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-lg group-hover:blur-xl transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
-                      <div className="relative bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/50 p-2 search-glow">
-                        <div className="flex items-center">
-                          {/* Search Icon */}
-                          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl text-white text-xl ml-2 shadow-lg search-icon-bounce">
-                            🔍
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl sm:rounded-3xl blur-lg group-hover:blur-xl transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+                      <div className="relative bg-white/95 backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-white/50 p-1.5 sm:p-2 search-glow">
+                        <div className="flex flex-col gap-3">
+                          {/* Search Icon and Input - Full width on mobile */}
+                          <div className="flex items-center flex-1 bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-lg border border-white/50">
+                            <div className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl text-white text-base sm:text-lg md:text-xl ml-1.5 sm:ml-2 shadow-lg search-icon-bounce flex-shrink-0">
+                              🔍
+                            </div>
+
+                            {/* Input Field */}
+                            <input
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => handleSearch(e.target.value)}
+                              placeholder="Search tools..."
+                              className="flex-1 px-2 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base md:text-lg bg-transparent border-none focus:outline-none text-gray-800 placeholder-gray-400 sm:placeholder-gray-500 font-medium search-input transition-all duration-300"
+                            />
+
+                            {/* Clear Button */}
+                            {searchQuery && (
+                              <button
+                                onClick={() => {
+                                  setSearchQuery('');
+                                  setFilteredTools([]);
+                                }}
+                                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg sm:rounded-xl transition-colors mr-1.5 sm:mr-2 flex-shrink-0"
+                              >
+                                <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            )}
                           </div>
 
-                          {/* Input Field */}
-                          <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => handleSearch(e.target.value)}
-                            placeholder="Search tools... (PDF, Image, Video, Resume, QR Code)"
-                            className="flex-1 px-6 py-4 text-lg bg-transparent border-none focus:outline-none text-gray-800 placeholder-gray-500 font-medium search-input transition-all duration-300"
-                          />
-
-                          {/* Clear Button */}
-                          {searchQuery && (
-                            <button
-                              onClick={() => {
-                                setSearchQuery('');
-                                setFilteredTools([]);
-                              }}
-                              className="flex items-center justify-center w-10 h-10 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors mr-2"
-                            >
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          )}
-
-                          {/* Search Button */}
+                          {/* Search Button - Full width on mobile, moves below input */}
                           <button
                             onClick={() => handleSearch(searchQuery)}
-                            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl click-effect mr-2"
+                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl click-effect"
                           >
                             Search
                           </button>
@@ -595,13 +597,13 @@ export default function HomePage() {
 
                     {/* Quick Suggestions */}
                     {!searchQuery && (
-                      <div className="mt-4 flex flex-wrap justify-center gap-2">
-                        <div className="text-sm text-gray-600 mb-2 w-full text-center">Popular searches:</div>
+                      <div className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-1.5 sm:gap-2 px-2">
+                        <div className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2 w-full text-center">Popular searches:</div>
                         {['PDF to Word', 'Image Compress', 'QR Code', 'Resume Builder', 'PNG to WebP'].map((suggestion, index) => (
                           <button
                             key={suggestion}
                             onClick={() => handleSearch(suggestion)}
-                            className="bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-100 hover:to-purple-100 text-gray-700 hover:text-blue-700 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 border border-gray-200 hover:border-blue-300 hover:shadow-md"
+                            className="bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-100 hover:to-purple-100 text-gray-700 hover:text-blue-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 hover:scale-105 border border-gray-200 hover:border-blue-300 hover:shadow-md"
                           >
                             {suggestion}
                           </button>
@@ -611,22 +613,23 @@ export default function HomePage() {
 
                     {/* Enhanced Search Results */}
                     {searchQuery && (
-                      <div className="mt-6 relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl blur-sm"></div>
-                        <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
+                      <div className="mt-4 sm:mt-6 relative px-2">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl sm:rounded-3xl blur-sm"></div>
+                        <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-white/50 overflow-hidden">
                           {filteredTools.length > 0 ? (
                             <div>
                               {/* Results Header */}
-                              <div className="bg-gradient-to-r from-blue-50 to-purple-50 px-6 py-4 border-b border-gray-200/50">
+                              <div className="bg-gradient-to-r from-blue-50 to-purple-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200/50">
                                 <div className="flex items-center justify-between">
-                                  <h3 className="text-lg font-bold text-gray-900 flex items-center">
-                                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm mr-3">
+                                  <h3 className="text-base sm:text-lg font-bold text-gray-900 flex items-center">
+                                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs sm:text-sm mr-2 sm:mr-3">
                                       {filteredTools.length}
                                     </div>
-                                    Search Results
+                                    <span className="hidden sm:inline">Search Results</span>
+                                    <span className="sm:hidden">Results</span>
                                   </h3>
-                                  <div className="text-sm text-gray-600">
-                                    Found {filteredTools.length} tool{filteredTools.length !== 1 ? 's' : ''}
+                                  <div className="text-xs sm:text-sm text-gray-600">
+                                    {filteredTools.length} tool{filteredTools.length !== 1 ? 's' : ''}
                                   </div>
                                 </div>
                               </div>
@@ -643,10 +646,10 @@ export default function HomePage() {
                                       setFilteredTools([]);
                                     }}
                                   >
-                                    <div className="p-6 flex items-center space-x-4">
+                                    <div className="p-3 sm:p-4 md:p-6 flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                                       {/* Tool Icon */}
                                       <div className="flex-shrink-0">
-                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-lg transition-transform group-hover:scale-110 ${
+                                        <div className={`w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center text-lg sm:text-xl md:text-2xl shadow-md sm:shadow-lg transition-transform group-hover:scale-110 ${
                                           tool.category === 'PDF' ? 'bg-gradient-to-r from-red-400 to-pink-500' :
                                           tool.category === 'Image' ? 'bg-gradient-to-r from-green-400 to-blue-500' :
                                           tool.category === 'Video' ? 'bg-gradient-to-r from-purple-400 to-pink-500' :
@@ -665,17 +668,17 @@ export default function HomePage() {
 
                                       {/* Tool Info */}
                                       <div className="flex-1 min-w-0">
-                                        <h4 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-1">
+                                        <h4 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-0.5 sm:mb-1">
                                           {tool.name}
                                         </h4>
-                                        <p className="text-sm text-gray-600 group-hover:text-gray-700 transition-colors">
+                                        <p className="text-xs sm:text-sm text-gray-600 group-hover:text-gray-700 transition-colors line-clamp-1 sm:line-clamp-none">
                                           {tool.description}
                                         </p>
                                       </div>
 
                                       {/* Category & Arrow */}
-                                      <div className="flex items-center space-x-3">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                      <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 flex-shrink-0">
+                                        <span className={`hidden sm:inline-block px-2 sm:px-3 py-1 rounded-full text-xs font-bold ${
                                           tool.category === 'PDF' ? 'bg-red-100 text-red-700' :
                                           tool.category === 'Image' ? 'bg-green-100 text-green-700' :
                                           tool.category === 'Video' ? 'bg-purple-100 text-purple-700' :
@@ -684,7 +687,7 @@ export default function HomePage() {
                                         }`}>
                                           {tool.category}
                                         </span>
-                                        <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                         </svg>
                                       </div>
@@ -694,19 +697,19 @@ export default function HomePage() {
                               </div>
                             </div>
                           ) : (
-                            <div className="p-12 text-center">
-                              <div className="w-20 h-20 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 animate-pulse">
+                            <div className="p-6 sm:p-8 md:p-12 text-center">
+                              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full flex items-center justify-center text-3xl sm:text-4xl mx-auto mb-4 sm:mb-6 animate-pulse">
                                 🔍
                               </div>
-                              <h3 className="text-xl font-bold text-gray-900 mb-3">No tools found</h3>
-                              <p className="text-gray-600 mb-6">We couldn't find any tools matching your search.</p>
-                              <div className="flex flex-wrap justify-center gap-2">
-                                <span className="text-sm text-gray-500 mb-2 w-full">Try searching for:</span>
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">No tools found</h3>
+                              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">We couldn't find any tools matching your search.</p>
+                              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
+                                <span className="text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2 w-full">Try searching for:</span>
                                 {['PDF', 'Image', 'Convert', 'Generator', 'Compress'].map((suggestion) => (
                                   <button
                                     key={suggestion}
                                     onClick={() => handleSearch(suggestion)}
-                                    className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-sm font-medium transition-colors"
+                                    className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium transition-colors"
                                   >
                                     {suggestion}
                                   </button>
@@ -720,11 +723,11 @@ export default function HomePage() {
                 </div>
 
                 {/* Call to Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 mt-8">
-                  <Link href="/convert-pdf-to-word-online" className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-lg hover-lift click-effect animate-pulse-glow">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-10 md:mb-12 mt-6 sm:mt-8 px-4">
+                  <Link href="/convert-pdf-to-word-online" className="w-full sm:w-auto bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg sm:shadow-xl text-base sm:text-lg hover-lift click-effect animate-pulse-glow text-center">
                     🔥 Start Converting
                   </Link>
-                  <Link href="/tools" className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-2xl font-bold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 text-lg hover-glow click-effect">
+                  <Link href="/tools" className="w-full sm:w-auto border-2 border-blue-600 text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 text-base sm:text-lg hover-glow click-effect text-center">
                     📋 Browse All Tools
                   </Link>
                 </div>
@@ -735,15 +738,15 @@ export default function HomePage() {
         </section>
 
         {/* Popular/Featured Tools Section */}
-        <section className="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
+        <section className="px-4 py-12 sm:py-14 md:py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center justify-center gap-2 sm:gap-3 px-4">
               🔥 Most Popular Tools
             </h2>
-            <p className="text-lg text-gray-600">Our top-rated tools trusted by millions</p>
+            <p className="text-base sm:text-lg text-gray-600 px-4">Our top-rated tools trusted by millions</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-12 sm:mb-14 md:mb-16">
             {[
               { name: 'PDF to Word', href: '/convert-pdf-to-word-online', icon: '📝', badge: 'HOT', badgeColor: 'bg-red-500' },
               { name: 'Image Compress', href: '/image-compressor', icon: '🗜️', badge: 'HOT', badgeColor: 'bg-red-500' },
@@ -754,13 +757,13 @@ export default function HomePage() {
               { name: 'Invoice Generator', href: '/invoice-generator', icon: '🧾', badge: 'Featured', badgeColor: 'bg-purple-500' },
               { name: 'Password Generator', href: '/password-generator', icon: '🔐', badge: 'Secure', badgeColor: 'bg-emerald-500' }
             ].map((tool, index) => (
-              <Link key={tool.name} href={tool.href} className="relative group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-gray-100 hover-lift hover-glow click-effect animate-bounce-in" style={{animationDelay: `${index * 100}ms`}}>
-                <div className={`absolute top-2 right-2 ${tool.badgeColor} text-white text-xs font-bold px-2 py-1 rounded-full`}>
+              <Link key={tool.name} href={tool.href} className="relative group bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-gray-100 hover-lift hover-glow click-effect animate-bounce-in" style={{animationDelay: `${index * 100}ms`}}>
+                <div className={`absolute top-1.5 right-1.5 sm:top-2 sm:right-2 ${tool.badgeColor} text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full`}>
                   {tool.badge}
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{tool.icon}</div>
-                  <h3 className="font-bold text-gray-900 text-sm group-hover:text-blue-600 transition-colors">{tool.name}</h3>
+                  <div className="text-3xl sm:text-4xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform">{tool.icon}</div>
+                  <h3 className="font-bold text-gray-900 text-xs sm:text-sm md:text-sm group-hover:text-blue-600 transition-colors leading-tight">{tool.name}</h3>
                 </div>
               </Link>
             ))}
@@ -768,26 +771,26 @@ export default function HomePage() {
         </section>
 
         {/* Tools Categories Grid */}
-        <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Tools Categories</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 px-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">Tools Categories</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Professional-grade tools organized by category for all your conversion needs
             </p>
           </div>
 
           {/* Row 1: Document Tools */}
-          <div className="mb-16">
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-8">
-              <div className="flex items-center mb-8">
-                <div className="text-4xl mr-4">📄</div>
+          <div className="mb-10 sm:mb-12 md:mb-16">
+            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8">
+              <div className="flex items-center mb-6 sm:mb-8">
+                <div className="text-3xl sm:text-4xl mr-3 sm:mr-4">📄</div>
                 <div>
-                  <h3 className="text-3xl font-bold text-gray-900">PDF Tools</h3>
-                  <p className="text-gray-600">Complete PDF processing suite</p>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">PDF Tools</h3>
+                  <p className="text-sm sm:text-base text-gray-600">Complete PDF processing suite</p>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8">
                 {[
                   { name: 'PDF to Word', href: '/convert-pdf-to-word-online', desc: 'Convert with precision' },
                   { name: 'Word to PDF', href: '/word-to-pdf-online', desc: 'Professional formatting' },
@@ -796,15 +799,15 @@ export default function HomePage() {
                   { name: 'PDF to Images', href: '/pdf-to-images', desc: 'High-quality conversion' },
                   { name: 'Compress PDF', href: '/compress-pdf', desc: 'Reduce file size' }
                 ].map((tool, index) => (
-                  <Link key={tool.name} href={tool.href} className="group bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-blue-100">
-                    <h4 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{tool.name}</h4>
-                    <p className="text-sm text-gray-600">{tool.desc}</p>
+                  <Link key={tool.name} href={tool.href} className="group bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg sm:rounded-xl p-3 sm:p-4 hover:shadow-md sm:hover:shadow-lg transition-all duration-300 hover:scale-105 border border-blue-100">
+                    <h4 className="font-bold text-gray-900 mb-1 sm:mb-2 group-hover:text-blue-600 transition-colors text-sm sm:text-base">{tool.name}</h4>
+                    <p className="text-xs sm:text-sm text-gray-600">{tool.desc}</p>
                   </Link>
                 ))}
               </div>
 
               <div className="text-center">
-                <Link href="/tools#pdf-tools" className="inline-flex items-center text-blue-600 font-bold hover:text-blue-700 transition-colors bg-blue-50 px-6 py-3 rounded-full border border-blue-200">
+                <Link href="/tools#pdf-tools" className="inline-flex items-center text-blue-600 font-bold hover:text-blue-700 transition-colors bg-blue-50 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-blue-200 text-sm sm:text-base">
                   View All PDF Tools →
                 </Link>
               </div>
@@ -812,18 +815,18 @@ export default function HomePage() {
           </div>
 
           {/* Row 2: Media Tools */}
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-12 md:mb-16">
             {/* Image Tools */}
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-8">
-              <div className="flex items-center mb-8">
-                <div className="text-4xl mr-4">🖼️</div>
+            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8">
+              <div className="flex items-center mb-6 sm:mb-8">
+                <div className="text-3xl sm:text-4xl mr-3 sm:mr-4">🖼️</div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Image Tools</h3>
-                  <p className="text-gray-600">Modern image conversion</p>
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Image Tools</h3>
+                  <p className="text-sm sm:text-base text-gray-600">Modern image conversion</p>
                 </div>
               </div>
 
-              <div className="space-y-4 mb-8">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4 mb-6 sm:mb-8">
                 {[
                   { name: 'PNG to WebP', href: '/png-to-webp-converter' },
                   { name: 'AVIF to PNG', href: '/avif-to-png' },
@@ -832,30 +835,30 @@ export default function HomePage() {
                   { name: 'PNG to JPG', href: '/png-to-jpg' },
                   { name: 'HEIC to JPG', href: '/heic-to-jpg' }
                 ].map((tool, index) => (
-                  <Link key={tool.name} href={tool.href} className="block bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-3 hover:shadow-md transition-all duration-300 hover:scale-105 border border-green-100">
-                    <span className="font-semibold text-gray-900 hover:text-green-600 transition-colors">{tool.name}</span>
+                  <Link key={tool.name} href={tool.href} className="block bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-2.5 sm:p-3 hover:shadow-sm sm:hover:shadow-md transition-all duration-300 hover:scale-105 border border-green-100">
+                    <span className="font-semibold text-gray-900 hover:text-green-600 transition-colors text-sm sm:text-base">{tool.name}</span>
                   </Link>
                 ))}
               </div>
 
               <div className="text-center">
-                <Link href="/tools#image-tools" className="text-green-600 font-bold hover:text-green-700 transition-colors">
+                <Link href="/tools#image-tools" className="text-green-600 font-bold hover:text-green-700 transition-colors text-sm sm:text-base">
                   View All →
                 </Link>
               </div>
             </div>
 
             {/* Video & Audio Tools */}
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-8">
-              <div className="flex items-center mb-8">
-                <div className="text-4xl mr-4">🎦</div>
+            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8">
+              <div className="flex items-center mb-6 sm:mb-8">
+                <div className="text-3xl sm:text-4xl mr-3 sm:mr-4">🎦</div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Video & Audio</h3>
-                  <p className="text-gray-600">Media format conversion</p>
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Video & Audio</h3>
+                  <p className="text-sm sm:text-base text-gray-600">Media format conversion</p>
                 </div>
               </div>
 
-              <div className="space-y-4 mb-8">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4 mb-6 sm:mb-8">
                 {[
                   { name: 'MP4 to MOV', href: '/mp4-to-mov' },
                   { name: 'MOV to MP4', href: '/mov-to-mp4' },
@@ -864,14 +867,14 @@ export default function HomePage() {
                   { name: 'MP3 to WAV', href: '/mp3-to-wav' },
                   { name: 'FLAC to MP3', href: '/flac-to-mp3' }
                 ].map((tool, index) => (
-                  <Link key={tool.name} href={tool.href} className="block bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-3 hover:shadow-md transition-all duration-300 hover:scale-105 border border-red-100">
-                    <span className="font-semibold text-gray-900 hover:text-red-600 transition-colors">{tool.name}</span>
+                  <Link key={tool.name} href={tool.href} className="block bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-2.5 sm:p-3 hover:shadow-sm sm:hover:shadow-md transition-all duration-300 hover:scale-105 border border-red-100">
+                    <span className="font-semibold text-gray-900 hover:text-red-600 transition-colors text-sm sm:text-base">{tool.name}</span>
                   </Link>
                 ))}
               </div>
 
               <div className="text-center">
-                <Link href="/tools#video-audio-tools" className="text-red-600 font-bold hover:text-red-700 transition-colors">
+                <Link href="/tools#video-audio-tools" className="text-red-600 font-bold hover:text-red-700 transition-colors text-sm sm:text-base">
                   View All →
                 </Link>
               </div>
@@ -879,17 +882,17 @@ export default function HomePage() {
           </div>
 
           {/* Row 3: Utility Tools */}
-          <div className="mb-16">
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-8">
-              <div className="flex items-center mb-8">
-                <div className="text-4xl mr-4">🛠️</div>
+          <div className="mb-10 sm:mb-12 md:mb-16">
+            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8">
+              <div className="flex items-center mb-6 sm:mb-8">
+                <div className="text-3xl sm:text-4xl mr-3 sm:mr-4">🛠️</div>
                 <div>
-                  <h3 className="text-3xl font-bold text-gray-900">Business & Utility Tools</h3>
-                  <p className="text-gray-600">Essential productivity tools</p>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">Business & Utility Tools</h3>
+                  <p className="text-sm sm:text-base text-gray-600">Essential productivity tools</p>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8">
                 {[
                   { name: 'Resume Builder', href: '/resume-builder', desc: 'Professional templates', icon: '📋' },
                   { name: 'Invoice Generator', href: '/invoice-generator', desc: 'Business invoicing', icon: '🧾' },
@@ -898,18 +901,18 @@ export default function HomePage() {
                   { name: 'Password Generator', href: '/password-generator', desc: 'Secure passwords', icon: '🔐' },
                   { name: 'Hash Generator', href: '/hash-generator', desc: 'Cryptographic hashes', icon: '⚙️' }
                 ].map((tool, index) => (
-                  <Link key={tool.name} href={tool.href} className="group bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-purple-100">
-                    <div className="flex items-center mb-2">
-                      <span className="text-2xl mr-2">{tool.icon}</span>
-                      <h4 className="font-bold text-gray-900 group-hover:text-purple-600 transition-colors">{tool.name}</h4>
+                  <Link key={tool.name} href={tool.href} className="group bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg sm:rounded-xl p-3 sm:p-4 hover:shadow-md sm:hover:shadow-lg transition-all duration-300 hover:scale-105 border border-purple-100">
+                    <div className="flex items-center mb-1 sm:mb-2">
+                      <span className="text-xl sm:text-2xl mr-2">{tool.icon}</span>
+                      <h4 className="font-bold text-gray-900 group-hover:text-purple-600 transition-colors text-sm sm:text-base">{tool.name}</h4>
                     </div>
-                    <p className="text-sm text-gray-600">{tool.desc}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{tool.desc}</p>
                   </Link>
                 ))}
               </div>
 
               <div className="text-center">
-                <Link href="/tools" className="inline-flex items-center text-purple-600 font-bold hover:text-purple-700 transition-colors bg-purple-50 px-6 py-3 rounded-full border border-purple-200">
+                <Link href="/tools" className="inline-flex items-center text-purple-600 font-bold hover:text-purple-700 transition-colors bg-purple-50 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-purple-200 text-sm sm:text-base">
                   View All Tools →
                 </Link>
               </div>
@@ -917,24 +920,24 @@ export default function HomePage() {
           </div>
 
           {/* Row 4: Font Tools */}
-          <div className="mb-16">
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-8">
-              <div className="flex items-center mb-8">
-                <div className="text-4xl mr-4">🔤</div>
+          <div className="mb-10 sm:mb-12 md:mb-16">
+            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8">
+              <div className="flex items-center mb-6 sm:mb-8">
+                <div className="text-3xl sm:text-4xl mr-3 sm:mr-4">🔤</div>
                 <div>
-                  <h3 className="text-3xl font-bold text-gray-900">Font Tools</h3>
-                  <p className="text-gray-600">Professional typography conversion</p>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">Font Tools</h3>
+                  <p className="text-sm sm:text-base text-gray-600">Professional typography conversion</p>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <Link href="/font-converter" className="group bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-blue-100">
-                  <div className="flex items-center mb-4">
-                    <span className="text-3xl mr-3">🔤</span>
-                    <h4 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Font Converter</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+                <Link href="/font-converter" className="group bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg sm:rounded-xl p-4 sm:p-6 hover:shadow-md sm:hover:shadow-lg transition-all duration-300 hover:scale-105 border border-blue-100">
+                  <div className="flex items-center mb-3 sm:mb-4">
+                    <span className="text-2xl sm:text-3xl mr-2 sm:mr-3">🔤</span>
+                    <h4 className="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Font Converter</h4>
                   </div>
-                  <p className="text-gray-600 mb-4">Convert fonts between different formats like TTF, OTF, WOFF, WOFF2, EOT, and SVG</p>
-                  <div className="flex flex-wrap gap-2">
+                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Convert fonts between different formats like TTF, OTF, WOFF, WOFF2, EOT, and SVG</p>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">TTF</span>
                     <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">OTF</span>
                     <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">WOFF</span>
@@ -942,18 +945,18 @@ export default function HomePage() {
                   </div>
                 </Link>
 
-                <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200 opacity-60">
-                  <div className="flex items-center mb-4">
-                    <span className="text-3xl mr-3">🎨</span>
-                    <h4 className="text-xl font-bold text-gray-700">Font Preview</h4>
+                <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-gray-200 opacity-60">
+                  <div className="flex items-center mb-3 sm:mb-4">
+                    <span className="text-2xl sm:text-3xl mr-2 sm:mr-3">🎨</span>
+                    <h4 className="text-lg sm:text-xl font-bold text-gray-700">Font Preview</h4>
                   </div>
-                  <p className="text-gray-500 mb-4">Preview fonts with custom text and styling options</p>
+                  <p className="text-sm sm:text-base text-gray-500 mb-3 sm:mb-4">Preview fonts with custom text and styling options</p>
                   <span className="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full">Coming Soon</span>
                 </div>
               </div>
 
               <div className="text-center">
-                <Link href="/font-converter" className="inline-flex items-center text-blue-600 font-bold hover:text-blue-700 transition-colors bg-blue-50 px-6 py-3 rounded-full border border-blue-200">
+                <Link href="/font-converter" className="inline-flex items-center text-blue-600 font-bold hover:text-blue-700 transition-colors bg-blue-50 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-blue-200 text-sm sm:text-base">
                   Try Font Converter →
                 </Link>
               </div>
@@ -962,103 +965,103 @@ export default function HomePage() {
         </section>
 
         {/* Font Converters Section */}
-        <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-              <span className="text-3xl">🔤</span>
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 px-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg sm:shadow-xl">
+              <span className="text-2xl sm:text-3xl">🔤</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Font Converters</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">Font Converters</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Convert font files between formats for web, desktop, and professional use
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-8 sm:mb-10 md:mb-12">
             {/* TTF → WOFF */}
-            <div className="group bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
-                <span className="text-2xl">📝</span>
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-blue-200 transition-colors">
+                <span className="text-xl sm:text-2xl">📝</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">TTF → WOFF</h3>
-              <p className="text-gray-600 text-sm mb-3">Desktop to web format</p>
-              <p className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">.ttf to .woff</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">TTF → WOFF</h3>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">Desktop to web format</p>
+              <p className="text-xs text-gray-500 bg-gray-50 px-2 sm:px-3 py-1 rounded-full inline-block">.ttf to .woff</p>
             </div>
 
             {/* OTF → WOFF2 */}
-            <div className="group bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
-                <span className="text-2xl">💻</span>
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-purple-200 transition-colors">
+                <span className="text-xl sm:text-2xl">💻</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">OTF → WOFF2</h3>
-              <p className="text-gray-600 text-sm mb-3">OpenType to modern web</p>
-              <p className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">.otf to .woff2</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">OTF → WOFF2</h3>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">OpenType to modern web</p>
+              <p className="text-xs text-gray-500 bg-gray-50 px-2 sm:px-3 py-1 rounded-full inline-block">.otf to .woff2</p>
             </div>
 
             {/* WOFF → TTF */}
-            <div className="group bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
-                <span className="text-2xl">🌐</span>
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-green-200 transition-colors">
+                <span className="text-xl sm:text-2xl">🌐</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">WOFF → TTF</h3>
-              <p className="text-gray-600 text-sm mb-3">Web to desktop format</p>
-              <p className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">.woff to .ttf</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">WOFF → TTF</h3>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">Web to desktop format</p>
+              <p className="text-xs text-gray-500 bg-gray-50 px-2 sm:px-3 py-1 rounded-full inline-block">.woff to .ttf</p>
             </div>
 
             {/* WOFF2 → OTF */}
-            <div className="group bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-200 transition-colors">
-                <span className="text-2xl">✍️</span>
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-indigo-200 transition-colors">
+                <span className="text-xl sm:text-2xl">✍️</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">WOFF2 → OTF</h3>
-              <p className="text-gray-600 text-sm mb-3">Modern web to OpenType</p>
-              <p className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">.woff2 to .otf</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">WOFF2 → OTF</h3>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">Modern web to OpenType</p>
+              <p className="text-xs text-gray-500 bg-gray-50 px-2 sm:px-3 py-1 rounded-full inline-block">.woff2 to .otf</p>
             </div>
 
             {/* TTF → OTF */}
-            <div className="group bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-yellow-200 transition-colors">
-                <span className="text-2xl">⚡</span>
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-yellow-200 transition-colors">
+                <span className="text-xl sm:text-2xl">⚡</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">TTF → OTF</h3>
-              <p className="text-gray-600 text-sm mb-3">TrueType to OpenType</p>
-              <p className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">.ttf to .otf</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">TTF → OTF</h3>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">TrueType to OpenType</p>
+              <p className="text-xs text-gray-500 bg-gray-50 px-2 sm:px-3 py-1 rounded-full inline-block">.ttf to .otf</p>
             </div>
 
             {/* EOT → WOFF */}
-            <div className="group bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-red-200 transition-colors">
-                <span className="text-2xl">🖨️</span>
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-red-200 transition-colors">
+                <span className="text-xl sm:text-2xl">🖨️</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">EOT → WOFF</h3>
-              <p className="text-gray-600 text-sm mb-3">Legacy IE to modern web</p>
-              <p className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">.eot to .woff</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">EOT → WOFF</h3>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">Legacy IE to modern web</p>
+              <p className="text-xs text-gray-500 bg-gray-50 px-2 sm:px-3 py-1 rounded-full inline-block">.eot to .woff</p>
             </div>
 
             {/* PS1 → OTF */}
-            <div className="group bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-pink-200 transition-colors">
-                <span className="text-2xl">🎨</span>
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-pink-100 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-pink-200 transition-colors">
+                <span className="text-xl sm:text-2xl">🎨</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">PS1 → OTF</h3>
-              <p className="text-gray-600 text-sm mb-3">PostScript to modern</p>
-              <p className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">.ps1 to .otf</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">PS1 → OTF</h3>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">PostScript to modern</p>
+              <p className="text-xs text-gray-500 bg-gray-50 px-2 sm:px-3 py-1 rounded-full inline-block">.ps1 to .otf</p>
             </div>
 
             {/* SVG → TTF */}
-            <div className="group bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors">
-                <span className="text-2xl">🎨</span>
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-orange-200 transition-colors">
+                <span className="text-xl sm:text-2xl">🎨</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">SVG → TTF</h3>
-              <p className="text-gray-600 text-sm mb-3">Vector to standard font</p>
-              <p className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">.svg to .ttf</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">SVG → TTF</h3>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">Vector to standard font</p>
+              <p className="text-xs text-gray-500 bg-gray-50 px-2 sm:px-3 py-1 rounded-full inline-block">.svg to .ttf</p>
             </div>
           </div>
 
           <div className="text-center">
-            <Link href="/tools#font-tools" className="inline-flex items-center text-blue-700 font-bold hover:text-blue-800 transition-colors bg-white/80 backdrop-blur-sm px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl border border-blue-200 group">
+            <Link href="/tools#font-tools" className="inline-flex items-center text-blue-700 font-bold hover:text-blue-800 transition-colors bg-white/80 backdrop-blur-sm px-5 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl border border-blue-200 group text-sm sm:text-base">
               Explore All Font Tools
-              <svg className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-2 sm:ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
@@ -1066,15 +1069,15 @@ export default function HomePage() {
         </section>
 
         {/* Features Section */}
-        <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Why Choose Our Platform?</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 px-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">Why Choose Our Platform?</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Trusted by millions for fast processing, secure handling, and professional results
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {[
               {
                 icon: '⚡',
@@ -1101,27 +1104,27 @@ export default function HomePage() {
                 color: 'from-pink-400 to-red-500'
               }
             ].map((feature, index) => (
-              <div key={index} className="text-center group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 border border-gray-100">
-                <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${feature.color} rounded-2xl text-white text-3xl mb-6 group-hover:scale-110 transition-transform shadow-lg`}>
+              <div key={index} className="text-center group bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-md sm:shadow-lg hover:shadow-xl sm:hover:shadow-2xl transition-all duration-500 hover:scale-105 border border-gray-100">
+                <div className={`inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r ${feature.color} rounded-xl sm:rounded-2xl text-white text-2xl sm:text-3xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform shadow-lg`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">{feature.title}</h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* How It Works Section */}
-        <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 to-purple-50">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">⚡ Simple 3-Step Process</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 to-purple-50">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 px-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">⚡ Simple 3-Step Process</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
               Get your files converted in three easy steps
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12">
             {[
               {
                 step: '1️⃣',
@@ -1143,67 +1146,67 @@ export default function HomePage() {
               }
             ].map((step, index) => (
               <div key={index} className="text-center group">
-                <div className="relative mb-8">
-                  <div className="w-24 h-24 bg-white rounded-full shadow-xl border-4 border-blue-100 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <span className="text-4xl">{step.icon}</span>
+                <div className="relative mb-6 sm:mb-8">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-full shadow-lg sm:shadow-xl border-3 sm:border-4 border-blue-100 flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                    <span className="text-3xl sm:text-4xl">{step.icon}</span>
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
+                  <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-lg sm:text-xl font-bold">
                     {index + 1}
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
-                <p className="text-gray-600 leading-relaxed text-lg">{step.description}</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">{step.title}</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed px-4">{step.description}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Image Converter Tools Section */}
-        <section className="px-4 py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-3xl border border-blue-200/50 shadow-2xl">
+        <section className="px-4 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl sm:rounded-3xl border border-blue-200/50 shadow-xl sm:shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
               <div className="absolute top-10 left-10 w-32 h-32 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
               <div className="absolute top-40 right-20 w-24 h-24 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float-delayed"></div>
               <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
             </div>
-            
-            <div className="relative z-10 p-8 md:p-16">
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl text-white text-3xl mb-8 shadow-xl animate-pulse">
+
+            <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16">
+              <div className="text-center mb-10 sm:mb-12 md:mb-16">
+                <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl sm:rounded-3xl text-white text-2xl sm:text-3xl mb-6 sm:mb-8 shadow-lg sm:shadow-xl animate-pulse">
                   🎨
                 </div>
-                <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent mb-8">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent mb-6 sm:mb-8 px-2">
                   Image Conversion Studio
                 </h2>
-                <p className="text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-light">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-light px-4">
                   Transform images between all popular formats with AI-powered optimization and pixel-perfect quality preservation
                 </p>
               </div>
 
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-16">
+              <div className="grid gap-4 sm:gap-5 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-10 sm:mb-12 md:mb-16">
                 {imageConverterTools.map((tool, index) => (
                   <Link
                     key={tool.name}
                     href={tool.href}
-                    className="relative group bg-white/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-lg border border-white/50 hover:shadow-2xl hover:scale-105 transition-all duration-500 hover:-rotate-1 overflow-hidden"
+                    className="relative group bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 text-center shadow-md sm:shadow-lg border border-white/50 hover:shadow-lg sm:hover:shadow-2xl hover:scale-105 transition-all duration-500 hover:-rotate-1 overflow-hidden"
                   >
                     {tool.popular && (
-                      <div className="absolute top-3 right-3 bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+                      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full shadow-md">
                         POPULAR
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative z-10">
-                      <div className="text-3xl mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                      <div className="text-2xl sm:text-3xl mb-3 sm:mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
                         {tool.icon}
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-700 transition-colors">
+                      <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-700 transition-colors">
                         {tool.name}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-6 group-hover:text-gray-700">{tool.description}</p>
-                      <div className="inline-flex items-center text-blue-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all bg-blue-50 px-4 py-2 rounded-full group-hover:bg-blue-100">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 group-hover:text-gray-700">{tool.description}</p>
+                      <div className="inline-flex items-center text-blue-600 font-semibold text-xs sm:text-sm group-hover:gap-3 gap-2 transition-all bg-blue-50 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full group-hover:bg-blue-100">
                         Convert Now
-                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
                       </div>
@@ -1215,10 +1218,10 @@ export default function HomePage() {
               <div className="text-center">
                 <Link
                   href="/tools#image-converters"
-                  className="inline-flex items-center text-blue-700 font-bold hover:text-blue-800 transition-colors bg-white/80 backdrop-blur-sm px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl border border-blue-200 group"
+                  className="inline-flex items-center text-blue-700 font-bold hover:text-blue-800 transition-colors bg-white/80 backdrop-blur-sm px-5 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl border border-blue-200 group text-sm sm:text-base"
                 >
                   Explore All Image Tools
-                  <svg className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-2 sm:ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
@@ -1228,51 +1231,51 @@ export default function HomePage() {
         </section>
 
         {/* Video Converter Tools Section */}
-        <section className="px-4 py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden bg-gradient-to-br from-red-50 via-white to-orange-50 rounded-3xl border border-red-200/50 shadow-2xl">
+        <section className="px-4 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden bg-gradient-to-br from-red-50 via-white to-orange-50 rounded-2xl sm:rounded-3xl border border-red-200/50 shadow-xl sm:shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
               <div className="absolute top-20 right-10 w-36 h-36 bg-red-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
               <div className="absolute bottom-10 left-20 w-28 h-28 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float-delayed"></div>
               <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
             </div>
 
-            <div className="relative z-10 p-8 md:p-16">
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-red-500 to-orange-600 rounded-3xl text-white text-3xl mb-8 shadow-xl animate-pulse">
+            <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16">
+              <div className="text-center mb-10 sm:mb-12 md:mb-16">
+                <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-red-500 to-orange-600 rounded-2xl sm:rounded-3xl text-white text-2xl sm:text-3xl mb-6 sm:mb-8 shadow-lg sm:shadow-xl animate-pulse">
                   🎬
                 </div>
-                <h2 className="text-5xl font-bold bg-gradient-to-r from-red-700 to-orange-700 bg-clip-text text-transparent mb-8">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-700 to-orange-700 bg-clip-text text-transparent mb-6 sm:mb-8 px-2">
                   Video Processing Lab
                 </h2>
-                <p className="text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-light">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-light px-4">
                   Convert video formats with advanced codecs while maintaining quality and optimizing for different platforms
                 </p>
               </div>
 
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-16">
+              <div className="grid gap-4 sm:gap-5 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-10 sm:mb-12 md:mb-16">
                 {videoConverterTools.map((tool, index) => (
                   <Link
                     key={tool.name}
                     href={tool.href}
-                    className="relative group bg-white/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-lg border border-white/50 hover:shadow-2xl hover:scale-105 transition-all duration-500 hover:rotate-1 overflow-hidden"
+                    className="relative group bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 text-center shadow-md sm:shadow-lg border border-white/50 hover:shadow-lg sm:hover:shadow-2xl hover:scale-105 transition-all duration-500 hover:rotate-1 overflow-hidden"
                   >
                     {tool.popular && (
-                      <div className="absolute top-3 right-3 bg-gradient-to-r from-red-400 to-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md animate-pulse">
+                      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gradient-to-r from-red-400 to-pink-500 text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full shadow-md animate-pulse">
                         HOT
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative z-10">
-                      <div className="text-3xl mb-4 group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300">
+                      <div className="text-2xl sm:text-3xl mb-3 sm:mb-4 group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300">
                         {tool.icon}
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-red-700 transition-colors">
+                      <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-red-700 transition-colors">
                         {tool.name}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-6 group-hover:text-gray-700">{tool.description}</p>
-                      <div className="inline-flex items-center text-red-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all bg-red-50 px-4 py-2 rounded-full group-hover:bg-red-100">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 group-hover:text-gray-700">{tool.description}</p>
+                      <div className="inline-flex items-center text-red-600 font-semibold text-xs sm:text-sm group-hover:gap-3 gap-2 transition-all bg-red-50 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full group-hover:bg-red-100">
                         Convert Now
-                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
                       </div>
@@ -1284,10 +1287,10 @@ export default function HomePage() {
               <div className="text-center">
                 <Link
                   href="/tools#video-converters"
-                  className="inline-flex items-center text-red-700 font-bold hover:text-red-800 transition-colors bg-white/80 backdrop-blur-sm px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl border border-red-200 group"
+                  className="inline-flex items-center text-red-700 font-bold hover:text-red-800 transition-colors bg-white/80 backdrop-blur-sm px-5 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl border border-red-200 group text-sm sm:text-base"
                 >
                   Explore All Video Tools
-                  <svg className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-2 sm:ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
@@ -1297,51 +1300,51 @@ export default function HomePage() {
         </section>
 
         {/* Audio Converter Tools Section */}
-        <section className="px-4 py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-orange-50 rounded-3xl border border-purple-200/50 shadow-2xl">
+        <section className="px-4 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-orange-50 rounded-2xl sm:rounded-3xl border border-purple-200/50 shadow-xl sm:shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
               <div className="absolute top-10 left-10 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
               <div className="absolute top-40 right-20 w-24 h-24 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float-delayed"></div>
               <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
             </div>
 
-            <div className="relative z-10 p-8 md:p-16">
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-500 to-orange-600 rounded-3xl text-white text-3xl mb-8 shadow-xl animate-pulse">
+            <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16">
+              <div className="text-center mb-10 sm:mb-12 md:mb-16">
+                <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-500 to-orange-600 rounded-2xl sm:rounded-3xl text-white text-2xl sm:text-3xl mb-6 sm:mb-8 shadow-lg sm:shadow-xl animate-pulse">
                   🎵
                 </div>
-                <h2 className="text-5xl font-bold bg-gradient-to-r from-purple-700 to-orange-700 bg-clip-text text-transparent mb-8">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-700 to-orange-700 bg-clip-text text-transparent mb-6 sm:mb-8 px-2">
                   Audio Processing Studio
                 </h2>
-                <p className="text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-light">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-light px-4">
                   High-quality audio format conversion with perfect sound preservation and optimized compression for all your music needs
                 </p>
               </div>
 
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-16">
+              <div className="grid gap-4 sm:gap-5 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-10 sm:mb-12 md:mb-16">
                 {audioConverterTools.map((tool, index) => (
                   <Link
                     key={tool.name}
                     href={tool.href}
-                    className="relative group bg-white/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-lg border border-white/50 hover:shadow-2xl hover:scale-105 transition-all duration-500 hover:-rotate-1 overflow-hidden"
+                    className="relative group bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 text-center shadow-md sm:shadow-lg border border-white/50 hover:shadow-lg sm:hover:shadow-2xl hover:scale-105 transition-all duration-500 hover:-rotate-1 overflow-hidden"
                   >
                     {tool.popular && (
-                      <div className="absolute top-3 right-3 bg-gradient-to-r from-purple-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md animate-pulse">
+                      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gradient-to-r from-purple-400 to-orange-500 text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full shadow-md animate-pulse">
                         POPULAR
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative z-10">
-                      <div className="text-3xl mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                      <div className="text-2xl sm:text-3xl mb-3 sm:mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
                         {tool.icon}
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-purple-700 transition-colors">
+                      <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-purple-700 transition-colors">
                         {tool.name}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-6 group-hover:text-gray-700">{tool.description}</p>
-                      <div className="inline-flex items-center text-purple-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all bg-purple-50 px-4 py-2 rounded-full group-hover:bg-purple-100">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 group-hover:text-gray-700">{tool.description}</p>
+                      <div className="inline-flex items-center text-purple-600 font-semibold text-xs sm:text-sm group-hover:gap-3 gap-2 transition-all bg-purple-50 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full group-hover:bg-purple-100">
                         Convert Now
-                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
                       </div>
@@ -1353,10 +1356,10 @@ export default function HomePage() {
               <div className="text-center">
                 <Link
                   href="/tools#audio-converters"
-                  className="inline-flex items-center text-purple-700 font-bold hover:text-purple-800 transition-colors bg-white/80 backdrop-blur-sm px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl border border-purple-200 group"
+                  className="inline-flex items-center text-purple-700 font-bold hover:text-purple-800 transition-colors bg-white/80 backdrop-blur-sm px-5 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl border border-purple-200 group text-sm sm:text-base"
                 >
                   Explore All Audio Tools
-                  <svg className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-2 sm:ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
@@ -1366,30 +1369,30 @@ export default function HomePage() {
         </section>
 
         {/* Benefits Section */}
-        <section className="px-4 py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden bg-white rounded-3xl shadow-2xl border border-gray-200">
+        <section className="px-4 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-gray-200">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-50/50 to-purple-50/50"></div>
-            
-            <div className="relative z-10 p-8 md:p-16">
-              <div className="text-center mb-20">
-                <h2 className="text-5xl font-bold text-gray-900 mb-8">
+
+            <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16">
+              <div className="text-center mb-12 sm:mb-16 md:mb-20 px-4">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 sm:mb-8">
                   Why FlipFileX Pro Leads the Industry
                 </h2>
-                <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
                   Experience the perfect fusion of cutting-edge technology, military-grade security, and intuitive design crafted for professionals who demand excellence.
                 </p>
               </div>
 
-              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              <div className="grid gap-4 sm:gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                 {benefits.map((benefit, index) => (
-                  <div key={index} className={`text-center group p-8 rounded-3xl ${benefit.bgColor} border ${benefit.borderColor} shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-rotate-1`}>
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl text-4xl mb-8 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-lg">
+                  <div key={index} className={`text-center group p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl ${benefit.bgColor} border ${benefit.borderColor} shadow-md sm:shadow-lg hover:shadow-xl sm:hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-rotate-1`}>
+                    <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl sm:rounded-3xl text-3xl sm:text-4xl mb-6 sm:mb-8 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-lg">
                       {benefit.icon}
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6 group-hover:text-gray-700 transition-colors">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 group-hover:text-gray-700 transition-colors">
                       {benefit.title}
                     </h3>
-                    <p className="text-gray-700 leading-relaxed text-base">
+                    <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                       {benefit.description}
                     </p>
                   </div>
@@ -1400,31 +1403,31 @@ export default function HomePage() {
         </section>
 
         {/* Statistics/Counter Section */}
-        <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3">
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 px-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center justify-center gap-2 sm:gap-3">
               📊 Trusted by Millions
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
               Join the community that relies on our professional-grade conversion platform
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-4">
+          <div className="grid gap-4 sm:gap-6 md:gap-8 grid-cols-2 md:grid-cols-4">
             {[
               { number: '500k+', label: 'Files Processed', icon: '📁', color: 'from-blue-500 to-cyan-500' },
               { number: '50+', label: 'Tools Available', icon: '🛠️', color: 'from-green-500 to-emerald-500' },
               { number: '99.9%', label: 'Uptime', icon: '⚡', color: 'from-yellow-500 to-orange-500' },
               { number: '100%', label: 'Free to Use', icon: '🎆', color: 'from-purple-500 to-pink-500' }
             ].map((stat, index) => (
-              <div key={index} className="relative group bg-white rounded-3xl p-8 text-center shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-500 hover:scale-105 overflow-hidden">
+              <div key={index} className="relative group bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-center shadow-lg sm:shadow-xl border border-gray-100 hover:shadow-xl sm:hover:shadow-2xl transition-all duration-500 hover:scale-105 overflow-hidden">
                 <div className={`absolute inset-0 bg-gradient-to-r ${stat.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
                 <div className="relative z-10">
-                  <div className="text-4xl mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">{stat.icon}</div>
-                  <div className={`text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-3`}>
+                  <div className="text-3xl sm:text-4xl mb-3 sm:mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">{stat.icon}</div>
+                  <div className={`text-4xl sm:text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2 sm:mb-3`}>
                     {stat.number}
                   </div>
-                  <div className="text-gray-600 font-semibold text-lg">{stat.label}</div>
+                  <div className="text-gray-600 font-semibold text-base sm:text-lg">{stat.label}</div>
                 </div>
               </div>
             ))}
@@ -1432,17 +1435,17 @@ export default function HomePage() {
         </section>
 
         {/* User Reviews/Testimonials */}
-        <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3">
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 px-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center justify-center gap-2 sm:gap-3">
               ⭐ What Users Say
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
               Real feedback from our satisfied users worldwide
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {[
               {
                 name: 'Ahmad',
@@ -1463,18 +1466,18 @@ export default function HomePage() {
                 avatar: '👨‍💻'
               }
             ].map((review, index) => (
-              <div key={index} className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-gray-100">
-                <div className="flex mb-4">
+              <div key={index} className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-md sm:shadow-lg hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-gray-100">
+                <div className="flex mb-3 sm:mb-4">
                   {[...Array(review.rating)].map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-xl">⭐</span>
+                    <span key={i} className="text-yellow-400 text-lg sm:text-xl">⭐</span>
                   ))}
                 </div>
-                <p className="text-gray-700 mb-6 text-lg italic">"{review.comment}"</p>
+                <p className="text-gray-700 mb-4 sm:mb-6 text-base sm:text-lg italic">"{review.comment}"</p>
                 <div className="flex items-center">
-                  <span className="text-3xl mr-3">{review.avatar}</span>
+                  <span className="text-2xl sm:text-3xl mr-2 sm:mr-3">{review.avatar}</span>
                   <div>
-                    <div className="font-bold text-gray-900">{review.name}</div>
-                    <div className="text-gray-600 text-sm">Verified User</div>
+                    <div className="font-bold text-gray-900 text-sm sm:text-base">{review.name}</div>
+                    <div className="text-gray-600 text-xs sm:text-sm">Verified User</div>
                   </div>
                 </div>
               </div>
@@ -1483,17 +1486,17 @@ export default function HomePage() {
         </section>
 
         {/* Blog/Tips Section */}
-        <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8 bg-gradient-to-r from-gray-50 to-blue-50">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3">
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8 bg-gradient-to-r from-gray-50 to-blue-50">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 px-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center justify-center gap-2 sm:gap-3">
               📝 Tips & Guides
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
               Learn best practices and maximize your productivity
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-10 md:mb-12">
             {[
               {
                 title: 'How to Compress PDF without Quality Loss',
@@ -1521,17 +1524,17 @@ export default function HomePage() {
               }
             ].map((article, index) => (
               <Link key={index} href={article.href} className="block group">
-                <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100 hover-lift animate-bounce-in cursor-pointer" style={{animationDelay: `${index * 100}ms`}}>
-                  <div className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-md sm:shadow-lg hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100 hover-lift animate-bounce-in cursor-pointer" style={{animationDelay: `${index * 100}ms`}}>
+                  <div className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-2.5 sm:px-3 py-1 rounded-full mb-3 sm:mb-4">
                     {article.category}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h3>
-                  <p className="text-gray-600 mb-4">{article.excerpt}</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h3>
+                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">{article.excerpt}</p>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-500 text-sm">{article.readTime}</span>
-                    <span className="text-blue-600 font-semibold group-hover:text-blue-700 transition-colors flex items-center">
+                    <span className="text-gray-500 text-xs sm:text-sm">{article.readTime}</span>
+                    <span className="text-blue-600 font-semibold group-hover:text-blue-700 transition-colors flex items-center text-sm sm:text-base">
                       Read More
-                      <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </span>
@@ -1542,7 +1545,7 @@ export default function HomePage() {
           </div>
 
           <div className="text-center">
-            <Link href="/blog" className="inline-flex items-center text-blue-600 font-bold hover:text-blue-700 transition-colors bg-white px-8 py-4 rounded-2xl shadow-lg border border-blue-200">
+            <Link href="/blog" className="inline-flex items-center text-blue-600 font-bold hover:text-blue-700 transition-colors bg-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg border border-blue-200 text-sm sm:text-base">
               Read More Articles →
             </Link>
           </div>
@@ -1550,21 +1553,21 @@ export default function HomePage() {
 
 
         {/* CTA Section */}
-        <section className="px-4 py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-3xl shadow-2xl">
+        <section className="px-4 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl">
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 animate-pulse"></div>
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-white/5 rounded-full -ml-40 -mb-40 animate-pulse" style={{animationDelay: '2s'}}></div>
-            
-            <div className="relative z-10 p-8 md:p-16 text-white text-center">
-              <h2 className="text-5xl md:text-6xl font-bold mb-8">
+
+            <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16 text-white text-center">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 px-2">
                 Ready to Transform Your Workflow?
               </h2>
-              <p className="text-2xl mb-16 text-blue-100 max-w-3xl mx-auto font-light">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-10 sm:mb-12 md:mb-16 text-blue-100 max-w-3xl mx-auto font-light px-4">
                 Join over 50,000 professionals who trust our secure, lightning-fast, and enterprise-grade conversion platform
               </p>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-12">
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto mb-8 sm:mb-10 md:mb-12">
                 {[
                   { text: 'PDF to Word', href: '/convert-pdf-to-word-online' },
                   { text: 'Word to PDF', href: '/word-to-pdf-online' },
@@ -1575,17 +1578,17 @@ export default function HomePage() {
                   { text: 'MP4 to MOV', href: '/mp4-to-mov' },
                   { text: 'MOV to MP4', href: '/mov-to-mp4' }
                 ].map((link, index) => (
-                  <Link key={index} href={link.href} className="bg-white/20 backdrop-blur-sm text-white px-4 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-lg text-center border border-white/20">
+                  <Link key={index} href={link.href} className="bg-white/20 backdrop-blur-sm text-white px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-lg text-center border border-white/20 text-sm sm:text-base">
                     {link.text}
                   </Link>
                 ))}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <Link href="/convert-pdf-to-word-online" className="bg-white text-blue-700 px-8 py-4 rounded-2xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl text-lg">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
+                <Link href="/convert-pdf-to-word-online" className="w-full sm:w-auto bg-white text-blue-700 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl text-base sm:text-lg text-center">
                   Start Converting Now
                 </Link>
-                <Link href="/tools" className="border-2 border-white text-white px-8 py-4 rounded-2xl font-bold hover:bg-white hover:text-blue-700 transition-all duration-300 transform hover:scale-105 text-lg">
+                <Link href="/tools" className="w-full sm:w-auto border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold hover:bg-white hover:text-blue-700 transition-all duration-300 transform hover:scale-105 text-base sm:text-lg text-center">
                   Browse All Tools
                 </Link>
               </div>
@@ -1594,32 +1597,32 @@ export default function HomePage() {
         </section>
 
         {/* Security & Privacy */}
-        <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden bg-gradient-to-r from-emerald-50 via-white to-blue-50 rounded-3xl border-2 border-emerald-200 shadow-xl">
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden bg-gradient-to-r from-emerald-50 via-white to-blue-50 rounded-2xl sm:rounded-3xl border-2 border-emerald-200 shadow-xl">
             <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
-            
-            <div className="relative z-10 p-8 md:p-12">
-              <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
+
+            <div className="relative z-10 p-6 sm:p-8 md:p-12">
+              <div className="flex flex-col lg:flex-row items-center space-y-6 sm:space-y-8 lg:space-y-0 lg:space-x-8 xl:space-x-12">
                 <div className="flex-shrink-0">
-                  <div className="w-24 h-24 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-3xl flex items-center justify-center text-4xl text-white shadow-2xl animate-pulse">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl sm:rounded-3xl flex items-center justify-center text-3xl sm:text-4xl text-white shadow-xl sm:shadow-2xl animate-pulse">
                     🛡️
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-4xl font-bold text-emerald-900 mb-8">Enterprise-Grade Security & Privacy</h3>
-                  <div className="grid md:grid-cols-2 gap-6 text-emerald-800">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-900 mb-6 sm:mb-8 text-center lg:text-left">Enterprise-Grade Security & Privacy</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-emerald-800">
                     {[
                       { title: 'Military-Grade Encryption', desc: 'AES-256 encryption for all file transfers and processing' },
                       { title: 'Zero-Knowledge Architecture', desc: 'Files automatically deleted within 60 minutes of processing' },
                       { title: 'GDPR & SOC 2 Compliant', desc: 'Full compliance with international privacy regulations' },
                       { title: 'No Data Retention', desc: 'We never save, share, access, or analyze your documents' }
                     ].map((item, index) => (
-                      <div key={index} className="flex items-start space-x-4 p-4 bg-white/80 rounded-2xl shadow-lg border border-emerald-100">
-                        <div className="text-emerald-600 text-2xl">✓</div>
+                      <div key={index} className="flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white/80 rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-emerald-100">
+                        <div className="text-emerald-600 text-xl sm:text-2xl flex-shrink-0">✓</div>
                         <div>
-                          <strong className="text-lg block mb-2">{item.title}:</strong>
-                          <span className="text-emerald-700">{item.desc}</span>
+                          <strong className="text-base sm:text-lg block mb-1 sm:mb-2">{item.title}:</strong>
+                          <span className="text-emerald-700 text-sm sm:text-base">{item.desc}</span>
                         </div>
                       </div>
                     ))}
@@ -1631,33 +1634,33 @@ export default function HomePage() {
         </section>
 
         {/* Enhanced FAQ Section */}
-        <section id="faq" className="px-4 py-24 mx-auto max-w-4xl sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl text-white text-2xl mb-6 shadow-lg animate-pulse">
+        <section id="faq" className="px-4 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto max-w-4xl sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl text-white text-xl sm:text-2xl mb-4 sm:mb-6 shadow-lg animate-pulse">
               ❓
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Everything you need to know about our professional conversion platform</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 px-4">Frequently Asked Questions</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">Everything you need to know about our professional conversion platform</p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 animate-bounce-in" style={{animationDelay: `${index * 100}ms`}}>
+              <div key={index} className="bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg border border-gray-200 overflow-hidden hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 animate-bounce-in" style={{animationDelay: `${index * 100}ms`}}>
                 <button
                   onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
-                  className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+                  className="w-full p-4 sm:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
                 >
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center mr-4">
-                      <span className="text-lg font-bold text-blue-600">{index + 1}</span>
+                  <div className="flex items-center flex-1 min-w-0">
+                    <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center mr-3 sm:mr-4">
+                      <span className="text-sm sm:text-lg font-bold text-blue-600">{index + 1}</span>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 pr-4">
+                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 pr-2 sm:pr-4">
                       {faq.question}
                     </h3>
                   </div>
                   <div className="flex-shrink-0">
                     <svg
-                      className={`w-6 h-6 text-gray-500 transition-transform duration-200 ${
+                      className={`w-5 h-5 sm:w-6 sm:h-6 text-gray-500 transition-transform duration-200 ${
                         openFaqIndex === index ? 'rotate-180' : ''
                       }`}
                       fill="none"
@@ -1672,9 +1675,9 @@ export default function HomePage() {
                 <div className={`overflow-hidden transition-all duration-300 ${
                   openFaqIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                 }`}>
-                  <div className="px-6 pb-6">
-                    <div className="ml-14 pt-2 border-l-2 border-blue-100 pl-6">
-                      <p className="text-gray-700 leading-relaxed text-base">{faq.answer}</p>
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+                    <div className="ml-11 sm:ml-14 pt-2 border-l-2 border-blue-100 pl-4 sm:pl-6">
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{faq.answer}</p>
                     </div>
                   </div>
                 </div>
@@ -1687,38 +1690,38 @@ export default function HomePage() {
           </div>
 
           {/* Quick Action Buttons */}
-          <div className="text-center mt-16 space-y-4">
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link href="/contact" className="inline-flex items-center text-blue-700 font-bold hover:text-blue-800 transition-colors bg-blue-50 px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl border border-blue-200 group text-lg hover-lift click-effect">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="text-center mt-10 sm:mt-12 md:mt-16 space-y-3 sm:space-y-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+              <Link href="/contact" className="w-full sm:w-auto inline-flex items-center justify-center text-blue-700 font-bold hover:text-blue-800 transition-colors bg-blue-50 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl border border-blue-200 group text-base sm:text-lg hover-lift click-effect">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.93 8.93 0 01-4.95-1.492L3 21l2.492-5.05A8.93 8.93 0 013 11c0-4.418 3.582-8 8-8s8 3.582 8 8z" />
                 </svg>
                 Contact Support
-                <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
 
               <button
                 onClick={() => setOpenFaqIndex(openFaqIndex === null ? 0 : null)}
-                className="inline-flex items-center text-purple-700 font-bold hover:text-purple-800 transition-colors bg-purple-50 px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl border border-purple-200 group text-lg hover-lift click-effect"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-purple-700 font-bold hover:text-purple-800 transition-colors bg-purple-50 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl border border-purple-200 group text-base sm:text-lg hover-lift click-effect"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {openFaqIndex === null ? 'Expand All' : 'Collapse All'}
               </button>
             </div>
 
-            <p className="text-gray-500 text-sm mt-4">Can't find what you're looking for? Our support team is here to help 24/7</p>
+            <p className="text-gray-500 text-xs sm:text-sm mt-3 sm:mt-4 px-4">Can't find what you're looking for? Our support team is here to help 24/7</p>
           </div>
         </section>
 
         {/* Simple Footer */}
-        <footer className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 border-t border-gray-200">
+        <footer className="px-4 py-6 sm:py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 border-t border-gray-200">
           <div className="text-center">
-            <p className="text-gray-600 text-lg">© 2024 FlipFileX Pro v3.0.0 - All-in-One Digital Tools Platform</p>
-            <p className="text-gray-500 mt-2">Trusted by professionals worldwide • Enterprise security • Lightning-fast processing</p>
+            <p className="text-gray-600 text-base sm:text-lg">© 2024 FlipFileX Pro v3.0.0 - All-in-One Digital Tools Platform</p>
+            <p className="text-gray-500 mt-2 text-sm sm:text-base px-4">Trusted by professionals worldwide • Enterprise security • Lightning-fast processing</p>
           </div>
         </footer>
 

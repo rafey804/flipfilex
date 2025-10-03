@@ -50,7 +50,7 @@
         },
         {
           name: 'PDF to Images',
-          href: '/pdf-to-images-converter', 
+          href: '/pdf-to-images',
           description: 'Convert PDF pages to image files',
           icon: '🖼️',
           popular: true
@@ -78,7 +78,7 @@
         },
         {
           name: 'PDF to Excel',
-          href: '/pdf-to-excel-converter',
+          href: '/pdf-to-excel',
           description: 'Convert PDF tables to Excel spreadsheets',
           icon: '📊',
           comingSoon: true
@@ -272,14 +272,14 @@
         },
         {
           name: 'Video Compressor',
-          href: '/compress-video-online',
+          href: '/compress-video',
           description: 'Reduce video file sizes',
           icon: '🗜️',
           comingSoon: true
         },
         {
           name: 'Video Trimmer',
-          href: '/trim-video-online',
+          href: '/trim-video',
           description: 'Cut and edit videos',
           icon: '✂️',
           comingSoon: true
@@ -344,21 +344,21 @@
         },
         {
           name: 'Audio Compressor',
-          href: '/compress-audio-online',
+          href: '/compress-audio',
           description: 'Compress audio files to reduce size',
           icon: '🗜️',
           comingSoon: true
         },
         {
           name: 'Audio Trimmer',
-          href: '/trim-audio-online',
+          href: '/trim-audio',
           description: 'Cut and trim audio files easily',
           icon: '✂️',
           comingSoon: true
         },
         {
           name: 'Audio Merger',
-          href: '/merge-audio-files',
+          href: '/merge-audio',
           description: 'Combine multiple audio files',
           icon: '🔗',
           comingSoon: true
@@ -405,21 +405,24 @@
         },
         {
           name: 'EOT to WOFF',
-          href: '/eot-to-woff',
+          href: '/eot-to-woff2',
           description: 'Legacy IE to modern web format',
-          icon: '🖨️'
+          icon: '🖨️',
+          comingSoon: true
         },
         {
-          name: 'PS1 to OTF',
-          href: '/ps1-to-otf',
+          name: 'PSL to OTF',
+          href: '/psl-to-otf',
           description: 'PostScript to modern format',
-          icon: '🎨'
+          icon: '🎨',
+          comingSoon: true
         },
         {
           name: 'SVG to TTF',
-          href: '/svg-to-ttf',
+          href: '/svg-to-ttf2',
           description: 'Vector to standard font format',
-          icon: '🎨'
+          icon: '🎨',
+          comingSoon: true
         }
       ]
     },
