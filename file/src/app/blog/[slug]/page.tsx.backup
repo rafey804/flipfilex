@@ -1,0 +1,438 @@
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+
+// Blog posts data
+const blogPosts = {
+  'convert-pdf-to-word-without-losing-formatting': {
+    id: 1,
+    title: 'How to Convert PDF to Word Without Losing Formatting',
+    excerpt: 'Learn the best practices for converting PDF files to Word documents while preserving your original formatting.',
+    content: `
+      <p>Converting PDF files to Word documents can be challenging, especially when you want to maintain the original formatting. In this article, we'll explore the best practices for seamless conversion.</p>
+      
+      <h2>Why Formatting Matters</h2>
+      <p>When converting documents for professional or academic purposes, maintaining the original layout, fonts, and styling is crucial. Even minor formatting issues can make your document look unprofessional.</p>
+      
+      <h2>Best Practices for PDF to Word Conversion</h2>
+      <p>Follow these tips to ensure your converted documents look exactly how you intended:</p>
+      
+      <h3>1. Use High-Quality Source Files</h3>
+      <p>Start with a well-formatted PDF. Documents created from Word or other text editors convert better than scanned documents.</p>
+      
+      <h3>2. Choose the Right Conversion Tool</h3>
+      <p>Our PDF to Word converter uses advanced algorithms to preserve formatting, tables, images, and even complex layouts.</p>
+      
+      <h3>3. Check Font Compatibility</h3>
+      <p>Some fonts in your PDF might not be available in Word. Our tool automatically selects the closest matching fonts.</p>
+      
+      <h2>Step-by-Step Conversion Guide</h2>
+      <p>Using our tool is simple:</p>
+      <ol>
+        <li>Upload your PDF file</li>
+        <li>Select conversion options</li>
+        <li>Download your Word document</li>
+        <li>Review and make minor adjustments if needed</li>
+      </ol>
+      
+      <h2>Common Issues and Solutions</h2>
+      <p>Even with the best tools, you might encounter some issues:</p>
+      <ul>
+        <li><strong>Text alignment problems:</strong> Usually fixed by adjusting paragraph settings</li>
+        <li><strong>Image placement issues:</strong> Try changing text wrapping options</li>
+        <li><strong>Font substitutions:</strong> Manually select a similar font if needed</li>
+      </ul>
+      
+      <p>By following these guidelines, you can convert your PDFs to Word documents with minimal formatting loss.</p>
+    `,
+    date: '2023-10-15',
+    category: 'Tutorials',
+    readTime: '5 min read',
+    author: 'PDF Tools Team',
+  },
+  'benefits-of-converting-word-to-pdf': {
+    id: 2,
+    title: '5 Benefits of Converting Word to PDF',
+    excerpt: 'Discover why converting your Word documents to PDF format is essential for professional document sharing.',
+    content: `
+      <p>Microsoft Word documents are great for creating and editing content, but when it comes to sharing and distributing documents, PDF format offers significant advantages. Here are the top 5 benefits of converting your Word documents to PDF.</p>
+      
+      <h2>1. Universal Compatibility</h2>
+      <p>PDF files can be opened on any device - Windows, Mac, iOS, or Android - without requiring specific software. Unlike Word documents that may display differently depending on the version of Microsoft Office or alternative word processors, PDFs maintain their appearance across all platforms.</p>
+      <p>This is particularly important when sharing documents with clients, colleagues, or organizations who might not have the same software or fonts installed on their devices.</p>
+      
+      <h2>2. Document Security</h2>
+      <p>PDF format offers robust security features that Word documents lack. You can:</p>
+      <ul>
+        <li>Password-protect sensitive documents</li>
+        <li>Restrict printing, copying, or editing</li>
+        <li>Add digital signatures for authentication</li>
+        <li>Set expiration dates for time-sensitive documents</li>
+      </ul>
+      <p>These features make PDF ideal for legal documents, contracts, financial reports, and any confidential materials.</p>
+      
+      <h2>3. Consistent Formatting</h2>
+      <p>Have you ever opened a Word document only to find formatting errors, misplaced images, or changed fonts? PDF eliminates this problem by preserving the exact layout, fonts, images, and formatting of your original document.</p>
+      <p>This consistency is crucial for:</p>
+      <ul>
+        <li>Resumes and job applications</li>
+        <li>Academic papers and research documents</li>
+        <li>Business proposals and reports</li>
+        <li>Marketing materials and brochures</li>
+      </ul>
+      
+      <h2>4. Smaller File Size</h2>
+      <p>PDF files are typically more compressed than Word documents, especially when they contain images. Advanced compression algorithms in PDF format reduce file size without sacrificing quality, making documents easier to share via email or upload to websites.</p>
+      <p>Smaller file sizes also mean faster upload and download times, which improves efficiency when sharing large documents or working with slow internet connections.</p>
+      
+      <h2>5. Professional Appearance</h2>
+      <p>PDF is the standard format for professional document exchange. Sending a PDF instead of a Word document conveys professionalism and attention to detail. It shows that you consider the document final and not meant for further editing.</p>
+      <p>Additionally, PDFs can include interactive elements like:</p>
+      <ul>
+        <li>Clickable links and bookmarks</li>
+        <li>Fillable form fields</li>
+        <li>Embedded multimedia</li>
+        <li>Layers for complex designs</li>
+      </ul>
+      
+      <h2>How to Convert Word to PDF</h2>
+      <p>Converting your Word documents to PDF is simple with our online tool:</p>
+      <ol>
+        <li>Visit our Word to PDF converter page</li>
+        <li>Upload your Word document</li>
+        <li>Click the convert button</li>
+        <li>Download your new PDF file</li>
+      </ol>
+      <p>The process takes just seconds and preserves all your original formatting.</p>
+      
+      <p>By converting your Word documents to PDF, you ensure they look professional, remain secure, and can be accessed by anyone, anywhere, on any device.</p>
+    `,
+    date: '2023-10-10',
+    category: 'Tips & Tricks',
+    readTime: '4 min read',
+    author: 'PDF Tools Team',
+  },
+  'how-to-merge-multiple-pdf-files': {
+    id: 3,
+    title: 'How to Merge Multiple PDF Files Efficiently',
+    excerpt: 'Step-by-step guide on combining multiple PDF documents into a single file for better organization.',
+    content: `
+      <p>Combining multiple PDF files into a single document can save time, reduce clutter, and make information easier to manage. Whether you're compiling reports, combining chapters of an ebook, or gathering related documents, here's how to merge PDF files efficiently.</p>
+      
+      <h2>Why Merge PDF Files?</h2>
+      <p>Merging PDFs offers several advantages:</p>
+      <ul>
+        <li><strong>Organization:</strong> Keep related documents together in one file</li>
+        <li><strong>Professionalism:</strong> Present a complete package instead of multiple attachments</li>
+        <li><strong>Convenience:</strong> Easier to share, print, and archive a single file</li>
+        <li><strong>Efficiency:</strong> Reduce time spent searching through multiple files</li>
+      </ul>
+      
+      <h2>Step-by-Step Guide to Merging PDFs</h2>
+      <p>Follow these simple steps to combine your PDF documents:</p>
+      
+      <h3>1. Prepare Your Files</h3>
+      <p>Gather all the PDF files you want to merge and ensure they're in the correct order. Consider renaming them with numbers (01, 02, 03) to make sorting easier.</p>
+      
+      <h3>2. Use Our Online Merger Tool</h3>
+      <p>Our PDF merger tool is designed for simplicity and efficiency:</p>
+      <ol>
+        <li>Visit our Merge PDF page</li>
+        <li>Upload your PDF files (you can drag and drop or select from your device)</li>
+        <li>Rearrange files by dragging them into your preferred order</li>
+        <li>Click the "Merge" button</li>
+        <li>Download your combined PDF</li>
+      </ol>
+      
+      <h3>3. Review the Merged Document</h3>
+      <p>After merging, quickly scan through the document to ensure:</p>
+      <ul>
+        <li>All pages are in the correct order</li>
+        <li>No pages are missing</li>
+        <li>Formatting remains consistent</li>
+      </ul>
+      
+      <h2>Advanced Merging Tips</h2>
+      <p>For more complex merging needs, consider these advanced techniques:</p>
+      
+      <h3>Selective Page Merging</h3>
+      <p>Instead of merging entire documents, you can select specific pages from each PDF. This is useful when you only need certain sections from multiple files.</p>
+      
+      <h3>Adding Bookmarks</h3>
+      <p>After merging, add bookmarks to help navigate the combined document. This is especially helpful for long documents with multiple sections.</p>
+      
+      <h3>File Size Management</h3>
+      <p>If your merged file becomes too large, consider compressing it or removing unnecessary pages to reduce the file size.</p>
+      
+      <h2>Common Use Cases for PDF Merging</h2>
+      <ul>
+        <li><strong>Business Reports:</strong> Combine financial statements, presentations, and analyses</li>
+        <li><strong>Academic Work:</strong> Merge research papers, references, and appendices</li>
+        <li><strong>Legal Documents:</strong> Combine contracts, exhibits, and supporting materials</li>
+        <li><strong>Personal Use:</strong> Create photo albums, recipe collections, or travel journals</li>
+      </ul>
+      
+      <p>With our easy-to-use merging tool, you can quickly combine PDF files without losing quality or compromising security.</p>
+    `,
+    date: '2023-10-05',
+    category: 'Tutorials',
+    readTime: '6 min read',
+    author: 'PDF Tools Team',
+  },
+  'when-to-use-pdf-to-image-conversion': {
+    id: 4,
+    title: 'When to Use PDF to Image Conversion',
+    excerpt: 'Learn about the scenarios where converting PDF pages to image formats is the most practical solution.',
+    content: `
+      <p>While PDF is an excellent format for document preservation, there are situations where converting PDF pages to images (JPG, PNG, or TIFF) is more beneficial. Understanding when to use PDF to image conversion can improve your workflow and document management.</p>
+      
+      <h2>1. When You Need Universal Viewing</h2>
+      <p>Images are the most universally compatible file format. Almost every device can display JPG or PNG files without specialized software. Convert PDF to images when:</p>
+      <ul>
+        <li>Sharing documents with people who might not have PDF readers</li>
+        <li>Embedding document content in applications that don't support PDF</li>
+        <li>Posting content on platforms that prefer images over documents</li>
+      </ul>
+      
+      <h2>2. For Web and Social Media Use</h2>
+      <p>Images load faster than PDFs on websites and social media platforms. Convert PDF pages to images when:</p>
+      <ul>
+        <li>Creating website galleries from PDF portfolios</li>
+        <li>Sharing document excerpts on social media</li>
+        <li>Embedding document content in blog posts or articles</li>
+        <li>Creating thumbnails for document previews</li>
+      </ul>
+      
+      <h2>3. When Editing Isn't Required</h2>
+      <p>Converting to images prevents accidental modifications, making it ideal for:</p>
+      <ul>
+        <li>Final versions of contracts or agreements</li>
+        <li>Archived documents that shouldn't be altered</li>
+        <li>Preserving the exact appearance of historical documents</li>
+        <li>Creating read-only versions of sensitive materials</li>
+      </ul>
+      
+      <h2>4. For Graphic-Intensive Documents</h2>
+      <p>PDFs containing primarily images, designs, or illustrations often work better as image files when:</p>
+      <ul>
+        <li>Each page functions as a standalone image</li>
+        <li>You need to extract specific visual elements</li>
+        <li>The document is more visual than textual</li>
+        <li>You're working with art portfolios, design mockups, or photo collections</li>
+      </ul>
+      
+      <h2>5. Compatibility with Specific Applications</h2>
+      <p>Some applications work better with images than PDFs. Convert when:</p>
+      <ul>
+        <li>Importing content into video editing software</li>
+        <li>Using document pages in presentation software</li>
+        <li>Adding pages to graphic design projects</li>
+        <li>Incorporating content into mobile applications</li>
+      </ul>
+      
+      <h2>How to Convert PDF to Images</h2>
+      <p>Our PDF to image converter makes the process simple:</p>
+      <ol>
+        <li>Upload your PDF file</li>
+        <li>Select your preferred image format (JPG, PNG, or TIFF)</li>
+        <li>Choose image quality settings</li>
+        <li>Select specific pages or convert all pages</li>
+        <li>Download your images as a ZIP file</li>
+      </ol>
+      
+      <h2>Choosing the Right Image Format</h2>
+      <ul>
+        <li><strong>JPG:</strong> Best for photographs and complex images with many colors</li>
+        <li><strong>PNG:</strong> Ideal for documents with text, line art, or transparent backgrounds</li>
+        <li><strong>TIFF:</strong> Suitable for high-quality archiving and professional printing</li>
+      </ul>
+      
+      <p>By understanding when to use PDF to image conversion, you can choose the right format for your specific needs and improve your document workflow.</p>
+    `,
+    date: '2023-09-28',
+    category: 'Use Cases',
+    readTime: '3 min read',
+    author: 'PDF Tools Team',
+  },
+};
+
+interface BlogPostParams {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export async function generateMetadata({ params }: BlogPostParams): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = blogPosts[resolvedParams.slug as keyof typeof blogPosts];
+  
+  if (!post) {
+    return {
+      title: 'Post Not Found',
+    };
+  }
+  
+  return {
+    title: `${post.title} | PDF Converter Pro Blog`,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.date,
+      authors: [post.author],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+    },
+    alternates: {
+      canonical: `https://yourdomain.com/blog/${resolvedParams.slug}`,
+    },
+  };
+}
+
+export default async function BlogPost({ params }: BlogPostParams) {
+  const resolvedParams = await params;
+  const post = blogPosts[resolvedParams.slug as keyof typeof blogPosts];
+  
+  if (!post) {
+    notFound();
+  }
+  
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav className="mb-8">
+          <ol className="flex items-center space-x-2 text-sm text-gray-600">
+            <li>
+              <Link href="/" className="hover:text-blue-600">Home</Link>
+            </li>
+            <li className="before:content-['/'] before:mx-2">
+              <Link href="/blog" className="hover:text-blue-600">Blog</Link>
+            </li>
+            <li className="before:content-['/'] before:mx-2">
+              <span className="text-gray-900">{post.title}</span>
+            </li>
+          </ol>
+        </nav>
+        
+        {/* Article Header */}
+        <article className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="p-8">
+            <div className="flex items-center justify-between mb-4">
+              <span className="inline-block bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                {post.category}
+              </span>
+              <span className="text-sm text-gray-500">{post.readTime}</span>
+            </div>
+            
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
+            
+            <div className="flex items-center text-sm text-gray-600 mb-6">
+              <span>By {post.author}</span>
+              <span className="mx-2">•</span>
+              <time dateTime={post.date}>
+                {new Date(post.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
+            </div>
+            
+            {/* Article Content */}
+            <div 
+              className="prose prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+            
+            {/* Share Buttons */}
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Share this article</h3>
+              <div className="flex space-x-4">
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://yourdomain.com/blog/${resolvedParams.slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-500"
+                >
+                  <span className="sr-only">Twitter</span>
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                  </svg>
+                </a>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://yourdomain.com/blog/${resolvedParams.slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700"
+                >
+                  <span className="sr-only">LinkedIn</span>
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                </a>
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://yourdomain.com/blog/${resolvedParams.slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700"
+                >
+                  <span className="sr-only">Facebook</span>
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+        
+        {/* Related Posts */}
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {Object.entries(blogPosts)
+              .filter(([slug]) => slug !== resolvedParams.slug)
+              .slice(0, 2)
+              .map(([slug, post]) => (
+                <div key={post.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                  <span className="inline-block bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full mb-3">
+                    {post.category}
+                  </span>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    <Link href={`/blog/${slug}`} className="hover:text-blue-600">
+                      {post.title}
+                    </Link>
+                  </h3>
+                  <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">{post.readTime}</span>
+                    <Link 
+                      href={`/blog/${slug}`}
+                      className="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center"
+                    >
+                      Read more
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Generate static params for all blog posts
+export async function generateStaticParams() {
+  return Object.keys(blogPosts).map((slug) => ({
+    slug,
+  }));
+}
