@@ -115,6 +115,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google AdSense */}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8694080572387733"
+          crossOrigin="anonymous"></script>
+
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-918R7EMM6E"
@@ -128,13 +132,6 @@ export default function RootLayout({
             gtag('config', 'G-918R7EMM6E');
           `}
         </Script>
-
-        {/* Google AdSense */}
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8694080572387733"
-          strategy="lazyOnload"
-          crossOrigin="anonymous"
-        />
 
         {/* Organization Schema */}
         <Script id="organization-schema" type="application/ld+json" strategy="afterInteractive">
