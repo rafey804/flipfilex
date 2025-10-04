@@ -8,11 +8,15 @@ import Script from 'next/script';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
 });
 
 // SEO Optimized Metadata
@@ -126,11 +130,11 @@ export default function RootLayout({
         </Script>
 
         {/* Google AdSense */}
-        <script
-          async
+        <Script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8694080572387733"
+          strategy="lazyOnload"
           crossOrigin="anonymous"
-        ></script>
+        />
 
         {/* Organization Schema */}
         <Script id="organization-schema" type="application/ld+json" strategy="afterInteractive">
@@ -140,7 +144,7 @@ export default function RootLayout({
             name: 'FlipFileX',
             alternateName: 'FlipFile X',
             url: 'https://flipfilex.com',
-            logo: 'https://flipfilex.com/logo.png',
+            logo: 'https://flipfilex.com/logo.webp',
             description: 'Free online file converter and digital tools platform with 200+ tools',
             email: 'support@flipfilex.com',
             foundingDate: '2024',

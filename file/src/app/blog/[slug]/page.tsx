@@ -65,7 +65,7 @@ export default async function BlogPost({ params }: BlogPostParams) {
       "name": "FlipFileX",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://flipfilex.com/logo.png"
+        "url": "https://flipfilex.com/logo.webp"
       }
     },
     "datePublished": post.date,

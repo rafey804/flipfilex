@@ -665,7 +665,7 @@
                     {/* Glass container for logo */}
                     <div className="absolute inset-0 rounded-lg bg-white/40 backdrop-blur-md border border-white/20 shadow-lg group-hover:shadow-xl transition-all duration-300"></div>
                     <Image
-                      src="/logo.png"
+                      src="/logo.webp"
                       alt="FlipFilex Logo"
                       width={32}
                       height={32}

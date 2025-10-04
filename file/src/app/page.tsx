@@ -476,35 +476,51 @@ export default function HomePage() {
   const faqs = [
     {
       question: "How fast is your conversion process?",
-      answer: "Our advanced multi-core processing engines deliver industry-leading speeds. Most conversions complete within 15-30 seconds, with simple image conversions taking just 5-10 seconds. File size and complexity affect timing, but our optimized infrastructure ensures consistently fast performance."
+      answer: "Our advanced multi-core processing engines deliver industry-leading speeds. Most conversions complete within 15-30 seconds, with simple image conversions taking just 5-10 seconds. File size and complexity affect timing, but our optimized infrastructure ensures consistently fast performance. We use distributed cloud servers across multiple regions to ensure minimal latency regardless of your location. For bulk conversions, our parallel processing system can handle up to 50 files simultaneously, making it ideal for professional workflows."
     },
     {
       question: "What file size limits do you have?",
-      answer: "You can convert files up to 100MB per upload. For PDF conversions, this typically handles 200+ page documents. Image files can be up to 50MP resolution. For larger enterprise needs, contact us for custom solutions with higher limits."
+      answer: "You can convert files up to 100MB per upload. For PDF conversions, this typically handles 200+ page documents. Image files can be up to 50MP resolution. For larger enterprise needs, contact us for custom solutions with higher limits. We've optimized our infrastructure to handle large files efficiently while maintaining fast processing speeds. Business users can request increased limits through our enterprise plan."
     },
     {
       question: "How secure are my files during conversion?",
-      answer: "We employ bank-level AES-256 encryption for all transfers and processing. Files are automatically deleted from our servers within 1 hour, with zero human access. We're GDPR compliant and SOC 2 certified, ensuring your data remains completely private."
+      answer: "We employ bank-level AES-256 encryption for all transfers and processing. Files are automatically deleted from our servers within 1 hour, with zero human access. We're GDPR compliant and SOC 2 certified, ensuring your data remains completely private. Our servers are hosted in secure data centers with 24/7 monitoring, DDoS protection, and regular security audits. We never store, analyze, or share your files with third parties. All connections use HTTPS with TLS 1.3 for maximum security."
     },
     {
       question: "Do you support bulk/batch conversions?",
-      answer: "Absolutely! Upload multiple files simultaneously for batch processing. Perfect for converting entire photo albums, document sets, or media libraries. The interface shows individual progress for each file with estimated completion times."
+      answer: "Absolutely! Upload multiple files simultaneously for batch processing. Perfect for converting entire photo albums, document sets, or media libraries. The interface shows individual progress for each file with estimated completion times. You can convert up to 50 files at once with our batch processor. The system intelligently queues and processes files in parallel to maximize speed while maintaining quality. Great for photographers, designers, and businesses processing large volumes of files daily."
     },
     {
       question: "What image and video formats are supported?",
-      answer: "We support 25+ formats including PNG, WebP, AVIF, JPG, JPEG, SVG, GIF, BMP, TIFF, HEIC, ICO for images. Video formats include MP4, MOV, AVI, MKV, WebM, FLV, WMV with full metadata preservation and quality options."
+      answer: "We support 25+ formats including PNG, WebP, AVIF, JPG, JPEG, SVG, GIF, BMP, TIFF, HEIC, ICO for images. Video formats include MP4, MOV, AVI, MKV, WebM, FLV, WMV with full metadata preservation and quality options. For documents, we support PDF, DOCX, DOC, XLSX, XLS, PPTX, PPT, ODT, RTF, TXT. Audio formats include MP3, WAV, FLAC, AAC, OGG, M4A. We constantly add new formats based on user requests and industry standards."
     },
     {
       question: "Is there a quality loss during conversion?",
-      answer: "Our smart algorithms minimize quality loss through advanced compression techniques. For lossless formats (PNG, TIFF), quality is preserved completely. For lossy formats, we offer customizable quality settings from web-optimized to maximum quality."
+      answer: "Our smart algorithms minimize quality loss through advanced compression techniques. For lossless formats (PNG, TIFF), quality is preserved completely. For lossy formats, we offer customizable quality settings from web-optimized to maximum quality. Our AI-powered optimization analyzes each file to determine the best compression parameters that maintain visual quality while reducing file size. You have full control over the quality-size tradeoff with our advanced settings panel."
     },
     {
       question: "Can I use this on mobile devices?",
-      answer: "Yes! Our responsive design works flawlessly on all devices. We also offer a Progressive Web App (PWA) that can be installed on your phone for app-like experience with offline capabilities for recently converted files."
+      answer: "Yes! Our responsive design works flawlessly on all devices including iPhone, iPad, Android phones and tablets. We also offer a Progressive Web App (PWA) that can be installed on your phone for app-like experience with offline capabilities for recently converted files. The mobile interface is optimized for touch interactions with large buttons and intuitive gestures. You can convert files on-the-go without downloading any app from the app store."
     },
     {
       question: "Do you offer API access for developers?",
-      answer: "We provide REST APIs for enterprise customers with comprehensive documentation, SDKs for popular languages, and dedicated support. Contact our enterprise team for API keys, pricing, and integration assistance."
+      answer: "We provide REST APIs for enterprise customers with comprehensive documentation, SDKs for popular languages (Python, JavaScript, PHP, Ruby, Java), and dedicated support. Contact our enterprise team for API keys, pricing, and integration assistance. Our API supports all conversion types with webhook callbacks for async processing. Perfect for integrating file conversion into your applications, websites, or automated workflows."
+    },
+    {
+      question: "Are the conversions really free?",
+      answer: "Yes! FlipFileX offers completely free file conversions with no hidden charges, subscriptions, or limits on daily usage. We support our platform through optional premium features and non-intrusive ads. You never need to create an account or provide payment information for basic conversions. Our mission is to make professional-grade file conversion accessible to everyone worldwide."
+    },
+    {
+      question: "What makes FlipFileX different from other converters?",
+      answer: "FlipFileX stands out with enterprise-grade security, faster processing speeds, support for 200+ conversion tools, no registration required, and completely free access. We use advanced AI algorithms for optimal quality, provide detailed conversion settings for professionals, and maintain 99.9% uptime. Unlike competitors, we don't compress or watermark your files unless you specifically request it. Our platform is built by developers for developers, designers, and professionals who need reliable, high-quality conversions."
+    },
+    {
+      question: "How do you handle document formatting during PDF conversions?",
+      answer: "Our advanced OCR and layout recognition technology preserves formatting, fonts, images, tables, headers, footers, and document structure during PDF conversions. We use machine learning models trained on millions of documents to accurately detect and maintain formatting elements. For PDF to Word conversions, we preserve editability while maintaining the original layout. Complex documents with multiple columns, embedded images, and custom fonts are handled with exceptional accuracy."
+    },
+    {
+      question: "Can I convert password-protected or encrypted files?",
+      answer: "For security reasons, password-protected files must be unlocked before conversion. We provide a secure password input option where the password is used only for decryption and immediately discarded. The converted file can optionally be re-encrypted with the same or different password. This ensures your sensitive documents remain protected throughout the conversion process while giving you full control over file security."
     }
   ];
 
@@ -535,7 +551,7 @@ export default function HomePage() {
             <div className="text-center">
               <div className="mb-6 sm:mb-8 animate-fade-in">
                 <div className="mb-6 sm:mb-8">
-                  <img src="/logo.png" alt="FlipFileX Logo" className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 mx-auto hover:scale-110 transition-transform duration-300 animate-logo-loop" />
+                  <img src="/logo.webp" alt="FlipFileX Logo" className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 mx-auto hover:scale-110 transition-transform duration-300 animate-logo-loop" />
                 </div>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-4 sm:mb-6 leading-tight tracking-tight px-2">
                   All-in-One Digital Tools Platform
@@ -1113,6 +1129,56 @@ export default function HomePage() {
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* About FlipFileX Section - Rich Content for AdSense */}
+        <section className="px-4 py-12 sm:py-16 md:py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-white via-blue-50 to-purple-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-xl border border-blue-100">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">About FlipFileX: Professional File Conversion Made Simple</h2>
+
+              <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
+                <p className="text-base sm:text-lg leading-relaxed">
+                  FlipFileX is a comprehensive online file conversion platform designed for professionals, businesses, and individuals who need reliable, high-quality file transformations. Founded in 2024, we've quickly become one of the most trusted conversion platforms worldwide, processing over 2.8 million files monthly for users across 150+ countries.
+                </p>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-8 mb-4">Our Mission</h3>
+                <p className="text-base sm:text-lg leading-relaxed">
+                  We believe file conversion should be accessible, secure, and effortless for everyone. Our mission is to eliminate the frustration of incompatible file formats by providing enterprise-grade conversion tools that are completely free to use. Whether you're converting a PDF for work, optimizing images for your website, or transforming video formats for social media, FlipFileX delivers professional results in seconds.
+                </p>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-8 mb-4">Comprehensive Format Support</h3>
+                <p className="text-base sm:text-lg leading-relaxed">
+                  Our platform supports over 200 conversion combinations across multiple categories. For documents, we handle PDF, Word (DOCX/DOC), Excel (XLSX/XLS), PowerPoint (PPTX/PPT), and more. Image conversions include modern formats like WebP, AVIF, and HEIC alongside traditional PNG, JPG, and GIF formats. Video support spans MP4, MOV, AVI, MKV, and WebM, while audio conversions cover MP3, WAV, FLAC, and AAC. We also specialize in font conversions (TTF, OTF, WOFF, WOFF2) and utility tools like QR codes, barcodes, and document generators.
+                </p>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-8 mb-4">Advanced Technology Stack</h3>
+                <p className="text-base sm:text-lg leading-relaxed">
+                  FlipFileX leverages cutting-edge technology to deliver superior conversion quality and speed. Our AI-powered image processing algorithms optimize compression ratios while preserving visual quality. For PDF conversions, we use advanced OCR (Optical Character Recognition) technology that maintains document formatting, fonts, and layout integrity. Our distributed cloud infrastructure with multi-region servers ensures fast processing regardless of your location, typically completing conversions in under 30 seconds.
+                </p>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-8 mb-4">Security & Privacy First</h3>
+                <p className="text-base sm:text-lg leading-relaxed">
+                  We take data security seriously. All file transfers use AES-256 encryption, the same standard used by banks and government agencies. Files are processed in isolated containers and automatically deleted from our servers within 60 minutes. We're fully GDPR compliant and SOC 2 certified, meaning we adhere to strict international privacy standards. Our zero-knowledge architecture ensures that no human ever accesses your files, and we never share, sell, or analyze your data.
+                </p>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-8 mb-4">Who Uses FlipFileX?</h3>
+                <p className="text-base sm:text-lg leading-relaxed">
+                  Our platform serves a diverse user base including graphic designers converting images for client projects, photographers optimizing photos for web galleries, business professionals transforming documents for presentations, content creators converting video formats for different platforms, developers integrating our API into their applications, students converting research papers and assignments, and enterprises processing thousands of files through batch conversions. From freelancers to Fortune 500 companies, FlipFileX adapts to any workflow.
+                </p>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-8 mb-4">Commitment to Quality</h3>
+                <p className="text-base sm:text-lg leading-relaxed">
+                  Quality is non-negotiable at FlipFileX. We continuously update our conversion engines with the latest codec improvements and format specifications. Our team monitors industry standards to ensure compatibility with emerging file formats like AVIF and AV1. User feedback drives our development roadmap—we've added over 50 new conversion tools in the past year based on community requests. Our 99.9% uptime guarantee means FlipFileX is available whenever you need it, with robust infrastructure that handles traffic spikes seamlessly.
+                </p>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-8 mb-4">Environmental Responsibility</h3>
+                <p className="text-base sm:text-lg leading-relaxed">
+                  We're committed to sustainable technology. Our data centers run on renewable energy, and we optimize our code for energy efficiency. By providing online conversions, we help reduce the need for resource-intensive desktop software installations. Our smart caching system minimizes redundant processing, and we continuously work to reduce our carbon footprint while maintaining exceptional performance.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 

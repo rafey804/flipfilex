@@ -153,11 +153,13 @@ export default function Footer({ children }: FooterProps) {
             <div className="flex items-center space-x-2 mb-4">
               <div className="relative w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg p-1">
                 <Image
-                  src="/logo.png"
+                  src="/logo.webp"
                   alt="FlipFileX Logo"
                   width={32}
                   height={32}
                   className="rounded object-contain"
+                  loading="lazy"
+                  priority={false}
                 />
               </div>
               <div>
@@ -432,10 +434,12 @@ export default function Footer({ children }: FooterProps) {
             </div>
             <div className="flex items-center justify-center lg:justify-end">
               <div className="flex items-center space-x-2">
-                <span className="text-sm">🌍</span>
+                <label htmlFor="language-selector" className="text-sm">🌍</label>
                 <select
+                  id="language-selector"
                   onChange={handleLanguageChange}
                   value={selectedLanguage}
+                  aria-label="Select Language"
                   className="bg-white/10 text-slate-300 hover:text-white focus:outline-none border border-white/20 rounded px-2 py-1 text-xs cursor-pointer transition-colors backdrop-blur-sm"
                 >
                   <option value="en" className="bg-slate-900 text-white">🇺🇸 English</option>
@@ -462,7 +466,7 @@ export default function Footer({ children }: FooterProps) {
             "@type": "Organization",
             "name": "FlipFileX",
             "url": "https://flipfilex.com",
-            "logo": "https://flipfilex.com/logo.png",
+            "logo": "https://flipfilex.com/logo.webp",
             "description": "Professional file conversion platform for PDFs, images, videos, and audio files with enterprise-grade security",
             "founder": {
               "@type": "Person",
