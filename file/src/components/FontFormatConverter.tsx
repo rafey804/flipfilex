@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import Head from 'next/head';
 import { useDropzone } from 'react-dropzone';
 
 // Utility functions
@@ -424,20 +423,6 @@ export default function FontFormatConverter({ sourceFormat, targetFormat }: Font
 
   return (
     <>
-      <Head>
-        <title>{conversionConfig.title} | Free Online Font Converter - FlipFileX</title>
-        <meta name="description" content={conversionConfig.metaDescription} />
-        <meta name="keywords" content={conversionConfig.keywords} />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content={`${conversionConfig.title} | FlipFileX`} />
-        <meta property="og:description" content={conversionConfig.metaDescription} />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${conversionConfig.title} | FlipFileX`} />
-        <meta name="twitter:description" content={conversionConfig.metaDescription} />
-        <link rel="canonical" href={`https://flipfilex.com/${conversionConfig.urlSlug}`} />
-      </Head>
-
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-zinc-50 py-6 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

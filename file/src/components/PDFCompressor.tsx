@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import Head from 'next/head';
 import { useDropzone } from 'react-dropzone';
 import { ApiService } from '@/lib/api';
 
@@ -367,20 +366,6 @@ export default function PDFCompressor() {
 
   return (
     <>
-      <Head>
-        <title>PDF Compressor - Reduce PDF File Size Online Free | FlipFileX</title>
-        <meta name="description" content="Compress PDF files online for free. Reduce PDF file size up to 80% while maintaining quality. Fast, secure, and easy PDF compression tool." />
-        <meta name="keywords" content="PDF compressor, reduce PDF size, compress PDF online, PDF optimization, shrink PDF, PDF file size reducer" />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="PDF Compressor - Reduce PDF File Size Online Free | FlipFileX" />
-        <meta property="og:description" content="Compress PDF files online for free. Reduce PDF file size up to 80% while maintaining quality." />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="PDF Compressor - Reduce PDF File Size Online Free | FlipFileX" />
-        <meta name="twitter:description" content="Compress PDF files online for free. Reduce PDF file size up to 80% while maintaining quality." />
-        <link rel="canonical" href="https://flipfilex.com/compress-pdf" />
-      </Head>
-
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-6 sm:py-12">
         {/* Animated Background Elements */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">

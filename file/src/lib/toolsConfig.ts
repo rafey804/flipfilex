@@ -331,11 +331,6 @@ export const toolsConfig: Record<string, ToolConfig> = {
     props: { sourceFormat: 'jpg', targetFormat: 'pdf' },
     type: 'image'
   },
-  'webp-to-jpg': {
-    component: 'SEOOptimizedImageConverter',
-    props: { sourceFormat: 'webp', targetFormat: 'jpg' },
-    type: 'image'
-  },
   'avif-to-webp': {
     component: 'SEOOptimizedImageConverter',
     props: { sourceFormat: 'avif', targetFormat: 'webp' },
@@ -364,11 +359,6 @@ export const toolsConfig: Record<string, ToolConfig> = {
   'ico-to-webp': {
     component: 'SEOOptimizedImageConverter',
     props: { sourceFormat: 'ico', targetFormat: 'webp' },
-    type: 'image'
-  },
-  'ico-to-jpg': {
-    component: 'SEOOptimizedImageConverter',
-    props: { sourceFormat: 'ico', targetFormat: 'jpg' },
     type: 'image'
   },
 

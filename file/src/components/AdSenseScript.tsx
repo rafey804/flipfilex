@@ -1,4 +1,4 @@
-// Create: components/AdSenseScript.tsx
+// AdSense Script Component - Updated for modern APIs
 'use client'
 
 import Script from 'next/script'
@@ -7,18 +7,18 @@ export default function AdSenseScript() {
   return (
     <Script
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8694080572387733"
-      strategy="lazyOnload"
+      strategy="afterInteractive"
       crossOrigin="anonymous"
+      async
       onLoad={() => {
-        console.log('AdSense loaded successfully');
         try {
-          (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+          // Modern AdSense initialization without deprecated APIs
+          if (typeof window !== 'undefined') {
+            (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+          }
         } catch (error) {
-          console.error('AdSense initialization failed:', error);
+          console.error('AdSense initialization error:', error);
         }
-      }}
-      onError={(error) => {
-        console.error('AdSense script failed to load:', error);
       }}
     />
   )

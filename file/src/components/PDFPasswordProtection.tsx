@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Head from 'next/head';
 import { useDropzone } from 'react-dropzone';
 import ProgressPopup from './ProgressPopup';
 import { ApiService } from '@/lib/api';
@@ -259,20 +258,6 @@ export default function PDFPasswordProtection() {
 
   return (
     <>
-      <Head>
-        <title>PDF Password Protection - Lock/Unlock PDF Files Online Free | FlipFileX</title>
-        <meta name="description" content="Add or remove password protection from PDF files online for free. Secure your documents with advanced encryption or unlock password-protected PDFs." />
-        <meta name="keywords" content="PDF password, PDF lock, PDF unlock, PDF security, PDF encryption, password protect PDF, remove PDF password" />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="PDF Password Protection - Lock/Unlock PDF Files Online Free | FlipFileX" />
-        <meta property="og:description" content="Add or remove password protection from PDF files online for free. Secure your documents with advanced encryption." />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="PDF Password Protection - Lock/Unlock PDF Files Online Free | FlipFileX" />
-        <meta name="twitter:description" content="Add or remove password protection from PDF files online for free." />
-        <link rel="canonical" href="https://flipfilex.com/pdf-password-protection" />
-      </Head>
-
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-6 sm:py-12">
         {/* Animated Background Elements */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">

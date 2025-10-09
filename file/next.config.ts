@@ -81,6 +81,119 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  // Redirects for fixing 404 and wrong URLs
+  async redirects() {
+    return [
+      // Fix incorrect URL patterns
+      {
+        source: '/kdrop-blur-sm%20px-8%20py-4%20rounded-2xl%20shadow-lg%20hover:shadow-xl%20border%20border-red-200%20group',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/www.flipfilex.com/:path*',
+        destination: 'https://flipfilex.com/:path*',
+        permanent: true,
+      },
+      // Language redirects to main site
+      {
+        source: '/de',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/es',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/fr',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/it',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/ja',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/ko',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/zh',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/pt',
+        destination: '/',
+        permanent: true,
+      },
+      // Fix tool page redirects
+      {
+        source: '/pdf-to-images-converter',
+        destination: '/pdf-to-images',
+        permanent: true,
+      },
+      {
+        source: '/url-shortener',
+        destination: '/shorten-url',
+        permanent: true,
+      },
+      {
+        source: '/status',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/browserconfig.xml',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/cdn-cgi/l/email-protection',
+        destination: '/contact',
+        permanent: true,
+      },
+      // Converter page naming fixes
+      {
+        source: '/wav-to-mp3-converter',
+        destination: '/wav-to-mp3',
+        permanent: true,
+      },
+      {
+        source: '/png-to-webp-converter',
+        destination: '/png-to-webp',
+        permanent: true,
+      },
+      // Sitemap redirects
+      {
+        source: '/sitemap',
+        destination: '/sitemap.xml',
+        permanent: true,
+      },
+      // Config files that shouldn't be accessed
+      {
+        source: '/_next/static/media/:path*',
+        destination: '/',
+        permanent: false,
+      },
+      // HTTP to HTTPS redirects handled at server level, but enforce www removal
+      {
+        source: '/www.:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

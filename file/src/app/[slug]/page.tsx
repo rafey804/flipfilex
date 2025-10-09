@@ -50,19 +50,45 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const canonicalUrl = `https://flipfilex.com/${slug}`;
+
   return {
     title: metadata.title,
     description: metadata.description,
     keywords: metadata.keywords,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: metadata.title,
       description: metadata.description,
+      url: canonicalUrl,
+      siteName: 'FlipFileX',
       type: 'website',
+      images: [
+        {
+          url: 'https://flipfilex.com/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: metadata.title,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: metadata.title,
       description: metadata.description,
+      images: ['https://flipfilex.com/og-image.png'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }

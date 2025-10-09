@@ -366,67 +366,6 @@
       ]
     },
     {
-      name: 'All Font Tools',
-      subItems: [
-        {
-          name: 'TTF to WOFF',
-          href: '/ttf-to-woff',
-          description: 'Desktop to web format conversion',
-          icon: '📝',
-          popular: true
-        },
-        {
-          name: 'OTF to WOFF2',
-          href: '/otf-to-woff2',
-          description: 'OpenType to modern web format',
-          icon: '💻',
-          popular: true
-        },
-        {
-          name: 'WOFF to TTF',
-          href: '/woff-to-ttf',
-          description: 'Web to desktop format conversion',
-          icon: '🌐',
-          popular: true
-        },
-        {
-          name: 'WOFF2 to OTF',
-          href: '/woff2-to-otf',
-          description: 'Modern web to OpenType format',
-          icon: '✍️',
-          popular: true
-        },
-        {
-          name: 'TTF to OTF',
-          href: '/ttf-to-otf',
-          description: 'TrueType to OpenType conversion',
-          icon: '⚡',
-          popular: true
-        },
-        {
-          name: 'EOT to WOFF',
-          href: '/eot-to-woff2',
-          description: 'Legacy IE to modern web format',
-          icon: '🖨️',
-          comingSoon: true
-        },
-        {
-          name: 'PSL to OTF',
-          href: '/psl-to-otf',
-          description: 'PostScript to modern format',
-          icon: '🎨',
-          comingSoon: true
-        },
-        {
-          name: 'SVG to TTF',
-          href: '/svg-to-ttf2',
-          description: 'Vector to standard font format',
-          icon: '🎨',
-          comingSoon: true
-        }
-      ]
-    },
-    {
       name: 'All Utility Tools',
       subItems: [
         {
@@ -585,8 +524,6 @@
           return 'w-[90vw] max-w-[80%] lg:w-[80%]';
         case 'All Audio Tools':
           return 'w-[90vw] max-w-[80%] lg:w-[80%]';
-        case 'All Font Tools':
-          return 'w-[90vw] max-w-[80%] lg:w-[80%]';
         case 'All Utility Tools':
           return 'w-[90vw] max-w-[80%] lg:w-[80%]';
         default:
@@ -604,8 +541,6 @@
         case 'All PDF Tools':
           return 'grid-cols-3';
         case 'All Audio Tools':
-          return 'grid-cols-3';
-        case 'All Font Tools':
           return 'grid-cols-3';
         case 'All Utility Tools':
           return 'grid-cols-3';
@@ -756,7 +691,6 @@
                                   {item.name === 'All Image Tools' && '🎨'}
                                   {item.name === 'All Video Tools' && '🎬'}
                                   {item.name === 'All Audio Tools' && '🎵'}
-                                  {item.name === 'All Font Tools' && '🔤'}
                                   {item.name === 'All Utility Tools' && '🛠️'}
                                 </span>
                                 <span>{item.name}</span>
@@ -918,7 +852,6 @@
                                 {item.name === 'All Image Tools' && '🎨'}
                                 {item.name === 'All Video Tools' && '🎬'}
                                 {item.name === 'All Audio Tools' && '🎵'}
-                                {item.name === 'All Font Tools' && '🔤'}
                                 {item.name === 'All Utility Tools' && '🛠️'}
                               </div>
                               <div className="font-medium text-sm">{item.name}</div>

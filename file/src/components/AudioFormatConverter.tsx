@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import Head from 'next/head';
 import { useDropzone } from 'react-dropzone';
 
 // Utility functions
@@ -529,19 +528,6 @@ export default function AudioFormatConverter({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-orange-50">
-      <Head>
-        <title>{seoConfig.title}</title>
-        <meta name="description" content={seoConfig.metaDescription} />
-        <meta name="keywords" content={seoConfig.keywords} />
-        <meta property="og:title" content={seoConfig.title} />
-        <meta property="og:description" content={seoConfig.metaDescription} />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={seoConfig.title} />
-        <meta name="twitter:description" content={seoConfig.metaDescription} />
-        <link rel="canonical" href={`https://flipfilex.com/${sourceFormat}-to-${targetFormat}`} />
-      </Head>
-
       <style jsx>{`
         @keyframes slide-in {
           from {

@@ -20,55 +20,53 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Tool pages - Document ke base pe missing tools add kiye
+  // Tool pages - Only valid pages that exist
   const toolPages = [
-    // Image Converters
+    // Image Converters (existing pages)
     'avif-to-png', 'webp-to-png', 'png-to-webp', 'jpg-to-png', 'png-to-jpg',
     'jpeg-to-webp', 'svg-to-png', 'gif-to-png', 'bmp-to-png', 'tiff-to-png',
     'heic-to-jpg', 'ico-to-png',
-    
-    // Video Converters
+
+    // Video Converters (existing pages)
     'mp4-to-mov', 'mov-to-mp4', 'avi-to-mp4', 'mkv-to-mp4', 'webm-to-mp4',
     'flv-to-mp4', 'wmv-to-mp4', 'mp4-to-webm',
-    
-    // Audio Converters
-    'wav-to-mp3', 'mp3-to-wav', 'flac-to-mp3', 'aac-to-mp3', 'm4a-to-mp3',
-    'ogg-to-mp3', 'wma-to-mp3', 'mp3-to-aac',
-    
-    // Font Converters
-    'ttf-to-woff', 'otf-to-woff2', 'woff-to-ttf', 'woff2-to-otf',
-    'ttf-to-otf', 'eot-to-woff', 'ps1-to-otf', 'svg-to-ttf',
-    
-    // PDF Tools
-    'pdf-to-word', 'word-to-pdf', 'merge-pdf', 'split-pdf', 'pdf-to-images',
-    'excel-to-pdf', 'powerpoint-to-pdf', 'text-to-pdf', 'html-to-pdf',
-    'csv-to-excel', 'json-to-csv', 'compress-pdf', 'lock-pdf', 'unlock-pdf',
-    
-    // Document Converters
-    'epub-to-pdf', 'mobi-to-epub', 'txt-to-epub', 'docx-to-epub',
-    'bib-to-pdf', 'latex-to-pdf',
-    
-    // Research & Academic
-    'ris-to-bibtex', 'mathml-to-image',
-    
-    // CAD & 3D Tools
+
+    // Audio Converters (existing pages)
+    'wav-to-mp3', 'flac-to-mp3', 'aac-to-mp3',
+
+    // PDF Tools (existing pages)
+    'convert-pdf-to-word-online', 'word-to-pdf-online', 'merge-pdf-files-free',
+    'split-pdf-online', 'pdf-to-images', 'compress-pdf-online',
+    'excel-to-pdf-converter', 'pdf-to-excel-converter',
+
+    // Document Converters (existing pages)
+    'mobi-to-epub', 'txt-to-epub', 'docx-to-epub', 'latex-to-pdf',
+
+    // Research & Academic (existing pages)
+    'ris-to-bibtex',
+
+    // CAD & 3D Tools (existing pages)
     'stl-to-obj', 'dwg-to-pdf', 'step-to-stl', 'ply-to-obj',
-    
-    // Finance & Crypto
-    'defi-yield-calculator', 'jwt-decoder',
-    
-    // Medical & Imaging
+
+    // Finance & Crypto (existing pages)
+    'defi-yield-calculator', 'jwt-token-decoder',
+
+    // Medical & Imaging (existing pages)
     'dicom-to-jpeg',
-    
-    // Utility Tools
-    'data-to-invoice', 'profile-to-resume', 'image-to-text', 'text-to-qr-code',
-    'text-to-barcode', 'password-generator', 'text-to-hash', 'url-shortener',
-    'color-palette-generator', 'base64-encoder', 'base64-decoder', 'compress-image',
-    
+
+    // Utility Tools (existing pages)
+    'ocr-image-to-text', 'qr-code-generator', 'password-generator',
+    'hash-generator', 'color-picker', 'json-formatter', 'base64-encoder',
+    'image-compressor', 'color-palette-generator', 'font-converter',
+
+    // Static pages
+    'tools', 'about', 'contact', 'privacy-policy', 'terms-of-service',
+    'cookies', 'help', 'accessibility', 'security', 'api-docs', 'enterprise',
+
   ].map(tool => ({
     url: `${baseUrl}/${tool}`,
     lastModified: new Date(),
-    changeFrequency: 'monthly' as const, // Tools ko 'monthly' better hai
+    changeFrequency: 'monthly' as const,
     priority: 0.8,
   }))
 

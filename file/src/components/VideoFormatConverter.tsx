@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import Head from 'next/head';
 import { useDropzone } from 'react-dropzone';
 
 // Utility functions
@@ -115,6 +114,15 @@ export default function VideoFormatConverter({
     type: 'success' | 'error' | 'info' | 'warning';
   }>({ show: false, message: '', type: 'info' });
 
+  // Define notification functions early
+  const showNotification = useCallback((message: string, type: 'success' | 'error' | 'info' | 'warning') => {
+    setNotification({ show: true, message, type });
+  }, []);
+
+  const hideNotification = useCallback(() => {
+    setNotification({ show: false, message: '', type: 'info' });
+  }, []);
+
   const [conversionStats] = useState({
     totalConverted: 45623,
     successRate: 98.7,
@@ -145,30 +153,29 @@ export default function VideoFormatConverter({
   useEffect(() => {
     const newConfig = generateSEOConfig(sourceFormat, targetFormat);
     setSeoConfig(newConfig);
-  }, [sourceFormat, targetFormat]); // Removed generateSEOConfig since it's now stable
+  }, [sourceFormat, targetFormat, generateSEOConfig]);
 
   // Update conversion type and URL
   const updateConversionType = useCallback((newFrom: string, newTo: string) => {
+    // Prevent same format selection
+    if (newFrom === newTo) {
+      showNotification('Source and target formats cannot be the same. Please select a different format.', 'warning');
+      return;
+    }
+
     const newConfig = generateSEOConfig(newFrom, newTo);
     setSeoConfig(newConfig);
-    
+
     if (router) {
       const cleanUrl = `/${newFrom}-to-${newTo}`;
       router.push(cleanUrl);
     }
-    
+
     setFiles([]);
     setSourceFormat(newFrom);
     setTargetFormat(newTo);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, generateSEOConfig]);
-
-  const showNotification = useCallback((message: string, type: 'success' | 'error' | 'info' | 'warning') => {
-    setNotification({ show: true, message, type });
-  }, []);
-
-  const hideNotification = useCallback(() => {
-    setNotification({ show: false, message: '', type: 'info' });
-  }, []);
 
   // Load supported formats
   useEffect(() => {
@@ -528,19 +535,6 @@ export default function VideoFormatConverter({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-pink-50">
-      <Head>
-        <title>{seoConfig.title}</title>
-        <meta name="description" content={seoConfig.metaDescription} />
-        <meta name="keywords" content={seoConfig.keywords} />
-        <meta property="og:title" content={seoConfig.title} />
-        <meta property="og:description" content={seoConfig.metaDescription} />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={seoConfig.title} />
-        <meta name="twitter:description" content={seoConfig.metaDescription} />
-        <link rel="canonical" href={`https://flipfilex.com/${sourceFormat}-to-${targetFormat}`} />
-      </Head>
-
       <style jsx>{`
         @keyframes slide-in {
           from {
@@ -628,9 +622,19 @@ export default function VideoFormatConverter({
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">From Format</label>
-                <select 
-                  value={sourceFormat} 
-                  onChange={(e) => updateConversionType(e.target.value, targetFormat)}
+                <select
+                  value={sourceFormat}
+                  onChange={(e) => {
+                    const newSource = e.target.value;
+                    // If target is same as new source, auto-select first available different format
+                    if (newSource === targetFormat) {
+                      const availableFormats = Object.keys(videoFormats).filter(key => key !== newSource);
+                      const newTarget = availableFormats[0] || 'mp4';
+                      updateConversionType(newSource, newTarget);
+                    } else {
+                      updateConversionType(newSource, targetFormat);
+                    }
+                  }}
                   className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-500 focus:ring focus:ring-red-200 text-lg"
                 >
                   {Object.entries(videoFormats).map(([key, format]) => (
@@ -638,12 +642,22 @@ export default function VideoFormatConverter({
                   ))}
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">To Format</label>
-                <select 
-                  value={targetFormat} 
-                  onChange={(e) => updateConversionType(sourceFormat, e.target.value)}
+                <select
+                  value={targetFormat}
+                  onChange={(e) => {
+                    const newTarget = e.target.value;
+                    // If source is same as new target, auto-select first available different format
+                    if (newTarget === sourceFormat) {
+                      const availableFormats = Object.keys(videoFormats).filter(key => key !== newTarget);
+                      const newSource = availableFormats[0] || 'mov';
+                      updateConversionType(newSource, newTarget);
+                    } else {
+                      updateConversionType(sourceFormat, newTarget);
+                    }
+                  }}
                   className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-pink-500 focus:ring focus:ring-pink-200 text-lg"
                 >
                   {Object.entries(videoFormats).filter(([key]) => key !== sourceFormat).map(([key, format]) => (

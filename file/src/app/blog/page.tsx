@@ -35,7 +35,7 @@ export default function BlogPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const currentCategory = searchParams.category || 'All';
+  const currentCategory = (searchParams.category as string) || 'All';
   const currentPage = Number(searchParams.page) || 1;
 
   // Filter posts by category if specified
