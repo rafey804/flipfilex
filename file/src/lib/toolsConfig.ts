@@ -74,40 +74,21 @@ export const toolsConfig: Record<string, ToolConfig> = {
     type: 'audio'
   },
 
-  // Video conversion tools
+  // Video conversion tools - Complete matrix of all supported formats
+  // MP4 conversions
   'mp4-to-mov': {
     component: 'VideoFormatConverter',
     props: { sourceFormat: 'mp4', targetFormat: 'mov' },
     type: 'video'
   },
-  'mov-to-mp4': {
+  'mp4-to-avi': {
     component: 'VideoFormatConverter',
-    props: { sourceFormat: 'mov', targetFormat: 'mp4' },
+    props: { sourceFormat: 'mp4', targetFormat: 'avi' },
     type: 'video'
   },
-  'avi-to-mp4': {
+  'mp4-to-mkv': {
     component: 'VideoFormatConverter',
-    props: { sourceFormat: 'avi', targetFormat: 'mp4' },
-    type: 'video'
-  },
-  'mkv-to-mp4': {
-    component: 'VideoFormatConverter',
-    props: { sourceFormat: 'mkv', targetFormat: 'mp4' },
-    type: 'video'
-  },
-  'webm-to-mp4': {
-    component: 'VideoFormatConverter',
-    props: { sourceFormat: 'webm', targetFormat: 'mp4' },
-    type: 'video'
-  },
-  'wmv-to-mp4': {
-    component: 'VideoFormatConverter',
-    props: { sourceFormat: 'wmv', targetFormat: 'mp4' },
-    type: 'video'
-  },
-  'flv-to-mp4': {
-    component: 'VideoFormatConverter',
-    props: { sourceFormat: 'flv', targetFormat: 'mp4' },
+    props: { sourceFormat: 'mp4', targetFormat: 'mkv' },
     type: 'video'
   },
   'mp4-to-webm': {
@@ -115,9 +96,83 @@ export const toolsConfig: Record<string, ToolConfig> = {
     props: { sourceFormat: 'mp4', targetFormat: 'webm' },
     type: 'video'
   },
+  'mp4-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mp4', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'mp4-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mp4', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'mp4-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mp4', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'mp4-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mp4', targetFormat: 'h264' },
+    type: 'video'
+  },
+  'mp4-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mp4', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // MOV conversions
+  'mov-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mov', targetFormat: 'mp4' },
+    type: 'video'
+  },
+  'mov-to-avi': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mov', targetFormat: 'avi' },
+    type: 'video'
+  },
+  'mov-to-mkv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mov', targetFormat: 'mkv' },
+    type: 'video'
+  },
   'mov-to-webm': {
     component: 'VideoFormatConverter',
     props: { sourceFormat: 'mov', targetFormat: 'webm' },
+    type: 'video'
+  },
+  'mov-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mov', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'mov-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mov', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'mov-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mov', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'mov-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mov', targetFormat: 'h264' },
+    type: 'video'
+  },
+  'mov-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mov', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // AVI conversions
+  'avi-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'avi', targetFormat: 'mp4' },
     type: 'video'
   },
   'avi-to-mov': {
@@ -125,9 +180,368 @@ export const toolsConfig: Record<string, ToolConfig> = {
     props: { sourceFormat: 'avi', targetFormat: 'mov' },
     type: 'video'
   },
+  'avi-to-mkv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'avi', targetFormat: 'mkv' },
+    type: 'video'
+  },
+  'avi-to-webm': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'avi', targetFormat: 'webm' },
+    type: 'video'
+  },
+  'avi-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'avi', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'avi-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'avi', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'avi-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'avi', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'avi-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'avi', targetFormat: 'h264' },
+    type: 'video'
+  },
+  'avi-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'avi', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // MKV conversions
+  'mkv-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mkv', targetFormat: 'mp4' },
+    type: 'video'
+  },
   'mkv-to-mov': {
     component: 'VideoFormatConverter',
     props: { sourceFormat: 'mkv', targetFormat: 'mov' },
+    type: 'video'
+  },
+  'mkv-to-avi': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mkv', targetFormat: 'avi' },
+    type: 'video'
+  },
+  'mkv-to-webm': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mkv', targetFormat: 'webm' },
+    type: 'video'
+  },
+  'mkv-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mkv', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'mkv-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mkv', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'mkv-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mkv', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'mkv-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mkv', targetFormat: 'h264' },
+    type: 'video'
+  },
+  'mkv-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mkv', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // WebM conversions
+  'webm-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'mp4' },
+    type: 'video'
+  },
+  'webm-to-mov': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'mov' },
+    type: 'video'
+  },
+  'webm-to-avi': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'avi' },
+    type: 'video'
+  },
+  'webm-to-mkv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'mkv' },
+    type: 'video'
+  },
+  'webm-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'webm-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'webm-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'webm-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'h264' },
+    type: 'video'
+  },
+  'webm-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'webm', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // WMV conversions
+  'wmv-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'mp4' },
+    type: 'video'
+  },
+  'wmv-to-mov': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'mov' },
+    type: 'video'
+  },
+  'wmv-to-avi': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'avi' },
+    type: 'video'
+  },
+  'wmv-to-mkv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'mkv' },
+    type: 'video'
+  },
+  'wmv-to-webm': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'webm' },
+    type: 'video'
+  },
+  'wmv-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'wmv-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'wmv-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'h264' },
+    type: 'video'
+  },
+  'wmv-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'wmv', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // FLV conversions
+  'flv-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'mp4' },
+    type: 'video'
+  },
+  'flv-to-mov': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'mov' },
+    type: 'video'
+  },
+  'flv-to-avi': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'avi' },
+    type: 'video'
+  },
+  'flv-to-mkv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'mkv' },
+    type: 'video'
+  },
+  'flv-to-webm': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'webm' },
+    type: 'video'
+  },
+  'flv-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'flv-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'flv-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'h264' },
+    type: 'video'
+  },
+  'flv-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'flv', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // MPEG conversions
+  'mpeg-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'mp4' },
+    type: 'video'
+  },
+  'mpeg-to-mov': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'mov' },
+    type: 'video'
+  },
+  'mpeg-to-avi': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'avi' },
+    type: 'video'
+  },
+  'mpeg-to-mkv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'mkv' },
+    type: 'video'
+  },
+  'mpeg-to-webm': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'webm' },
+    type: 'video'
+  },
+  'mpeg-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'mpeg-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'mpeg-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'h264' },
+    type: 'video'
+  },
+  'mpeg-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'mpeg', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // H.264 conversions
+  'h264-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'mp4' },
+    type: 'video'
+  },
+  'h264-to-mov': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'mov' },
+    type: 'video'
+  },
+  'h264-to-avi': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'avi' },
+    type: 'video'
+  },
+  'h264-to-mkv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'mkv' },
+    type: 'video'
+  },
+  'h264-to-webm': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'webm' },
+    type: 'video'
+  },
+  'h264-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'h264-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'h264-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'h264-to-h265': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h264', targetFormat: 'h265' },
+    type: 'video'
+  },
+
+  // H.265 conversions
+  'h265-to-mp4': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'mp4' },
+    type: 'video'
+  },
+  'h265-to-mov': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'mov' },
+    type: 'video'
+  },
+  'h265-to-avi': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'avi' },
+    type: 'video'
+  },
+  'h265-to-mkv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'mkv' },
+    type: 'video'
+  },
+  'h265-to-webm': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'webm' },
+    type: 'video'
+  },
+  'h265-to-wmv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'wmv' },
+    type: 'video'
+  },
+  'h265-to-flv': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'flv' },
+    type: 'video'
+  },
+  'h265-to-mpeg': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'mpeg' },
+    type: 'video'
+  },
+  'h265-to-h264': {
+    component: 'VideoFormatConverter',
+    props: { sourceFormat: 'h265', targetFormat: 'h264' },
     type: 'video'
   },
 

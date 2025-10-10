@@ -2250,33 +2250,37 @@ export default function ResumeBuilder() {
                 <div className="w-full h-auto min-h-screen bg-white" style={{ fontFamily: 'Arial, sans-serif' }}>
 
                   {/* Header Section */}
-                  <div className="w-full py-4 px-4 md:py-6 md:px-6" style={{ backgroundColor: selectedTheme.primary }}>
+                  <div className="w-full py-2 px-3 md:py-3 md:px-4" style={{ backgroundColor: selectedTheme.primary }}>
                     <div className="flex flex-col md:flex-row items-center md:items-center">
                       {/* Photo */}
                       {resumeData.personalInfo.photo && (
-                        <div className="mb-3 md:mb-0 md:mr-6">
-                          <img
-                            src={resumeData.personalInfo.photo}
-                            alt="Professional"
-                            className={`object-cover border-2 border-white rounded-full ${
-                              resumeData.personalInfo.photoAdjustments?.size === 'small' ? 'w-14 h-14' :
-                              resumeData.personalInfo.photoAdjustments?.size === 'large' ? 'w-20 h-20' : 'w-16 h-16'
-                            }`}
-                            style={{
-                              filter: `brightness(${resumeData.personalInfo.photoAdjustments?.brightness || 100}%) contrast(${resumeData.personalInfo.photoAdjustments?.contrast || 100}%)`,
-                              objectPosition: resumeData.personalInfo.photoAdjustments?.position || 'center'
-                            }}
-                          />
+                        <div className="mb-1 md:mb-0 md:mr-2">
+                          <div className={`overflow-hidden border-2 border-white ${
+                            resumeData.personalInfo.photoAdjustments?.shape === 'square' ? 'rounded-lg' : 'rounded-full'
+                          } ${
+                            resumeData.personalInfo.photoAdjustments?.size === 'small' ? 'w-10 h-10' :
+                            resumeData.personalInfo.photoAdjustments?.size === 'large' ? 'w-16 h-16' : 'w-12 h-12'
+                          }`}>
+                            <img
+                              src={resumeData.personalInfo.photo}
+                              alt="Professional"
+                              className="w-full h-full object-cover"
+                              style={{
+                                filter: `brightness(${resumeData.personalInfo.photoAdjustments?.brightness || 100}%) contrast(${resumeData.personalInfo.photoAdjustments?.contrast || 100}%)`,
+                                objectPosition: resumeData.personalInfo.photoAdjustments?.position || 'center'
+                              }}
+                            />
+                          </div>
                         </div>
                       )}
 
                       {/* Name and Title */}
                       <div className="text-white text-center md:text-left">
-                        <h1 className="text-xl md:text-2xl font-bold tracking-wide mb-1">
+                        <h1 className="text-sm md:text-base font-bold tracking-wide mb-0.5">
                           {(resumeData.personalInfo.fullName || 'YOUR NAME').toUpperCase()}
                         </h1>
                         {resumeData.professionalSummary && (
-                          <p className="text-xs md:text-sm opacity-90 font-light">
+                          <p className="text-[8px] md:text-[9px] opacity-90 font-light">
                             {resumeData.professionalSummary.split(' ').slice(0, 8).join(' ')}...
                           </p>
                         )}
@@ -2285,12 +2289,12 @@ export default function ResumeBuilder() {
                   </div>
 
                   {/* Main Content */}
-                  <div className="px-6 py-4">
+                  <div className="px-3 py-2">
 
                     {/* Contact Section */}
-                    <div className="mb-5 bg-gray-50 p-3 rounded-lg">
-                      <h2 className="text-base font-bold mb-2 tracking-wide" style={{ color: selectedTheme.primary }}>CONTACT</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-gray-700">
+                    <div className="mb-2 bg-gray-50 p-1.5 rounded-lg">
+                      <h2 className="text-[10px] font-bold mb-1 tracking-wide" style={{ color: selectedTheme.primary }}>CONTACT</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-[8px] text-gray-700">
                         {resumeData.personalInfo.phone && (
                           <div className="flex items-center">
                             <span className="mr-2">📞</span>
@@ -2320,9 +2324,9 @@ export default function ResumeBuilder() {
 
                     {/* About Me Section */}
                     {resumeData.professionalSummary && (
-                      <div className="mb-5">
-                        <h2 className="text-lg font-bold mb-2 tracking-wide" style={{ color: selectedTheme.primary }}>ABOUT ME</h2>
-                        <p className="text-gray-700 leading-relaxed text-xs">
+                      <div className="mb-2">
+                        <h2 className="text-[10px] font-bold mb-1 tracking-wide" style={{ color: selectedTheme.primary }}>ABOUT ME</h2>
+                        <p className="text-gray-700 leading-tight text-[8px]">
                           {resumeData.professionalSummary}
                         </p>
                       </div>
@@ -2330,20 +2334,20 @@ export default function ResumeBuilder() {
 
                     {/* Professional Experience */}
                     {resumeData.experience.length > 0 && (
-                      <div className="mb-5">
-                        <h2 className="text-lg font-bold mb-3 tracking-wide" style={{ color: selectedTheme.primary }}>PROFESSIONAL EXPERIENCE</h2>
-                        <div className="space-y-3">
+                      <div className="mb-2">
+                        <h2 className="text-[10px] font-bold mb-1 tracking-wide" style={{ color: selectedTheme.primary }}>PROFESSIONAL EXPERIENCE</h2>
+                        <div className="space-y-1.5">
                           {resumeData.experience.map((exp, index) => (
-                            <div key={exp.id} className="border-l-3 pl-4" style={{ borderColor: selectedTheme.accent }}>
-                              <div className="mb-1">
-                                <h3 className="text-sm font-semibold text-gray-800">{exp.position}</h3>
-                                <p className="text-xs font-medium" style={{ color: selectedTheme.secondary }}>{exp.company}, {exp.location}</p>
-                                <p className="text-xs text-gray-500">
+                            <div key={exp.id} className="border-l-2 pl-1.5" style={{ borderColor: selectedTheme.accent }}>
+                              <div className="mb-0.5">
+                                <h3 className="text-[9px] font-semibold text-gray-800">{exp.position}</h3>
+                                <p className="text-[8px] font-medium" style={{ color: selectedTheme.secondary }}>{exp.company}, {exp.location}</p>
+                                <p className="text-[7px] text-gray-500">
                                   {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
                                 </p>
                               </div>
                               {exp.description && (
-                                <div className="text-xs text-gray-700 leading-relaxed">
+                                <div className="text-[8px] text-gray-700 leading-tight">
                                   {exp.description.split('\n').map((line, idx) => (
                                     <p key={idx} className="mb-0.5">• {line.trim()}</p>
                                   ))}
@@ -2357,15 +2361,15 @@ export default function ResumeBuilder() {
 
                     {/* Education */}
                     {resumeData.education.length > 0 && (
-                      <div className="mb-5">
-                        <h2 className="text-lg font-bold mb-2 tracking-wide" style={{ color: selectedTheme.primary }}>EDUCATION</h2>
-                        <div className="space-y-2">
+                      <div className="mb-2">
+                        <h2 className="text-[10px] font-bold mb-1 tracking-wide" style={{ color: selectedTheme.primary }}>EDUCATION</h2>
+                        <div className="space-y-1">
                           {resumeData.education.map((edu, index) => (
                             <div key={edu.id}>
-                              <h3 className="text-sm font-semibold text-gray-800">{edu.degree}</h3>
-                              <p className="text-xs" style={{ color: selectedTheme.secondary }}>{edu.institution}</p>
-                              <p className="text-xs text-gray-500">{edu.startDate} - {edu.endDate}</p>
-                              {edu.gpa && <p className="text-xs text-gray-600">GPA: {edu.gpa}</p>}
+                              <h3 className="text-[9px] font-semibold text-gray-800">{edu.degree}</h3>
+                              <p className="text-[8px]" style={{ color: selectedTheme.secondary }}>{edu.institution}</p>
+                              <p className="text-[7px] text-gray-500">{edu.startDate} - {edu.endDate}</p>
+                              {edu.gpa && <p className="text-[7px] text-gray-600">GPA: {edu.gpa}</p>}
                             </div>
                           ))}
                         </div>
@@ -2373,17 +2377,17 @@ export default function ResumeBuilder() {
                     )}
 
                     {/* Two Column Layout for Skills and Additional Info */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
 
                       {/* Skills */}
                       {resumeData.skills.length > 0 && (
-                        <div className="mb-4">
-                          <h2 className="text-lg font-bold mb-2 tracking-wide" style={{ color: selectedTheme.primary }}>KEY SKILLS</h2>
-                          <div className="space-y-1">
+                        <div className="mb-1.5">
+                          <h2 className="text-[10px] font-bold mb-1 tracking-wide" style={{ color: selectedTheme.primary }}>KEY SKILLS</h2>
+                          <div className="space-y-0.5">
                             {resumeData.skills.map((skill, index) => (
                               <div key={index} className="flex items-center">
-                                <span className="w-1.5 h-1.5 rounded-full mr-2" style={{ backgroundColor: selectedTheme.accent }}></span>
-                                <span className="text-xs text-gray-700">{skill}</span>
+                                <span className="w-0.5 h-0.5 rounded-full mr-1" style={{ backgroundColor: selectedTheme.accent }}></span>
+                                <span className="text-[8px] text-gray-700">{skill}</span>
                               </div>
                             ))}
                           </div>
@@ -2392,13 +2396,13 @@ export default function ResumeBuilder() {
 
                       {/* Languages */}
                       {resumeData.languages && resumeData.languages.length > 0 && (
-                        <div className="mb-4">
-                          <h2 className="text-lg font-bold mb-2 tracking-wide" style={{ color: selectedTheme.primary }}>LANGUAGES</h2>
-                          <div className="space-y-1">
+                        <div className="mb-1.5">
+                          <h2 className="text-[10px] font-bold mb-1 tracking-wide" style={{ color: selectedTheme.primary }}>LANGUAGES</h2>
+                          <div className="space-y-0.5">
                             {resumeData.languages.map((lang, index) => (
                               <div key={index} className="flex justify-between items-center">
-                                <span className="text-xs text-gray-700">{lang.name || 'Language'}</span>
-                                <span className="text-xs text-gray-500 bg-gray-100 px-1 py-0.5 rounded">{lang.proficiency}</span>
+                                <span className="text-[8px] text-gray-700">{lang.name || 'Language'}</span>
+                                <span className="text-[7px] text-gray-500 bg-gray-100 px-1 py-0.5 rounded">{lang.proficiency}</span>
                               </div>
                             ))}
                           </div>
@@ -2408,15 +2412,15 @@ export default function ResumeBuilder() {
 
                     {/* Certifications */}
                     {resumeData.certifications && resumeData.certifications.length > 0 && (
-                      <div className="mb-4">
-                        <h2 className="text-lg font-bold mb-2 tracking-wide" style={{ color: selectedTheme.primary }}>CERTIFICATIONS</h2>
-                        <div className="space-y-1">
+                      <div className="mb-1.5">
+                        <h2 className="text-[10px] font-bold mb-1 tracking-wide" style={{ color: selectedTheme.primary }}>CERTIFICATIONS</h2>
+                        <div className="space-y-0.5">
                           {resumeData.certifications.map((cert, index) => (
-                            <div key={cert.id || index} className="border-l-3 pl-3" style={{ borderColor: selectedTheme.accent }}>
-                              <div className="text-xs font-semibold text-gray-800">{cert.name || 'Certification'}</div>
-                              <div className="text-xs" style={{ color: selectedTheme.secondary }}>{cert.issuer || 'Organization'}</div>
+                            <div key={cert.id || index} className="border-l-2 pl-1.5" style={{ borderColor: selectedTheme.accent }}>
+                              <div className="text-[8px] font-semibold text-gray-800">{cert.name || 'Certification'}</div>
+                              <div className="text-[8px]" style={{ color: selectedTheme.secondary }}>{cert.issuer || 'Organization'}</div>
                               {cert.date && (
-                                <div className="text-xs text-gray-500">
+                                <div className="text-[7px] text-gray-500">
                                   {new Date(cert.date + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                                 </div>
                               )}
@@ -2428,18 +2432,18 @@ export default function ResumeBuilder() {
 
                     {/* Projects */}
                     {resumeData.projects && resumeData.projects.length > 0 && (
-                      <div className="mb-4">
-                        <h2 className="text-lg font-bold mb-2 tracking-wide" style={{ color: selectedTheme.primary }}>PROJECTS</h2>
-                        <div className="space-y-2">
+                      <div className="mb-1.5">
+                        <h2 className="text-[10px] font-bold mb-1 tracking-wide" style={{ color: selectedTheme.primary }}>PROJECTS</h2>
+                        <div className="space-y-1">
                           {resumeData.projects.map((project, index) => (
-                            <div key={project.id} className="border-l-3 pl-3" style={{ borderColor: selectedTheme.accent }}>
-                              <h3 className="text-xs font-semibold text-gray-800">{project.name}</h3>
-                              <p className="text-xs text-gray-600 mb-1">{project.description}</p>
+                            <div key={project.id} className="border-l-2 pl-1.5" style={{ borderColor: selectedTheme.accent }}>
+                              <h3 className="text-[8px] font-semibold text-gray-800">{project.name}</h3>
+                              <p className="text-[8px] text-gray-600 mb-0.5">{project.description}</p>
                               {project.technologies && (
-                                <p className="text-xs" style={{ color: selectedTheme.secondary }}>Technologies: {project.technologies}</p>
+                                <p className="text-[7px]" style={{ color: selectedTheme.secondary }}>Technologies: {project.technologies}</p>
                               )}
                               {project.link && (
-                                <p className="text-xs underline" style={{ color: selectedTheme.secondary }}>{project.link}</p>
+                                <p className="text-[7px] underline" style={{ color: selectedTheme.secondary }}>{project.link}</p>
                               )}
                             </div>
                           ))}

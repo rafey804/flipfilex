@@ -460,6 +460,12 @@
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [isNavigating, setIsNavigating] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    // Handle mount state to prevent hydration mismatch
+    useEffect(() => {
+      setIsMounted(true);
+    }, []);
 
     // Handle scroll effect
     useEffect(() => {
@@ -549,30 +555,33 @@
       }
     };
 
-    // Get dynamic positioning for mega menu to prevent overflow
-    const getMegaMenuPosition = () => {
-      if (typeof window !== 'undefined') {
-        const windowWidth = window.innerWidth;
-        if (windowWidth < 640) {
-          return {
-            left: '1rem',
-            right: '1rem',
-            transform: 'none'
-          };
-        } else if (windowWidth < 1024) {
-          return {
-            left: '50%',
-            transform: 'translateX(-50%)',
-            maxWidth: 'calc(100vw - 4rem)'
-          };
-        }
-      }
-      return {
-        left: '50%',
-        transform: 'translateX(-50%)',
-        maxWidth: 'calc(100vw - 2rem)'
-      };
-    };
+    // Removed getMegaMenuPosition function - not needed as mega menu positioning is handled by CSS
+
+    // Prevent hydration mismatch by not rendering until mounted
+    if (!isMounted) {
+      return (
+        <nav className="fixed top-0 left-0 right-0 z-[100] bg-white/60 backdrop-blur-2xl shadow-xl border-b border-white/30">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-50/20 via-white/40 to-purple-50/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/30 to-transparent backdrop-blur-sm"></div>
+          <div className="absolute inset-0 bg-noise opacity-5"></div>
+          <div className="relative max-w-6xl mx-auto px-3 sm:px-4 lg:px-6">
+            <div className="flex justify-between items-center h-12">
+              <div className="flex items-center">
+                <Link href="/" className="flex items-center space-x-2">
+                  <div className="relative">
+                    <Image src="/logo.webp" alt="FlipFilex Logo" width={48} height={48} className="relative transition-all duration-300 object-contain" />
+                  </div>
+                  <div className="hidden sm:block">
+                    <span className="text-lg font-bold bg-gradient-to-r from-slate-800 via-blue-700 to-purple-700 bg-clip-text text-transparent">FlipFilex</span>
+                    <div className="text-[10px] text-slate-600/80 font-medium">Professional File Tools</div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </nav>
+      );
+    }
 
     return (
       <>
@@ -597,14 +606,12 @@
                   className="flex items-center space-x-2 group transition-all duration-300 hover:scale-[1.02] relative"
                 >
                   <div className="relative">
-                    {/* Glass container for logo */}
-                    <div className="absolute inset-0 rounded-lg bg-white/40 backdrop-blur-md border border-white/20 shadow-lg group-hover:shadow-xl transition-all duration-300"></div>
                     <Image
                       src="/logo.webp"
                       alt="FlipFilex Logo"
-                      width={32}
-                      height={32}
-                      className="relative rounded-lg p-1 transition-all duration-300"
+                      width={48}
+                      height={48}
+                      className="relative transition-all duration-300 object-contain"
                     />
                   </div>
                   <div className="hidden sm:block">

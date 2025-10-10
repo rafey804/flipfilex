@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { blogPostsData } from '@/lib/blogPostsData'
+import { getAllToolSlugs } from '@/lib/toolsConfig'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://flipfilex.com'
@@ -9,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const, // 'daily' se 'weekly' better hai
+      changeFrequency: 'weekly' as const,
       priority: 1,
     },
     {
@@ -20,50 +21,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Tool pages - Only valid pages that exist
-  const toolPages = [
-    // Image Converters (existing pages)
-    'avif-to-png', 'webp-to-png', 'png-to-webp', 'jpg-to-png', 'png-to-jpg',
-    'jpeg-to-webp', 'svg-to-png', 'gif-to-png', 'bmp-to-png', 'tiff-to-png',
-    'heic-to-jpg', 'ico-to-png',
-
-    // Video Converters (existing pages)
-    'mp4-to-mov', 'mov-to-mp4', 'avi-to-mp4', 'mkv-to-mp4', 'webm-to-mp4',
-    'flv-to-mp4', 'wmv-to-mp4', 'mp4-to-webm',
-
-    // Audio Converters (existing pages)
-    'wav-to-mp3', 'flac-to-mp3', 'aac-to-mp3',
-
-    // PDF Tools (existing pages)
+  // Additional static/utility pages not in toolsConfig
+  const additionalPages = [
     'convert-pdf-to-word-online', 'word-to-pdf-online', 'merge-pdf-files-free',
     'split-pdf-online', 'pdf-to-images', 'compress-pdf-online',
     'excel-to-pdf-converter', 'pdf-to-excel-converter',
-
-    // Document Converters (existing pages)
     'mobi-to-epub', 'txt-to-epub', 'docx-to-epub', 'latex-to-pdf',
-
-    // Research & Academic (existing pages)
-    'ris-to-bibtex',
-
-    // CAD & 3D Tools (existing pages)
-    'stl-to-obj', 'dwg-to-pdf', 'step-to-stl', 'ply-to-obj',
-
-    // Finance & Crypto (existing pages)
-    'defi-yield-calculator', 'jwt-token-decoder',
-
-    // Medical & Imaging (existing pages)
-    'dicom-to-jpeg',
-
-    // Utility Tools (existing pages)
+    'ris-to-bibtex', 'stl-to-obj', 'dwg-to-pdf', 'step-to-stl', 'ply-to-obj',
+    'defi-yield-calculator', 'jwt-token-decoder', 'dicom-to-jpeg',
     'ocr-image-to-text', 'qr-code-generator', 'password-generator',
     'hash-generator', 'color-picker', 'json-formatter', 'base64-encoder',
     'image-compressor', 'color-palette-generator', 'font-converter',
-
-    // Static pages
     'tools', 'about', 'contact', 'privacy-policy', 'terms-of-service',
     'cookies', 'help', 'accessibility', 'security', 'api-docs', 'enterprise',
+    'url-shortener', 'barcode-generator', 'base64-encoder-decoder',
+    'resume-builder', 'invoice-generator', 'epub-to-pdf',
+    'pdf-password-protection', 'split-pdf-pages', 'excel-to-pdf',
+    'powerpoint-to-pdf', 'text-to-pdf', 'html-to-pdf', 'csv-to-excel',
+    'json-to-csv', 'bib-to-pdf', 'mathml-to-image', 'png-to-webp-converter',
+  ]
 
-  ].map(tool => ({
+  // Dynamically get all tool slugs from toolsConfig
+  const allToolSlugs = getAllToolSlugs()
+
+  // Combine all unique tool slugs
+  const allUniqueSlugs = [...new Set([...allToolSlugs, ...additionalPages])]
+
+  // Tool pages - Dynamically generated from toolsConfig
+  const toolPages = allUniqueSlugs.map(tool => ({
     url: `${baseUrl}/${tool}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
@@ -75,7 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/blog/${slug}`,
     lastModified: new Date(blogPostsData[slug as keyof typeof blogPostsData].date),
     changeFrequency: 'monthly' as const,
-    priority: 0.7, // Blog posts ki priority thodi kam rakho
+    priority: 0.7,
   }))
 
   return [...staticPages, ...toolPages, ...blogPosts]
