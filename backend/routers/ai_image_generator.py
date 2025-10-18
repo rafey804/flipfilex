@@ -121,16 +121,17 @@ async def create_ai_image(request: ImageGenerationRequest):
 
         response_data = {
             "success": True,
-            "message": "Image generation guidance created successfully",
+            "message": "Image generated successfully",
             "data": {
                 "prompt": result["prompt"],
                 "enhanced_prompt": result["enhanced_prompt"],
                 "style": result["style"],
                 "size": result["size"],
                 "num_images": result["num_images"],
+                "images": result.get("images", []),
                 "metadata": result["metadata"],
-                "recommendations": result["recommendations"],
-                "note": result.get("message", "")
+                "recommendations": result.get("recommendations", ""),
+                "message": result.get("message", "")
             },
             "timestamp": None
         }
