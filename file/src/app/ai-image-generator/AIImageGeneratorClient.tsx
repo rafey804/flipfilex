@@ -26,14 +26,19 @@ interface GenerationResult {
   style: string;
   size: string;
   num_images: number;
+  images?: Array<{
+    image_data: string;
+    index: number;
+  }>;
   metadata: {
     original_prompt: string;
     style_used: string;
     dimensions: string;
-    guidance: string;
+    guidance?: string;
+    model?: string;
   };
   message: string;
-  recommendations: string;
+  recommendations?: string;
 }
 
 export default function AIImageGeneratorClient() {
@@ -344,7 +349,7 @@ export default function AIImageGeneratorClient() {
                   Generating Guidance...
                 </span>
               ) : (
-                '✨ Generate Image Guidance'
+                '✨ Generate Image'
               )}
             </motion.button>
           </motion.div>
@@ -358,27 +363,79 @@ export default function AIImageGeneratorClient() {
               style={{ background: theme.cardBg }}
             >
               <h2 className="text-3xl font-bold mb-6 text-center" style={{ color: theme.accent }}>
-                🎨 Generation Guidance Ready!
+                {result.images ? '🎨 Your AI Generated Images!' : '🎨 Generation Guidance Ready!'}
               </h2>
 
               {/* Important Notice */}
               <div className="mb-6 p-4 rounded-xl" style={{ background: `linear-gradient(135deg, ${theme.blue}, ${theme.pink})` }}>
                 <p className="text-white font-semibold">
-                  📝 {result.message}
+                  {result.images ? '✅' : '📝'} {result.message}
                 </p>
               </div>
+
+              {/* Generated Images Display */}
+              {result.images && result.images.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold mb-4" style={{ color: theme.primary }}>
+                    Generated Images:
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {result.images.map((img) => (
+                      <motion.div
+                        key={img.index}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: img.index * 0.1 }}
+                        className="relative group"
+                      >
+                        <div className="rounded-xl overflow-hidden shadow-2xl border-2" style={{ borderColor: theme.primary }}>
+                          <img
+                            src={img.image_data}
+                            alt={`Generated image ${img.index}`}
+                            className="w-full h-auto"
+                          />
+                        </div>
+                        <div className="mt-3 flex gap-2">
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => {
+                              const link = document.createElement('a');
+                              link.href = img.image_data;
+                              link.download = `ai-generated-image-${img.index}.png`;
+                              link.click();
+                            }}
+                            className="flex-1 px-4 py-2 rounded-lg font-semibold text-sm shadow-lg"
+                            style={{ background: theme.primary, color: 'white' }}
+                          >
+                            💾 Download
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => {
+                              window.open(img.image_data, '_blank');
+                            }}
+                            className="flex-1 px-4 py-2 rounded-lg font-semibold text-sm shadow-lg"
+                            style={{ background: theme.secondary, color: 'white' }}
+                          >
+                            🔍 View Full
+                          </motion.button>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Enhanced Prompt */}
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-3" style={{ color: theme.primary }}>
-                  Enhanced Prompt for AI Tools:
+                  Enhanced Prompt Used:
                 </h3>
                 <div className="p-4 bg-gray-800 rounded-xl border-2" style={{ borderColor: theme.primary }}>
                   <p className="text-white font-mono text-sm">{result.enhanced_prompt}</p>
                 </div>
-                <p className="mt-2 text-sm" style={{ color: 'rgba(241, 245, 249, 0.6)' }}>
-                  Use this enhanced prompt with DALL-E, Midjourney, Stable Diffusion, or other image generation tools
-                </p>
               </div>
 
               {/* Metadata */}
@@ -397,33 +454,35 @@ export default function AIImageGeneratorClient() {
                 </div>
               </div>
 
-              {/* AI Recommendations */}
-              <div className="mb-6">
-                <h3 className="text-xl font-bold mb-3" style={{ color: theme.secondary }}>
-                  Professional AI Guidance:
-                </h3>
-                <div
-                  className="prose prose-invert max-w-none p-4 bg-gray-800 rounded-xl overflow-auto"
-                  style={{ color: theme.text }}
-                >
-                  <ReactMarkdown
-                    components={{
-                      p: ({ node, ...props }) => <p className="mb-4 leading-relaxed" {...props} />,
-                      h1: ({ node, ...props }) => <h1 className="text-3xl font-bold mb-6 mt-8 text-emerald-400 border-b-2 border-emerald-500 pb-2" {...props} />,
-                      h2: ({ node, ...props }) => <h2 className="text-2xl font-bold mb-4 mt-6 text-violet-400" {...props} />,
-                      h3: ({ node, ...props }) => <h3 className="text-xl font-bold mb-3 mt-4 text-blue-400" {...props} />,
-                      ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-4 space-y-2" {...props} />,
-                      ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-4 space-y-2" {...props} />,
-                      li: ({ node, ...props }) => <li className="leading-relaxed" {...props} />,
-                      strong: ({ node, ...props }) => <strong className="text-emerald-300 font-bold" {...props} />,
-                      code: ({ node, ...props }) => <code className="bg-gray-900 px-2 py-1 rounded text-amber-300" {...props} />,
-                      hr: ({ node, ...props }) => <hr className="border-gray-700 my-6" {...props} />,
-                    }}
+              {/* AI Recommendations - Only show if no images generated */}
+              {result.recommendations && (
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold mb-3" style={{ color: theme.secondary }}>
+                    Professional AI Guidance:
+                  </h3>
+                  <div
+                    className="prose prose-invert max-w-none p-4 bg-gray-800 rounded-xl overflow-auto"
+                    style={{ color: theme.text }}
                   >
-                    {result.recommendations}
-                  </ReactMarkdown>
+                    <ReactMarkdown
+                      components={{
+                        p: ({ node, ...props }) => <p className="mb-4 leading-relaxed" {...props} />,
+                        h1: ({ node, ...props }) => <h1 className="text-3xl font-bold mb-6 mt-8 text-emerald-400 border-b-2 border-emerald-500 pb-2" {...props} />,
+                        h2: ({ node, ...props }) => <h2 className="text-2xl font-bold mb-4 mt-6 text-violet-400" {...props} />,
+                        h3: ({ node, ...props }) => <h3 className="text-xl font-bold mb-3 mt-4 text-blue-400" {...props} />,
+                        ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-4 space-y-2" {...props} />,
+                        ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-4 space-y-2" {...props} />,
+                        li: ({ node, ...props }) => <li className="leading-relaxed" {...props} />,
+                        strong: ({ node, ...props }) => <strong className="text-emerald-300 font-bold" {...props} />,
+                        code: ({ node, ...props }) => <code className="bg-gray-900 px-2 py-1 rounded text-amber-300" {...props} />,
+                        hr: ({ node, ...props }) => <hr className="border-gray-700 my-6" {...props} />,
+                      }}
+                    >
+                      {result.recommendations}
+                    </ReactMarkdown>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Action Buttons */}
               <div className="flex gap-4 flex-wrap">

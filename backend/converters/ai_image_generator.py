@@ -6,6 +6,7 @@ Generates images from text descriptions using Google's Imagen model
 import google.generativeai as genai
 import base64
 import os
+import io
 from typing import Dict, Any, Optional
 import logging
 
@@ -72,11 +73,9 @@ class AIImageGenerator:
     def __init__(self):
         """Initialize the AI Image Generator"""
         try:
-            # Use Gemini 2.5 Flash for image generation guidance
-            # Note: Direct image generation via Gemini API is not yet available
-            # This provides detailed guidance for use with other image generation tools
-            self.model = genai.GenerativeModel('gemini-2.5-flash')
-            logger.info("AI Image Generator initialized successfully with Gemini 2.5 Flash")
+            # Use Imagen 3.0 Fast for actual image generation
+            self.model = genai.ImageGenerationModel('imagen-3.0-fast-generate-001')
+            logger.info("AI Image Generator initialized successfully with Imagen 3.0 Fast")
         except Exception as e:
             logger.error(f"Failed to initialize AI Image Generator: {e}")
             raise
@@ -132,39 +131,47 @@ class AIImageGenerator:
             # Get size information
             size_info = self.SIZE_OPTIONS[size]
 
-            # Note: Google Gemini API doesn't directly generate images yet
-            # This is a placeholder for when the feature becomes available
-            # For now, we'll return a helpful response about image generation
+            # Generate actual images using Imagen 3.0 Fast
+            generated_images = []
 
-            generation_config = {
-                "temperature": 0.9,
-                "top_p": 0.95,
-                "top_k": 40,
-                "max_output_tokens": 2048,
-            }
+            for i in range(num_images):
+                try:
+                    # Generate image with Imagen API
+                    result = self.model.generate_images(
+                        prompt=enhanced_prompt,
+                        number_of_images=1,
+                        aspect_ratio="1:1" if "square" in size else ("9:16" if size == "portrait" else ("16:9" if size == "landscape" else "16:9")),
+                        safety_filter_level="block_some",
+                        person_generation="allow_adult"
+                    )
 
-            # Generate detailed image description and metadata
-            response_prompt = f"""As an AI image generation assistant, provide detailed information for this image request:
+                    # Convert image to base64
+                    image = result.images[0]
 
-Prompt: {prompt}
-Style: {style_info['description']}
-Size: {size_info['label']}
+                    # Save to bytes
+                    img_byte_arr = io.BytesIO()
+                    image._pil_image.save(img_byte_arr, format='PNG')
+                    img_byte_arr = img_byte_arr.getvalue()
 
-Provide:
-1. Enhanced detailed description for image generation (100-150 words)
-2. Recommended camera settings (if realistic/photography)
-3. Color palette suggestions
-4. Composition tips
-5. Lighting recommendations
-6. Three alternative prompt variations
-7. SEO-optimized title and tags for the image
+                    # Convert to base64
+                    base64_image = base64.b64encode(img_byte_arr).decode('utf-8')
 
-Format as structured JSON-like text."""
+                    generated_images.append({
+                        "image_data": f"data:image/png;base64,{base64_image}",
+                        "index": i + 1
+                    })
 
-            response = self.model.generate_content(
-                response_prompt,
-                generation_config=generation_config
-            )
+                    logger.info(f"Generated image {i+1}/{num_images}")
+
+                except Exception as img_error:
+                    logger.error(f"Error generating image {i+1}: {img_error}")
+                    # Continue with other images even if one fails
+
+            if not generated_images:
+                return {
+                    "success": False,
+                    "error": "Failed to generate any images. Please try again."
+                }
 
             result = {
                 "success": True,
@@ -172,18 +179,18 @@ Format as structured JSON-like text."""
                 "enhanced_prompt": enhanced_prompt,
                 "style": style,
                 "size": size_info['label'],
-                "num_images": num_images,
+                "num_images": len(generated_images),
+                "images": generated_images,
                 "metadata": {
                     "original_prompt": prompt,
                     "style_used": style_info['description'],
                     "dimensions": f"{size_info['width']}x{size_info['height']}",
-                    "guidance": response.text if response.text else "Image generation guidance"
+                    "model": "imagen-3.0-fast-generate-001"
                 },
-                "message": "Image generation guidance created successfully. Note: Direct image generation via Gemini API is coming soon. Use this detailed guidance with tools like DALL-E, Midjourney, or Stable Diffusion.",
-                "recommendations": response.text if response.text else ""
+                "message": f"Successfully generated {len(generated_images)} image(s)!"
             }
 
-            logger.info("Image generation guidance created successfully")
+            logger.info(f"Successfully generated {len(generated_images)} images")
             return result
 
         except Exception as e:
