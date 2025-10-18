@@ -73,7 +73,8 @@ export default function AIVideoScriptWriterClient() {
     setResult(null);
 
     try {
-      const response = await fetch('http://localhost:8000/ai/generate-script', {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.flipfilex.com';
+      const response = await fetch(`${API_BASE_URL}/ai/generate-script`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
