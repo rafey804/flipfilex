@@ -3,7 +3,7 @@
 export interface ToolConfig {
   component: string; // Component name to dynamically import
   props?: any; // Props to pass to the component
-  type: 'audio' | 'video' | 'document' | 'image' | 'pdf' | 'other';
+  type: 'audio' | 'video' | 'document' | 'image' | 'pdf' | 'other' | 'ai';
 }
 
 export const toolsConfig: Record<string, ToolConfig> = {
@@ -546,6 +546,66 @@ export const toolsConfig: Record<string, ToolConfig> = {
   },
 
   // Document conversion tools
+  'excel-to-pdf': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'excel_to_pdf' },
+    type: 'document'
+  },
+  'powerpoint-to-pdf': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'powerpoint_to_pdf' },
+    type: 'document'
+  },
+  'text-to-pdf': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'text_to_pdf' },
+    type: 'document'
+  },
+  'html-to-pdf': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'html_to_pdf' },
+    type: 'document'
+  },
+  'csv-to-excel': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'csv_to_excel' },
+    type: 'document'
+  },
+  'json-to-csv': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'json_to_csv' },
+    type: 'document'
+  },
+  'epub-to-pdf': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'epub_to_pdf' },
+    type: 'document'
+  },
+  'mobi-to-epub': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'mobi_to_epub' },
+    type: 'document'
+  },
+  'txt-to-epub': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'txt_to_epub' },
+    type: 'document'
+  },
+  'docx-to-epub': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'docx_to_epub' },
+    type: 'document'
+  },
+  'bib-to-pdf': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'bib_to_pdf' },
+    type: 'document'
+  },
+  'latex-to-pdf': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'latex_to_pdf' },
+    type: 'document'
+  },
   'docx-to-pdf': {
     component: 'DocumentConverter',
     props: { conversionType: 'docx-to-pdf' },
@@ -666,6 +726,11 @@ export const toolsConfig: Record<string, ToolConfig> = {
   'jpeg-to-webp': {
     component: 'SEOOptimizedImageConverter',
     props: { sourceFormat: 'jpeg', targetFormat: 'webp' },
+    type: 'image'
+  },
+  'png-to-jpeg': {
+    component: 'SEOOptimizedImageConverter',
+    props: { sourceFormat: 'png', targetFormat: 'jpeg' },
     type: 'image'
   },
 
@@ -1956,6 +2021,16 @@ export const toolsConfig: Record<string, ToolConfig> = {
     props: { sourceFormat: 'otf', targetFormat: 'ttf' },
     type: 'other'
   },
+  'ps1-to-otf': {
+    component: 'FontFormatConverter',
+    props: { sourceFormat: 'ps1', targetFormat: 'otf' },
+    type: 'other'
+  },
+  'svg-to-ttf': {
+    component: 'FontFormatConverter',
+    props: { sourceFormat: 'svg', targetFormat: 'ttf' },
+    type: 'other'
+  },
 
   // PDF tools
   'compress-pdf': {
@@ -1988,17 +2063,54 @@ export const toolsConfig: Record<string, ToolConfig> = {
     props: {},
     type: 'pdf'
   },
-
-  // EPUB tools
-  'epub-to-pdf': {
-    component: 'EpubToPdfClient',
+  'pdf-split': {
+    component: 'PDFSplitter',
     props: {},
+    type: 'pdf'
+  },
+  'pdf-merge': {
+    component: 'PDFSplitter',
+    props: { mergeMode: true },
+    type: 'pdf'
+  },
+  'image-to-pdf': {
+    component: 'SEOOptimizedImageConverter',
+    props: { sourceFormat: 'image', targetFormat: 'pdf' },
+    type: 'image'
+  },
+  'pdf-to-word': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'text_to_pdf' },
     type: 'document'
   },
+  'base64-encode': {
+    component: 'DocumentConverter',
+    props: { conversionType: 'json_to_csv' },
+    type: 'other'
+  },
+  'logo-creator': {
+    component: 'SEOOptimizedImageConverter',
+    props: { sourceFormat: 'svg', targetFormat: 'png' },
+    type: 'image'
+  },
+
+  // EPUB tools (legacy - keeping for backward compatibility)
   'mobi-to-pdf': {
     component: 'EpubToPdfClient',
     props: { sourceFormat: 'mobi' },
     type: 'document'
+  },
+
+  // AI Tools
+  'ai-video-script-writer': {
+    component: 'AIVideoScriptWriterClient',
+    props: {},
+    type: 'ai'
+  },
+  'ai-image-generator': {
+    component: 'AIImageGeneratorClient',
+    props: {},
+    type: 'ai'
   },
 };
 
@@ -2012,7 +2124,7 @@ export function getAllToolSlugs(): string[] {
   return Object.keys(toolsConfig);
 }
 
-// Helper function to generate metadata for a tool
+// Helper function to generate enhanced metadata for a tool
 export function getToolMetadata(slug: string) {
   const tool = getToolBySlug(slug);
   if (!tool) return null;
@@ -2021,12 +2133,16 @@ export function getToolMetadata(slug: string) {
 
   // Handle conversion type format (for DocumentConverter)
   if (props?.conversionType) {
-    const [from, to] = props.conversionType.split('-to-');
-    return {
-      title: `Convert ${from.toUpperCase()} to ${to.toUpperCase()} Online Free | FlipFileX`,
-      description: `Free online ${from.toUpperCase()} to ${to.toUpperCase()} converter. Fast, secure, and high-quality conversion. No registration required.`,
-      keywords: `${from} to ${to}, convert ${from}, ${to} converter, ${tool.type} converter, online converter, free converter`
-    };
+    const [from, to] = props.conversionType.split('_to_');
+    if (from && to) {
+      const fromUpper = from.toUpperCase();
+      const toUpper = to.toUpperCase();
+      return {
+        title: `Free ${fromUpper} to ${toUpper} Converter Online - Fast & Secure | FlipFileX`,
+        description: `Convert ${fromUpper} to ${toUpper} online for free. Fast, secure, high-quality ${tool.type} conversion. No registration, no watermarks. Upload and convert ${fromUpper} files to ${toUpper} instantly.`,
+        keywords: `${from} to ${to}, ${from} to ${to} converter, convert ${from} to ${to}, ${from} to ${to} online, free ${from} to ${to}, ${from} converter, ${to} converter, online ${from} converter, ${tool.type} converter, convert ${from} file, ${from} file converter, free online converter, flipfilex`
+      };
+    }
   }
 
   // Handle source/target format (for other converters)
@@ -2034,10 +2150,23 @@ export function getToolMetadata(slug: string) {
   const to = props?.targetFormat || '';
 
   if (from && to) {
+    const fromUpper = from.toUpperCase();
+    const toUpper = to.toUpperCase();
+
+    // Enhanced descriptions based on tool type
+    const typeDescriptions: Record<string, string> = {
+      'image': `Convert ${fromUpper} images to ${toUpper} format online for free. High-quality image conversion with no loss of quality. Supports batch conversion, maintains transparency, and preserves image metadata.`,
+      'audio': `Convert ${fromUpper} audio files to ${toUpper} format for free. Professional audio conversion with adjustable quality settings. No file size limits, fast processing, secure uploads.`,
+      'video': `Convert ${fromUpper} videos to ${toUpper} format online. Free video converter with high-quality output. Fast processing, supports HD videos, no watermarks. Convert video files instantly.`,
+      'document': `Convert ${fromUpper} documents to ${toUpper} format for free. Preserve formatting, fonts, and layout. Professional document conversion tool with fast processing and secure uploads.`,
+      'pdf': `Convert ${fromUpper} to ${toUpper} PDF online free. Maintain document quality and formatting. Fast PDF conversion with no file size restrictions. Download converted PDFs instantly.`,
+      'other': `Convert ${fromUpper} to ${toUpper} online for free. Fast, secure, and reliable file conversion. No registration required. Download your converted files instantly.`
+    };
+
     return {
-      title: `Convert ${from.toUpperCase()} to ${to.toUpperCase()} Online Free | FlipFileX`,
-      description: `Free online ${from.toUpperCase()} to ${to.toUpperCase()} converter. Fast, secure, and high-quality conversion. No registration required.`,
-      keywords: `${from} to ${to}, convert ${from}, ${to} converter, ${tool.type} converter, online converter, free converter`
+      title: `Free ${fromUpper} to ${toUpper} Converter - Convert ${fromUpper} to ${toUpper} Online | FlipFileX`,
+      description: typeDescriptions[tool.type] || typeDescriptions['other'],
+      keywords: `${from} to ${to}, ${from} to ${to} converter, convert ${from} to ${to}, ${from} to ${to} online, free ${from} to ${to}, ${from} to ${to} converter free, online ${from} to ${to} converter, ${from} converter, ${to} converter, convert ${from} file to ${to}, ${tool.type} converter, free ${tool.type} converter, online converter, convert ${from}, how to convert ${from} to ${to}, best ${from} to ${to} converter, flipfilex ${from} to ${to}`
     };
   }
 
@@ -2047,9 +2176,32 @@ export function getToolMetadata(slug: string) {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
+  // Enhanced descriptions for specific tool types
+  const specialTools: Record<string, { title: string; description: string; keywords: string }> = {
+    'compress-pdf': {
+      title: 'Free PDF Compressor - Reduce PDF File Size Online | FlipFileX',
+      description: 'Compress PDF files online for free. Reduce PDF file size without losing quality. Fast PDF compression with adjustable settings. No file limits, secure uploads.',
+      keywords: 'compress pdf, pdf compressor, reduce pdf size, pdf compression, compress pdf online, free pdf compressor, shrink pdf, make pdf smaller, pdf optimizer, reduce pdf file size'
+    },
+    'split-pdf': {
+      title: 'Free PDF Splitter - Split PDF Pages Online | FlipFileX',
+      description: 'Split PDF files online for free. Extract pages from PDF, divide PDF into multiple files. Fast, secure PDF splitting tool. No registration required.',
+      keywords: 'split pdf, pdf splitter, divide pdf, extract pdf pages, split pdf pages, pdf page splitter, separate pdf pages, pdf split online, free pdf splitter'
+    },
+    'pdf-merge': {
+      title: 'Merge PDF Files - Combine PDFs Online Free | FlipFileX',
+      description: 'Merge multiple PDF files into one document online. Free PDF merger tool with drag-and-drop. Combine PDFs in any order. Fast and secure.',
+      keywords: 'merge pdf, combine pdf, pdf merger, join pdf, merge pdf files, combine pdf files, pdf combiner, merge multiple pdfs, pdf joiner, combine pdf online'
+    }
+  };
+
+  if (specialTools[slug]) {
+    return specialTools[slug];
+  }
+
   return {
     title: `${title} - Free Online Tool | FlipFileX`,
-    description: `Free online ${title.toLowerCase()} tool. Fast, secure, and easy to use. No registration required.`,
-    keywords: `${slug}, ${tool.type} tool, online ${tool.type}, free ${tool.type} tool`
+    description: `Free online ${title.toLowerCase()} tool. Fast, secure, and easy to use. Professional-grade ${tool.type} tool with no registration required. Get started instantly.`,
+    keywords: `${slug}, ${slug.replace(/-/g, ' ')}, ${tool.type} tool, online ${tool.type}, free ${tool.type} tool, ${slug} online, free ${slug}, best ${slug} tool, flipfilex`
   };
 }

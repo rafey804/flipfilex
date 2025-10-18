@@ -153,8 +153,8 @@ async def convert_image_endpoint(
             error_message = "PDF conversion requires pdf2image library. Install with: pip install pdf2image"
         elif "poppler" in error_message.lower():
             error_message = "PDF conversion requires poppler utilities. Please install poppler-utils."
-        elif "cairosvg" in error_message.lower():
-            error_message = "SVG conversion requires cairosvg library. Install with: pip install cairosvg"
+        elif "cairosvg" in error_message.lower() or "svg conversion failed" in error_message.lower():
+            error_message = "SVG conversion requires cairosvg or svglib library. Install with: pip install cairosvg svglib"
         elif "pillow-heif" in error_message.lower():
             error_message = "HEIC conversion requires pillow-heif library. Install with: pip install pillow-heif"
         elif "pillow-avif" in error_message.lower():

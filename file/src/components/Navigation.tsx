@@ -444,6 +444,20 @@
           description: 'AI-powered professional resume builder with ATS optimization',
           icon: '📝',
           popular: true
+        },
+        {
+          name: 'AI Video Script Writer',
+          href: '/ai-video-script-writer',
+          description: 'Generate professional video scripts with AI for YouTube, TikTok, Instagram',
+          icon: '🎬',
+          popular: true
+        },
+        {
+          name: 'AI Image Generator',
+          href: '/ai-image-generator',
+          description: 'Create stunning AI-generated images from text descriptions',
+          icon: '✨',
+          popular: true
         }
       ]
     },

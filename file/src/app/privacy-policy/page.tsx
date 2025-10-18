@@ -1,15 +1,22 @@
-import Head from 'next/head';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy - FlipFileX | Document Conversion Privacy Protection',
+  description: 'Learn how FlipFileX protects your privacy during document conversion. Comprehensive details about our data protection, file handling, and security measures.',
+  keywords: 'privacy policy, data protection, document security, file privacy, conversion security',
+  openGraph: {
+    title: 'Privacy Policy - FlipFileX',
+    description: 'Your privacy is our priority. Learn about our comprehensive data protection measures.',
+  },
+  alternates: {
+    canonical: 'https://flipfilex.com/privacy-policy',
+  },
+};
 
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <Head>
-        <title>Privacy Policy | PDF Converter - Free Online PDF Tools</title>
-        <meta name="description" content="Privacy Policy for PDF Converter. Learn how we protect your data and files during conversion. We never store your documents and automatically delete files within 1 hour." />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://pdfconverter.com/privacy-policy" />
-      </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
         {/* Breadcrumb */}
@@ -268,7 +275,7 @@ export default function PrivacyPolicyPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <h3 className="font-semibold text-gray-800 mb-2">Email</h3>
-                      <p className="text-gray-700">privacy@pdfconverter.com</p>
+                      <p className="text-gray-700">privacy@flipfilex.com</p>
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-800 mb-2">Response Time</h3>
@@ -276,7 +283,7 @@ export default function PrivacyPolicyPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-800 mb-2">Data Protection Officer</h3>
-                      <p className="text-gray-700">dpo@pdfconverter.com</p>
+                      <p className="text-gray-700">dpo@flipfilex.com</p>
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-800 mb-2">Legal Compliance</h3>

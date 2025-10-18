@@ -4,11 +4,20 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl
   const hostname = request.headers.get('host') || ''
+  const protocol = request.nextUrl.protocol
 
-  // Redirect www to non-www
+  // Handle www to non-www redirect with HTTPS enforcement
   if (hostname.startsWith('www.')) {
     const newUrl = request.nextUrl.clone()
     newUrl.host = hostname.replace('www.', '')
+    newUrl.protocol = 'https:'
+    return NextResponse.redirect(newUrl, 301)
+  }
+
+  // Force HTTPS in production for non-www domains
+  if (process.env.NODE_ENV === 'production' && protocol === 'http:' && !hostname.startsWith('localhost')) {
+    const newUrl = request.nextUrl.clone()
+    newUrl.protocol = 'https:'
     return NextResponse.redirect(newUrl, 301)
   }
 

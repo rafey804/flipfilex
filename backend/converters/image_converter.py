@@ -61,89 +61,99 @@ async def convert_image(input_path: str, output_path: str, target_format: str) -
                 print(f"PDF processing error: {e}")
                 return False
         
-        # Handle SVG input - use ImageMagick via Wand
+        # Handle SVG input - use multiple methods for best compatibility
         elif input_path.lower().endswith('.svg'):
             svg_converted = False
 
-            # Try Wand/ImageMagick first (best quality)
+            # Method 1: Try cairosvg first (best for web SVGs, preserves transparency)
             try:
-                from wand.image import Image as WandImage
+                import cairosvg
 
-                # Set ImageMagick path for Windows
-                import os as os_module
-                imagemagick_paths = [
-                    r'C:\Program Files\ImageMagick-7.1.2-Q16-HDRI',
-                    r'C:\Program Files\ImageMagick-7.1.1-Q16-HDRI',
-                    r'C:\Program Files\ImageMagick-7.1.0-Q16-HDRI',
-                    r'C:\Program Files\ImageMagick-7.0.11-Q16-HDRI',
-                ]
-
-                # Find ImageMagick installation
-                magick_home = None
-                for path in imagemagick_paths:
-                    if os_module.path.exists(path):
-                        magick_home = path
-                        break
-
-                if magick_home:
-                    os_module.environ['MAGICK_HOME'] = magick_home
-                    print(f"Using ImageMagick from: {magick_home}")
-
-                with WandImage(filename=input_path, resolution=150) as wand_img:
-                    wand_img.background_color = 'white'
-                    wand_img.alpha_channel = 'remove'
-
-                    # Limit max size for faster processing
-                    max_dimension = 2000
-                    if wand_img.width > max_dimension or wand_img.height > max_dimension:
-                        if wand_img.width > wand_img.height:
-                            new_width = max_dimension
-                            new_height = int(wand_img.height * max_dimension / wand_img.width)
-                        else:
-                            new_height = max_dimension
-                            new_width = int(wand_img.width * max_dimension / wand_img.height)
-                        wand_img.resize(new_width, new_height)
-
-                    wand_img.format = 'png'
-                    png_blob = wand_img.make_blob()
-                    img = Image.open(io.BytesIO(png_blob))
-                    print(f"Converted SVG using Wand/ImageMagick: {img.size} pixels")
-                    svg_converted = True
+                # Convert SVG to PNG bytes with transparency preserved
+                png_bytes = cairosvg.svg2png(url=input_path, dpi=300)
+                img = Image.open(io.BytesIO(png_bytes))
+                print(f"Converted SVG using cairosvg: {img.size} pixels")
+                svg_converted = True
 
             except ImportError:
-                print("Wand not installed")
-            except Exception as wand_error:
-                print(f"Wand conversion failed: {wand_error}")
+                print("cairosvg not installed - trying alternative methods")
+            except Exception as cairo_error:
+                print(f"cairosvg conversion failed: {cairo_error}")
 
-            # Fallback: Simple XML parsing for basic SVGs
+            # Method 2: Try svglib + reportlab (good for standard SVGs)
             if not svg_converted:
                 try:
-                    import xml.etree.ElementTree as ET
-                    from PIL import ImageDraw
+                    from svglib.svglib import svg2rlg
+                    from reportlab.graphics import renderPM
 
-                    tree = ET.parse(input_path)
-                    root = tree.getroot()
+                    # Convert SVG to ReportLab drawing
+                    drawing = svg2rlg(input_path)
+                    if drawing:
+                        # Render to PNG bytes
+                        png_bytes = renderPM.drawToString(drawing, fmt='PNG', dpi=300)
+                        img = Image.open(io.BytesIO(png_bytes))
+                        print(f"Converted SVG using svglib: {img.size} pixels")
+                        svg_converted = True
 
-                    # Extract dimensions
-                    import re
-                    width = root.attrib.get('width', '800')
-                    height = root.attrib.get('height', '600')
+                except ImportError:
+                    print("svglib not installed - trying alternative methods")
+                except Exception as svglib_error:
+                    print(f"svglib conversion failed: {svglib_error}")
 
-                    width = int(re.findall(r'\d+', str(width))[0]) if re.findall(r'\d+', str(width)) else 800
-                    height = int(re.findall(r'\d+', str(height))[0]) if re.findall(r'\d+', str(height)) else 600
+            # Method 3: Try Wand/ImageMagick (most reliable on Windows)
+            if not svg_converted:
+                try:
+                    from wand.image import Image as WandImage
+                    from wand.color import Color
 
-                    width = min(max(width, 100), 4000)
-                    height = min(max(height, 100), 4000)
+                    # Set ImageMagick path for Windows
+                    import os as os_module
+                    imagemagick_paths = [
+                        r'C:\Program Files\ImageMagick-7.1.2-Q16-HDRI',
+                        r'C:\Program Files\ImageMagick-7.1.1-Q16-HDRI',
+                        r'C:\Program Files\ImageMagick-7.1.0-Q16-HDRI',
+                        r'C:\Program Files\ImageMagick-7.0.11-Q16-HDRI',
+                    ]
 
-                    img = Image.new('RGBA', (width, height), (255, 255, 255, 255))
-                    print(f"Created basic SVG placeholder: {width}x{height}")
-                    svg_converted = True
+                    # Find ImageMagick installation
+                    magick_home = None
+                    for path in imagemagick_paths:
+                        if os_module.path.exists(path):
+                            magick_home = path
+                            break
 
-                except Exception as e:
-                    print(f"Basic SVG parsing failed: {e}")
+                    if magick_home:
+                        os_module.environ['MAGICK_HOME'] = magick_home
+                        print(f"Using ImageMagick from: {magick_home}")
+
+                    # Read SVG with high resolution for better quality
+                    with WandImage(filename=input_path, resolution=300) as wand_img:
+                        # Set transparent background to properly render SVG
+                        wand_img.background_color = Color('transparent')
+
+                        # Flatten the image to remove any transparency issues
+                        # This ensures the SVG content is visible
+                        with Image.new('RGBA', (wand_img.width, wand_img.height), (255, 255, 255, 0)) as base:
+                            # Convert wand image to PIL
+                            wand_img.format = 'png'
+                            png_blob = wand_img.make_blob()
+                            img = Image.open(io.BytesIO(png_blob))
+
+                            # Ensure it's in RGBA mode
+                            if img.mode != 'RGBA':
+                                img = img.convert('RGBA')
+
+                            print(f"Converted SVG using Wand/ImageMagick: {img.size} pixels")
+                            svg_converted = True
+
+                except ImportError:
+                    print("Wand not installed")
+                except Exception as wand_error:
+                    print(f"Wand conversion failed: {wand_error}")
 
             if not svg_converted:
-                print("SVG conversion failed with all methods")
+                print("SVG conversion failed - please install cairosvg, svglib, or wand for SVG support")
+                print("Install with: pip install cairosvg OR pip install svglib reportlab OR pip install wand")
                 return False
         
         # Handle HEIC input (requires pillow-heif)

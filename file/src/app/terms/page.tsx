@@ -1,15 +1,22 @@
-import Head from 'next/head';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service - FlipFileX | Document Conversion Terms & Conditions',
+  description: 'FlipFileX Terms of Service. Understand your rights and responsibilities when using our free document conversion tools and services.',
+  keywords: 'terms of service, terms and conditions, user agreement, document conversion terms',
+  openGraph: {
+    title: 'Terms of Service - FlipFileX',
+    description: 'Clear terms and conditions for using FlipFileX document conversion services.',
+  },
+  alternates: {
+    canonical: 'https://flipfilex.com/terms',
+  },
+};
 
 export default function TermsOfServicePage() {
   return (
     <>
-      <Head>
-        <title>Terms of Service | PDF Converter - Free Online PDF Tools</title>
-        <meta name="description" content="Terms of Service for PDF Converter. Understand your rights and responsibilities when using our free PDF conversion tools." />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://flipfilex.com/terms" />
-      </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
         {/* Breadcrumb */}
@@ -105,13 +112,14 @@ export default function TermsOfServicePage() {
                 <div className="bg-gray-50 rounded-xl p-6 mb-4">
                   <h3 className="text-xl font-semibold text-gray-800 mb-3">What We Provide</h3>
                   <p className="text-gray-700 mb-3">
-                    PDF Converter is a free online service that provides document conversion tools including:
+                    FlipFileX is a free online service that provides 100+ specialized conversion tools including:
                   </p>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
-                    <li>PDF to Word conversion</li>
-                    <li>Word to PDF conversion</li>
-                    <li>PDF merging and combining</li>
-                    <li>PDF to images conversion</li>
+                    <li>Document conversion (PDF, Word, Excel, PowerPoint)</li>
+                    <li>Image format conversion (JPEG, PNG, WebP, TIFF, etc.)</li>
+                    <li>Video format conversion and processing</li>
+                    <li>Audio format conversion and editing</li>
+                    <li>File merging, splitting, and compression tools</li>
                   </ul>
                 </div>
 
@@ -412,11 +420,11 @@ export default function TermsOfServicePage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <h3 className="font-semibold text-gray-800 mb-2">General Inquiries</h3>
-                      <p className="text-gray-700">support@pdfconverter.com</p>
+                      <p className="text-gray-700">support@flipfilex.com</p>
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-800 mb-2">Legal Department</h3>
-                      <p className="text-gray-700">legal@pdfconverter.com</p>
+                      <p className="text-gray-700">legal@flipfilex.com</p>
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-800 mb-2">Response Time</h3>

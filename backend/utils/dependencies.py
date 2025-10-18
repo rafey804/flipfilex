@@ -38,6 +38,14 @@ except ImportError:
     DOCX_AVAILABLE = False
 
 try:
+    from pdf2docx import parse
+    PDF2DOCX_AVAILABLE = True
+    print("[OK] pdf2docx imported successfully")
+except ImportError:
+    PDF2DOCX_AVAILABLE = False
+    print("[FAILED] pdf2docx import failed - advanced PDF to Word conversion disabled")
+
+try:
     from pdf2image import convert_from_path, convert_from_bytes
     PDF2IMAGE_AVAILABLE = True
 except ImportError:
@@ -256,6 +264,7 @@ def check_dependencies():
     print(f"  - PyPDF2: {'[OK]' if PYPDF2_AVAILABLE else '[FAILED]'} {PYPDF2_AVAILABLE}")
     print(f"  - reportlab: {'[OK]' if REPORTLAB_AVAILABLE else '[FAILED]'} {REPORTLAB_AVAILABLE}")
     print(f"  - python-docx: {'[OK]' if DOCX_AVAILABLE else '[FAILED]'} {DOCX_AVAILABLE}")
+    print(f"  - pdf2docx: {'[OK]' if PDF2DOCX_AVAILABLE else '[FAILED]'} {PDF2DOCX_AVAILABLE}")
     print(f"  - pdf2image: {'[OK]' if PDF2IMAGE_AVAILABLE else '[FAILED]'} {PDF2IMAGE_AVAILABLE}")
     print(f"  - PIL/Pillow: {'[OK]' if PIL_AVAILABLE else '[FAILED]'} {PIL_AVAILABLE}")
     print(f"  - ebooklib: {'[OK]' if EBOOKLIB_AVAILABLE else '[FAILED]'} {EBOOKLIB_AVAILABLE}")
@@ -290,6 +299,7 @@ def get_dependency_status() -> Dict[str, Any]:
         "PyPDF2": PYPDF2_AVAILABLE,
         "reportlab": REPORTLAB_AVAILABLE,
         "python-docx": DOCX_AVAILABLE,
+        "pdf2docx": PDF2DOCX_AVAILABLE,
         "pdf2image": PDF2IMAGE_AVAILABLE and (POPPLER_PATH is not None),
         "PIL": PIL_AVAILABLE,
         "ebooklib": EBOOKLIB_AVAILABLE,

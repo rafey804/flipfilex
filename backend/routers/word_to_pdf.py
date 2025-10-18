@@ -17,12 +17,6 @@ async def convert_word_to_pdf(
     file: UploadFile = File(...),
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
 ):
-    if not DOCX_AVAILABLE or not REPORTLAB_AVAILABLE:
-        raise HTTPException(
-            status_code=503, 
-            detail="Word to PDF conversion not available. Missing dependencies: python-docx or reportlab"
-        )
-    
     client_ip = "127.0.0.1"
     check_rate_limit(client_ip)
     cleanup_old_files()

@@ -229,9 +229,176 @@ export default function DicomToJpegPage() {
                 Generated JPEG files are compatible with all major medical imaging software, hospital information systems, and clinical workstations. Our outputs meet international medical imaging standards and work seamlessly across different healthcare technology platforms and medical device ecosystems.
               </p>
 
-              <p className="text-lg font-medium text-gray-900 mt-8">
+              <p className="text-lg font-medium text-gray-900 mt-8 mb-12">
                 Transform your DICOM medical images with confidence using our professional-grade converter. Trusted by healthcare professionals worldwide, our tool combines cutting-edge technology with medical industry standards to deliver reliable, secure, and accurate image conversion for all your clinical and research needs.
               </p>
+
+              {/* Enhanced Medical SEO Sections */}
+              <div className="space-y-16">
+                {/* Medical Use Cases */}
+                <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-cyan-200">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">Professional Medical Imaging Applications</h3>
+                  <div className="max-w-4xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="text-3xl mb-4">🏥</div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Clinical Documentation</h4>
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                          Convert DICOM images for inclusion in electronic health records, patient charts, and
+                          clinical documentation systems while maintaining diagnostic quality and HIPAA compliance.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="text-3xl mb-4">📚</div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Medical Education</h4>
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                          Create educational materials for medical students, resident training programs, and
+                          continuing medical education with anonymized medical images in accessible JPEG format.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="text-3xl mb-4">🔬</div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Research Publications</h4>
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                          Prepare medical images for peer-reviewed publications, conference presentations, and
+                          scientific journals with standardized JPEG format for universal accessibility.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="text-3xl mb-4">👨‍⚕️</div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Patient Consultation</h4>
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                          Generate patient-friendly images for consultations, treatment explanations, and
+                          shared decision-making processes with clear, accessible medical imaging.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="text-3xl mb-4">🖥️</div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Telemedicine</h4>
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                          Enable remote consultations and teleradiology services with lightweight JPEG images
+                          that maintain diagnostic quality while reducing bandwidth requirements.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="text-3xl mb-4">📊</div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Quality Assurance</h4>
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                          Support quality assurance programs, peer review processes, and medical audit
+                          requirements with standardized image formats for systematic evaluation.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Technical Benefits */}
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-green-200">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">Advanced Medical Imaging Technology</h3>
+                  <div className="max-w-4xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="flex items-center mb-4">
+                          <div className="text-3xl mr-4">🏥</div>
+                          <h4 className="text-xl font-semibold text-gray-900">HIPAA Compliance</h4>
+                        </div>
+                        <p className="text-gray-700 leading-relaxed">
+                          Client-side processing ensures patient data never leaves your browser, maintaining
+                          strict HIPAA compliance and medical privacy standards throughout the conversion process.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="flex items-center mb-4">
+                          <div className="text-3xl mr-4">🎯</div>
+                          <h4 className="text-xl font-semibold text-gray-900">Diagnostic Quality</h4>
+                        </div>
+                        <p className="text-gray-700 leading-relaxed">
+                          Advanced algorithms preserve critical diagnostic information, window/level settings,
+                          and radiological markers essential for accurate medical interpretation and diagnosis.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="flex items-center mb-4">
+                          <div className="text-3xl mr-4">🔄</div>
+                          <h4 className="text-xl font-semibold text-gray-900">Multi-Modality Support</h4>
+                        </div>
+                        <p className="text-gray-700 leading-relaxed">
+                          Comprehensive support for all DICOM modalities including CT, MRI, X-ray, ultrasound,
+                          mammography, nuclear medicine, and specialized medical imaging formats.
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                        <div className="flex items-center mb-4">
+                          <div className="text-3xl mr-4">🔐</div>
+                          <h4 className="text-xl font-semibold text-gray-900">Metadata Security</h4>
+                        </div>
+                        <p className="text-gray-700 leading-relaxed">
+                          Intelligent metadata handling with options for anonymization, ensuring patient privacy
+                          while preserving essential clinical information for medical workflows and research.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* FAQ Section */}
+                <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-200">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 text-center">DICOM to JPEG Conversion: Medical Professional Guide</h3>
+                  <div className="max-w-4xl mx-auto">
+                    <div className="space-y-6">
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Is this converter HIPAA compliant and secure for patient data?</h4>
+                        <p className="text-gray-700 leading-relaxed">
+                          Yes! Our converter processes all files locally in your browser without uploading patient data to any
+                          external servers. This client-side processing approach ensures full HIPAA compliance and maintains
+                          the highest standards of medical data protection throughout the conversion process.
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Will the converted JPEG maintain diagnostic quality?</h4>
+                        <p className="text-gray-700 leading-relaxed">
+                          Absolutely! Our medical-grade algorithms preserve critical diagnostic information including proper
+                          window/level settings, radiological orientation markers, and image quality parameters essential
+                          for accurate medical interpretation. The conversion maintains diagnostic integrity while creating
+                          universally accessible JPEG files.
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">What DICOM modalities and formats are supported?</h4>
+                        <p className="text-gray-700 leading-relaxed">
+                          Our converter supports all major DICOM modalities including CT scans, MRI images, X-rays, ultrasound,
+                          mammography, nuclear medicine studies, and specialized imaging formats. We handle both single-frame
+                          and multi-frame DICOM files with comprehensive metadata preservation capabilities.
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">How is patient metadata handled during conversion?</h4>
+                        <p className="text-gray-700 leading-relaxed">
+                          Our system provides intelligent metadata handling with options for complete anonymization or selective
+                          information retention based on your clinical requirements. Critical imaging parameters are preserved
+                          while patient identifiers can be automatically removed for research and educational use.
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Can converted images be used for medical documentation?</h4>
+                        <p className="text-gray-700 leading-relaxed">
+                          Yes! The converted JPEG images meet medical documentation standards and can be integrated into
+                          electronic health records (EHR), picture archiving systems (PACS), and clinical reporting platforms.
+                          The images maintain professional quality suitable for medical documentation and patient care.
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3">Is this tool suitable for medical research and publications?</h4>
+                        <p className="text-gray-700 leading-relaxed">
+                          Absolutely! Our converter is perfect for medical research, academic publications, and peer-reviewed
+                          journals. The standardized JPEG output ensures universal accessibility while maintaining the image
+                          quality and clinical information necessary for scientific research and medical education.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
         </div>

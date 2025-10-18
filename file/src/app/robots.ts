@@ -6,19 +6,57 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/'],
+        disallow: [
+          '/api/',
+          '/admin/',
+          '/_next/',
+          '/cdn-cgi/',
+          '/_vercel/',
+          '/.well-known/',
+          '/private/'
+        ],
+        crawlDelay: 1,
       },
       {
         userAgent: 'Googlebot',
-        allow: '/',
-        disallow: ['/api/', '/admin/'],
+        allow: [
+          '/',
+          '/tools',
+          '/blog',
+          '/about',
+          '/privacy-policy',
+          '/terms',
+          '/sitemap.xml'
+        ],
+        disallow: [
+          '/api/',
+          '/admin/',
+          '/_next/',
+          '/cdn-cgi/',
+          '/_vercel/',
+        ],
       },
       {
         userAgent: 'Bingbot',
-        allow: '/',
-        disallow: ['/api/', '/admin/'],
+        allow: [
+          '/',
+          '/tools',
+          '/blog',
+          '/about',
+          '/privacy-policy',
+          '/terms',
+          '/sitemap.xml'
+        ],
+        disallow: [
+          '/api/',
+          '/admin/',
+          '/_next/',
+          '/cdn-cgi/',
+          '/_vercel/',
+        ],
       },
     ],
     sitemap: 'https://flipfilex.com/sitemap.xml',
+    host: 'https://flipfilex.com',
   }
 }

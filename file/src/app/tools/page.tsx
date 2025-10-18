@@ -114,8 +114,10 @@ export default function ToolsPage() {
 
   // Utility tools
   const utilityTools = [
+    { path: '/ai-image-generator', fromName: 'Text', toName: 'AI Image', description: 'Create stunning AI-generated images from text descriptions', icon: '✨', gradient: 'from-emerald-600 to-violet-600' },
     { path: '/invoice-generator', fromName: 'Data', toName: 'Invoice', description: 'Create professional invoices with custom themes', icon: '📄', gradient: 'from-emerald-600 to-teal-600' },
     { path: '/resume-builder', fromName: 'Profile', toName: 'Resume', description: 'AI-powered professional resume builder with ATS optimization', icon: '📝', gradient: 'from-blue-600 to-indigo-600' },
+    { path: '/ai-video-script-writer', fromName: 'AI', toName: 'Video Script', description: 'Generate professional video scripts with AI for YouTube, TikTok, Instagram', icon: '🎬', gradient: 'from-indigo-600 to-purple-600' },
     { path: '/ocr-image-to-text', fromName: 'Image', toName: 'Text', description: 'Extract text from images and PDFs using OCR', icon: '📖', gradient: 'from-emerald-600 to-teal-600' },
     { path: '/qr-code-generator', fromName: 'Text', toName: 'QR Code', description: 'Generate QR codes from text, URLs, and data', icon: '📱', gradient: 'from-indigo-600 to-purple-600' },
     { path: '/barcode-generator', fromName: 'Text', toName: 'Barcode', description: 'Generate various barcode formats for products and inventory', icon: '📊', gradient: 'from-orange-600 to-red-600' },

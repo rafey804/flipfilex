@@ -85,15 +85,38 @@ const nextConfig: NextConfig = {
   // Redirects for fixing 404 and wrong URLs
   async redirects() {
     return [
-      // Fix incorrect URL patterns
+      // WWW to non-WWW redirects (canonical URL enforcement)
       {
-        source: '/kdrop-blur-sm%20px-8%20py-4%20rounded-2xl%20shadow-lg%20hover:shadow-xl%20border%20border-red-200%20group',
-        destination: '/',
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.flipfilex.com',
+          },
+        ],
+        destination: 'https://flipfilex.com/:path*',
         permanent: true,
       },
       {
         source: '/www.flipfilex.com/:path*',
         destination: 'https://flipfilex.com/:path*',
+        permanent: true,
+      },
+      // Missing pages redirects
+      {
+        source: '/api-docs',
+        destination: '/tools',
+        permanent: true,
+      },
+      {
+        source: '/merge-pdf',
+        destination: '/merge-pdf-files-free',
+        permanent: true,
+      },
+      // Fix incorrect URL patterns
+      {
+        source: '/kdrop-blur-sm%20px-8%20py-4%20rounded-2xl%20shadow-lg%20hover:shadow-xl%20border%20border-red-200%20group',
+        destination: '/',
         permanent: true,
       },
       // Language redirects to main site
@@ -160,7 +183,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/cdn-cgi/l/email-protection',
-        destination: '/contact',
+        destination: '/about',
         permanent: true,
       },
       // Converter page naming fixes

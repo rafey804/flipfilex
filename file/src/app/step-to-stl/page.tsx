@@ -1,5 +1,6 @@
 'use client';
 
+import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -34,7 +35,7 @@ export default function StepToStlPage() {
 
   return (
     <>
-      <head>
+      <Head>
         <title>Free STEP to STL Converter Online - CAD to 3D Printing | FlipFileX</title>
         <meta name="description" content="Convert STEP CAD files to STL format for 3D printing online for free. Professional-grade tool for preparing engineering models for additive manufacturing." />
         <meta name="keywords" content="STEP to STL, CAD to 3D printing, STEP converter, STL converter, 3D printing preparation, engineering, additive manufacturing, CAD models, mesh conversion" />
@@ -78,7 +79,7 @@ export default function StepToStlPage() {
             }
           })}
         </script>
-      </head>
+      </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-100">
         <div className="fixed inset-0 overflow-hidden pointer-events-none">

@@ -87,7 +87,7 @@ async def convert_video(input_path: str, output_path: str, target_format: str,
             'wmv': ["-c:v", "wmv2", "-c:a", "wmav2"],
             'flv': ["-c:v", "libx264", "-c:a", "aac", "-f", "flv"],
             'mpeg': ["-c:v", "mpeg2video", "-c:a", "mp2"],
-            
+
             # Codec formats - these output as MP4 with specified codec
             'h264': ["-c:v", "libx264", "-c:a", "aac", "-profile:v", "main"],
             'x264': ["-c:v", "libx264", "-c:a", "aac", "-profile:v", "main"],

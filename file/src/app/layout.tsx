@@ -41,6 +41,8 @@ export const metadata: Metadata = {
     'QR code generator', 'barcode generator', 'password generator', 'URL shortener',
     'Base64 encoder', 'hash generator', 'OCR tool', 'text to speech',
     'resume builder', 'invoice generator', 'font converter',
+    'AI video script writer', 'video script generator', 'YouTube script writer', 'TikTok script generator',
+    'AI image generator', 'text to image AI', 'AI art generator', 'image generation AI', 'AI image creator',
     'online converter', 'free file converter', 'file conversion tools', 'FlipFileX'
   ],
   authors: [{ name: 'Rafey-ul-din' }],

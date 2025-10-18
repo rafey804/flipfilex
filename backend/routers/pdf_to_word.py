@@ -6,7 +6,7 @@ import os
 
 from utils.config import UPLOAD_DIR
 from utils.helpers import validate_file_size, generate_unique_filename, check_rate_limit, write_file
-from utils.dependencies import cleanup_old_files, PYPDF2_AVAILABLE, DOCX_AVAILABLE
+from utils.dependencies import cleanup_old_files, PDF2DOCX_AVAILABLE
 from converters.pdf_to_word_converter import pdf_to_word_converter
 
 router = APIRouter()
@@ -17,12 +17,6 @@ async def convert_pdf_to_word(
     file: UploadFile = File(...),
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
 ):
-    if not PYPDF2_AVAILABLE or not DOCX_AVAILABLE:
-        raise HTTPException(
-            status_code=503, 
-            detail="PDF to Word conversion not available. Missing dependencies: PyPDF2 or python-docx"
-        )
-    
     # Rate limiting
     client_ip = "127.0.0.1"
     check_rate_limit(client_ip)

@@ -2,27 +2,60 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { blogPostsData } from '@/lib/blogPostsData';
 
-export const metadata: Metadata = {
-  title: 'PDF Tools Blog - Tips, Tricks & Latest Updates | PDF Converter Pro',
-  description: 'Discover helpful articles, tips, and updates about PDF conversion tools. Learn how to get the most out of our PDF to Word, Word to PDF, merge PDF, and PDF to image converters.',
-  keywords: 'PDF blog, PDF tips, document conversion, PDF tools, PDF to Word, Word to PDF, merge PDF, PDF to images',
-  openGraph: {
-    title: 'PDF Tools Blog - Tips, Tricks & Latest Updates',
-    description: 'Discover helpful articles, tips, and updates about PDF conversion tools.',
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://flipfilex.com/blog',
-    siteName: 'PDF Converter Pro',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'PDF Tools Blog - Tips, Tricks & Latest Updates',
-    description: 'Discover helpful articles, tips, and updates about PDF conversion tools.',
-  },
-  alternates: {
-    canonical: 'https://flipfilex.com/blog',
-  },
-};
+// Dynamic metadata generation for blog with pagination support
+export async function generateMetadata({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}): Promise<Metadata> {
+  const currentCategory = (searchParams.category as string) || 'All';
+  const currentPage = Number(searchParams.page) || 1;
+
+  // Build canonical URL based on current parameters
+  let canonicalUrl = 'https://flipfilex.com/blog';
+  const params = new URLSearchParams();
+
+  if (currentCategory && currentCategory !== 'All') {
+    params.set('category', currentCategory);
+  }
+  if (currentPage > 1) {
+    params.set('page', currentPage.toString());
+  }
+
+  if (params.toString()) {
+    canonicalUrl += `?${params.toString()}`;
+  }
+
+  const title = currentPage > 1
+    ? `PDF Tools Blog - Tips, Tricks & Latest Updates | Page ${currentPage}`
+    : 'PDF Tools Blog - Tips, Tricks & Latest Updates | FlipFileX';
+
+  const description = currentCategory !== 'All'
+    ? `Browse ${currentCategory} articles about PDF conversion tools and document management.`
+    : 'Discover helpful articles, tips, and updates about PDF conversion tools. Learn how to get the most out of our PDF to Word, Word to PDF, merge PDF, and PDF to image converters.';
+
+  return {
+    title,
+    description,
+    keywords: 'PDF blog, PDF tips, document conversion, PDF tools, PDF to Word, Word to PDF, merge PDF, PDF to images',
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      locale: 'en_US',
+      url: canonicalUrl,
+      siteName: 'FlipFileX',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+  };
+}
 
 // Convert blogPostsData object to array for listing
 const blogPosts = Object.entries(blogPostsData).map(([slug, post]) => ({

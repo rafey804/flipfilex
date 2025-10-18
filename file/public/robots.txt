@@ -1,9 +1,0 @@
-User-agent: *
-Allow: /
-
-# Disallow config and system files
-Disallow: /api/
-Disallow: /_next/
-Disallow: /cdn-cgi/
-
-Sitemap: https://flipfilex.com/sitemap.xml

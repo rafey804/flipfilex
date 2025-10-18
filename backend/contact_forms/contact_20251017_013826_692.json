@@ -1,0 +1,8 @@
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "category": "general",
+  "subject": "Test Subject",
+  "message": "This is a test message",
+  "timestamp": "2025-10-17 01:38:26.692434"
+}

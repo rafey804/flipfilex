@@ -749,6 +749,644 @@ export default function MergePdfPage() {
               </div>
             </div>
           </div>
+          {/* New Resume Sections */}
+
+{/* 1. How to Create a Resume Section */}
+<div className="bg-white rounded-3xl shadow-xl overflow-hidden mt-16">
+  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 px-8 py-6">
+    <h2 className="text-3xl font-bold text-white mb-2">How to Create a Professional Resume</h2>
+    <p className="text-purple-100">Step-by-step guide to building an impressive resume that gets noticed</p>
+  </div>
+
+  <div className="p-8 md:p-12">
+    <div className="prose max-w-none">
+      <p className="text-lg text-gray-700 leading-relaxed mb-6">
+        Creating a professional resume is crucial for standing out in today's competitive job market. 
+        Start by choosing a clean, modern format that highlights your most important qualifications. 
+        Use our PDF tools to ensure your resume maintains perfect formatting across all devices and applications.
+      </p>
+
+      <div className="grid md:grid-cols-2 gap-8 mb-8">
+        <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-200">
+          <h3 className="text-xl font-bold text-purple-800 mb-4 flex items-center">
+            <span className="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-3">1</span>
+            Contact Information
+          </h3>
+          <p className="text-gray-700 mb-4">
+            Include your full name, professional email, phone number, and LinkedIn profile. 
+            Ensure this information is current and professional.
+          </p>
+          <ul className="text-gray-600 text-sm space-y-2">
+            <li className="flex items-start">
+              <span className="text-purple-500 mr-2">•</span>
+              <span>Use a professional email address</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-purple-500 mr-2">•</span>
+              <span>Include relevant social profiles</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-purple-500 mr-2">•</span>
+              <span>Ensure contact details are up-to-date</span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-200">
+          <h3 className="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+            <span className="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-3">2</span>
+            Professional Summary
+          </h3>
+          <p className="text-gray-700 mb-4">
+            Write a compelling 3-4 sentence summary that highlights your key achievements, 
+            skills, and career objectives.
+          </p>
+          <ul className="text-gray-600 text-sm space-y-2">
+            <li className="flex items-start">
+              <span className="text-indigo-500 mr-2">•</span>
+              <span>Focus on measurable achievements</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-indigo-500 mr-2">•</span>
+              <span>Use industry-specific keywords</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-indigo-500 mr-2">•</span>
+              <span>Keep it concise and impactful</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-200">
+          <h3 className="text-xl font-bold text-purple-800 mb-4 flex items-center">
+            <span className="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-3">3</span>
+            Work Experience
+          </h3>
+          <p className="text-gray-700 mb-4">
+            List your work history in reverse chronological order, focusing on achievements 
+            rather than just responsibilities.
+          </p>
+          <ul className="text-gray-600 text-sm space-y-2">
+            <li className="flex items-start">
+              <span className="text-purple-500 mr-2">•</span>
+              <span>Use action verbs and quantify results</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-purple-500 mr-2">•</span>
+              <span>Highlight promotions and growth</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-purple-500 mr-2">•</span>
+              <span>Include relevant accomplishments</span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-200">
+          <h3 className="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+            <span className="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-3">4</span>
+            Education & Skills
+          </h3>
+          <p className="text-gray-700 mb-4">
+            Include your educational background and relevant skills that match the job 
+            requirements.
+          </p>
+          <ul className="text-gray-600 text-sm space-y-2">
+            <li className="flex items-start">
+              <span className="text-indigo-500 mr-2">•</span>
+              <span>List degrees and certifications</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-indigo-500 mr-2">•</span>
+              <span>Include technical and soft skills</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-indigo-500 mr-2">•</span>
+              <span>Tailor skills to job description</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-8 p-6 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl">
+        <h4 className="text-lg font-bold text-emerald-800 mb-3 flex items-center">
+          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          Pro Tip: Formatting Matters
+        </h4>
+        <p className="text-emerald-700">
+          After creating your resume, use our PDF tools to ensure it maintains perfect formatting 
+          across all platforms. A well-formatted PDF resume looks professional and is ATS-friendly.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* 2. Resume Writing Tips Section */}
+<div className="bg-white rounded-3xl shadow-xl overflow-hidden mt-16">
+  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 px-8 py-6">
+    <h2 className="text-3xl font-bold text-white mb-2">Resume Writing Tips & Best Practices</h2>
+    <p className="text-purple-100">Expert advice to make your resume stand out from the competition</p>
+  </div>
+
+  <div className="p-8 md:p-12">
+    <div className="prose max-w-none">
+      <p className="text-lg text-gray-700 leading-relaxed mb-8">
+        Crafting an effective resume requires more than just listing your experiences. Follow these 
+        proven tips to create a resume that captures attention and leads to interviews.
+      </p>
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        <div className="space-y-6">
+          <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-2">Quantify Your Achievements</h4>
+              <p className="text-gray-600 text-sm">
+                Use numbers and metrics to demonstrate your impact. Instead of "managed a team," 
+                say "managed a team of 10 that increased productivity by 25%."
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <div className="flex-shrink-0 w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-2">Use Action Verbs</h4>
+              <p className="text-gray-600 text-sm">
+                Start each bullet point with strong action verbs like "developed," "implemented," 
+                "managed," or "optimized" to create dynamic descriptions.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-2">Tailor for Each Job</h4>
+              <p className="text-gray-600 text-sm">
+                Customize your resume for each position by incorporating keywords from the job 
+                description and highlighting relevant experiences.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <div className="flex-shrink-0 w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center text-yellow-600">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-2">Keep It Concise</h4>
+              <p className="text-gray-600 text-sm">
+                Limit your resume to 1-2 pages. Be selective about what you include and focus on 
+                the most relevant and recent experiences.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-red-600">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-2">Avoid Common Mistakes</h4>
+              <p className="text-gray-600 text-sm">
+                Proofread carefully for spelling and grammar errors. Avoid generic objectives, 
+                irrelevant information, and inconsistent formatting.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-2">Include Keywords</h4>
+              <p className="text-gray-600 text-sm">
+                Research industry-specific keywords and incorporate them naturally throughout 
+                your resume to improve ATS compatibility.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* 3. ATS Optimization Guide Section */}
+<div className="bg-white rounded-3xl shadow-xl overflow-hidden mt-16">
+  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 px-8 py-6">
+    <h2 className="text-3xl font-bold text-white mb-2">ATS Optimization Guide</h2>
+    <p className="text-purple-100">Ensure your resume passes through Applicant Tracking Systems successfully</p>
+  </div>
+
+  <div className="p-8 md:p-12">
+    <div className="prose max-w-none">
+      <p className="text-lg text-gray-700 leading-relaxed mb-8">
+        Most companies use Applicant Tracking Systems (ATS) to screen resumes before they reach human eyes. 
+        Follow these guidelines to ensure your resume makes it through automated screening.
+      </p>
+
+      <div className="grid md:grid-cols-2 gap-8 mb-8">
+        <div className="space-y-6">
+          <h3 className="text-2xl font-bold text-purple-800 mb-4">Do's for ATS Optimization</h3>
+          
+          <div className="flex items-start space-x-4 p-4 bg-green-50 rounded-xl border border-green-200">
+            <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white">
+              ✓
+            </div>
+            <div>
+              <h4 className="font-bold text-green-800 mb-2">Use Standard Section Headings</h4>
+              <p className="text-green-700 text-sm">
+                Stick to common headings like "Work Experience," "Education," "Skills," and "Certifications."
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-4 p-4 bg-green-50 rounded-xl border border-green-200">
+            <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white">
+              ✓
+            </div>
+            <div>
+              <h4 className="font-bold text-green-800 mb-2">Incorporate Keywords</h4>
+              <p className="text-green-700 text-sm">
+                Use relevant keywords from the job description throughout your resume naturally.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-4 p-4 bg-green-50 rounded-xl border border-green-200">
+            <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white">
+              ✓
+            </div>
+            <div>
+              <h4 className="font-bold text-green-800 mb-2">Choose Simple Formatting</h4>
+              <p className="text-green-700 text-sm">
+                Use clean, simple layouts with standard fonts and clear section organization.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <h3 className="text-2xl font-bold text-red-800 mb-4">Don'ts for ATS Optimization</h3>
+          
+          <div className="flex items-start space-x-4 p-4 bg-red-50 rounded-xl border border-red-200">
+            <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white">
+              ✗
+            </div>
+            <div>
+              <h4 className="font-bold text-red-800 mb-2">Avoid Graphics and Tables</h4>
+              <p className="text-red-700 text-sm">
+                Most ATS cannot read text within images, tables, or complex graphics.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-4 p-4 bg-red-50 rounded-xl border border-red-200">
+            <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white">
+              ✗
+            </div>
+            <div>
+              <h4 className="font-bold text-red-800 mb-2">Don't Use Headers/Footers</h4>
+              <p className="text-red-700 text-sm">
+                ATS often ignores content in headers and footers, so keep important information in the main body.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-4 p-4 bg-red-50 rounded-xl border border-red-200">
+            <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white">
+              ✗
+            </div>
+            <div>
+              <h4 className="font-bold text-red-800 mb-2">Avoid Creative Formatting</h4>
+              <p className="text-red-700 text-sm">
+                Steer clear of columns, text boxes, and unusual layouts that can confuse ATS parsing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-200">
+        <h4 className="text-xl font-bold text-purple-800 mb-4 flex items-center">
+          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+          </svg>
+          ATS-Friendly File Format Tips
+        </h4>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <h5 className="font-semibold text-purple-700 mb-2">Recommended Formats:</h5>
+            <ul className="text-purple-600 text-sm space-y-1">
+              <li className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                <span>PDF (with selectable text)</span>
+              </li>
+              <li className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                <span>Microsoft Word (.docx)</span>
+              </li>
+              <li className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                <span>Plain Text (.txt)</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="font-semibold text-red-700 mb-2">Avoid These Formats:</h5>
+            <ul className="text-red-600 text-sm space-y-1">
+              <li className="flex items-center">
+                <span className="text-red-500 mr-2">✗</span>
+                <span>Image-based PDFs</span>
+              </li>
+              <li className="flex items-center">
+                <span className="text-red-500 mr-2">✗</span>
+                <span>Pages documents</span>
+              </li>
+              <li className="flex items-center">
+                <span className="text-red-500 mr-2">✗</span>
+                <span>Scanned documents</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* 4. Resume Examples by Industry */}
+<div className="bg-white rounded-3xl shadow-xl overflow-hidden mt-16">
+  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 px-8 py-6">
+    <h2 className="text-3xl font-bold text-white mb-2">Resume Examples by Industry</h2>
+    <p className="text-purple-100">Industry-specific templates and examples to guide your resume creation</p>
+  </div>
+
+  <div className="p-8 md:p-12">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {/* Technology Industry */}
+      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-200 hover:shadow-lg transition-all duration-300">
+        <div className="text-4xl mb-4">💻</div>
+        <h3 className="font-bold text-blue-800 text-lg mb-3">Technology & IT</h3>
+        <p className="text-blue-700 text-sm mb-4">
+          Focus on technical skills, programming languages, and project experience. Highlight specific technologies and methodologies.
+        </p>
+        <ul className="text-blue-600 text-xs space-y-1">
+          <li>• List programming languages & frameworks</li>
+          <li>• Include project portfolios</li>
+          <li>• Highlight certifications</li>
+          <li>• Emphasize problem-solving skills</li>
+        </ul>
+      </div>
+
+      {/* Healthcare Industry */}
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200 hover:shadow-lg transition-all duration-300">
+        <div className="text-4xl mb-4">🏥</div>
+        <h3 className="font-bold text-green-800 text-lg mb-3">Healthcare & Medical</h3>
+        <p className="text-green-700 text-sm mb-4">
+          Emphasize certifications, clinical experience, and patient care skills. Include relevant licenses and specializations.
+        </p>
+        <ul className="text-green-600 text-xs space-y-1">
+          <li>• Highlight medical certifications</li>
+          <li>• Detail clinical experience</li>
+          <li>• Include patient care metrics</li>
+          <li>• List specialized equipment skills</li>
+        </ul>
+      </div>
+
+      {/* Business Industry */}
+      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-200 hover:shadow-lg transition-all duration-300">
+        <div className="text-4xl mb-4">💼</div>
+        <h3 className="font-bold text-purple-800 text-lg mb-3">Business & Finance</h3>
+        <p className="text-purple-700 text-sm mb-4">
+          Focus on quantifiable achievements, financial metrics, and leadership experience. Highlight revenue growth and cost savings.
+        </p>
+        <ul className="text-purple-600 text-xs space-y-1">
+          <li>• Quantify financial achievements</li>
+          <li>• Highlight leadership roles</li>
+          <li>• Include relevant software skills</li>
+          <li>• Emphasize strategic planning</li>
+        </ul>
+      </div>
+
+      {/* Creative Industry */}
+      <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-6 border border-pink-200 hover:shadow-lg transition-all duration-300">
+        <div className="text-4xl mb-4">🎨</div>
+        <h3 className="font-bold text-pink-800 text-lg mb-3">Creative & Design</h3>
+        <p className="text-pink-700 text-sm mb-4">
+          Showcase portfolios, creative projects, and design skills. Include links to online portfolios and creative work.
+        </p>
+        <ul className="text-pink-600 text-xs space-y-1">
+          <li>• Include portfolio links</li>
+          <li>• List design software proficiency</li>
+          <li>• Highlight creative projects</li>
+          <li>• Showcase awards & recognition</li>
+        </ul>
+      </div>
+
+      {/* Education Industry */}
+      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-6 border border-yellow-200 hover:shadow-lg transition-all duration-300">
+        <div className="text-4xl mb-4">📚</div>
+        <h3 className="font-bold text-yellow-800 text-lg mb-3">Education & Teaching</h3>
+        <p className="text-yellow-700 text-sm mb-4">
+          Highlight teaching experience, curriculum development, and student outcomes. Include certifications and specialized training.
+        </p>
+        <ul className="text-yellow-600 text-xs space-y-1">
+          <li>• Detail teaching experience</li>
+          <li>• Include certifications & licenses</li>
+          <li>• Highlight student achievements</li>
+          <li>• List curriculum development</li>
+        </ul>
+      </div>
+
+      {/* Sales & Marketing */}
+      <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-200 hover:shadow-lg transition-all duration-300">
+        <div className="text-4xl mb-4">📊</div>
+        <h3 className="font-bold text-orange-800 text-lg mb-3">Sales & Marketing</h3>
+        <p className="text-orange-700 text-sm mb-4">
+          Emphasize sales figures, campaign results, and market growth. Use metrics to demonstrate success and impact.
+        </p>
+        <ul className="text-orange-600 text-xs space-y-1">
+          <li>• Quantify sales achievements</li>
+          <li>• Highlight campaign results</li>
+          <li>• Include market share growth</li>
+          <li>• List marketing tools & platforms</li>
+        </ul>
+      </div>
+    </div>
+
+    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
+      <h4 className="text-lg font-bold text-blue-800 mb-3 flex items-center">
+        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+        </svg>
+        Industry-Specific Resume Tips
+      </h4>
+      <p className="text-blue-700 mb-4">
+        Each industry has unique expectations for resumes. Research your target industry and tailor your resume accordingly. 
+        Use industry-specific keywords and highlight relevant experiences that demonstrate your fit for the role.
+      </p>
+      <div className="grid md:grid-cols-2 gap-4 text-sm">
+        <div>
+          <h5 className="font-semibold text-blue-800 mb-2">For Technical Roles:</h5>
+          <ul className="text-blue-700 space-y-1">
+            <li className="flex items-start">
+              <span className="text-blue-500 mr-2">•</span>
+              <span>Include GitHub portfolio links</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-500 mr-2">•</span>
+              <span>List specific technologies used</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 className="font-semibold text-indigo-800 mb-2">For Creative Roles:</h5>
+          <ul className="text-indigo-700 space-y-1">
+            <li className="flex items-start">
+              <span className="text-indigo-500 mr-2">•</span>
+              <span>Include Behance or Dribbble links</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-indigo-500 mr-2">•</span>
+              <span>Showcase specific design projects</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* 5. FAQ Section */}
+<div className="bg-white rounded-3xl shadow-xl overflow-hidden mt-16">
+  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 px-8 py-6">
+    <h2 className="text-3xl font-bold text-white mb-2">Frequently Asked Questions</h2>
+    <p className="text-purple-100">Common questions about resumes and PDF document management</p>
+  </div>
+
+  <div className="p-8 md:p-12">
+    <div className="space-y-6">
+      {/* FAQ Item 1 */}
+      <div className="border border-gray-200 rounded-2xl p-6 hover:border-purple-300 transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
+          <svg className="w-5 h-5 text-purple-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+          </svg>
+          How long should my resume be?
+        </h3>
+        <p className="text-gray-700 leading-relaxed">
+          For most professionals, a one-page resume is ideal. However, if you have extensive experience (10+ years) 
+          or are in academia/research, two pages may be appropriate. The key is relevance - only include information 
+          that directly supports your candidacy for the specific role you're applying for.
+        </p>
+      </div>
+
+      {/* FAQ Item 2 */}
+      <div className="border border-gray-200 rounded-2xl p-6 hover:border-purple-300 transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
+          <svg className="w-5 h-5 text-purple-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+          </svg>
+          Should I include references on my resume?
+        </h3>
+        <p className="text-gray-700 leading-relaxed">
+          It's generally recommended not to include references directly on your resume. Instead, create a separate 
+          references document that you can provide when specifically requested. This saves space on your resume for 
+          more important content and allows you to tailor your references to each specific job application.
+        </p>
+      </div>
+
+      {/* FAQ Item 3 */}
+      <div className="border border-gray-200 rounded-2xl p-6 hover:border-purple-300 transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
+          <svg className="w-5 h-5 text-purple-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+          </svg>
+          How can I make my resume stand out to ATS systems?
+        </h3>
+        <p className="text-gray-700 leading-relaxed">
+          To optimize your resume for ATS systems: use standard section headings, incorporate relevant keywords from 
+          the job description, avoid graphics and tables, use a clean and simple format, and save your resume as a 
+          PDF with selectable text. Our PDF tools ensure your resume maintains perfect ATS-friendly formatting.
+        </p>
+      </div>
+
+      {/* FAQ Item 4 */}
+      <div className="border border-gray-200 rounded-2xl p-6 hover:border-purple-300 transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
+          <svg className="w-5 h-5 text-purple-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+          </svg>
+          What's the best format for saving my resume?
+        </h3>
+        <p className="text-gray-700 leading-relaxed">
+          PDF is generally the best format for resumes because it preserves formatting across different devices and 
+          operating systems. Ensure your PDF has selectable text (not just an image) for ATS compatibility. Our PDF 
+          tools help you create perfectly formatted resumes that look professional on any platform.
+        </p>
+      </div>
+
+      {/* FAQ Item 5 */}
+      <div className="border border-gray-200 rounded-2xl p-6 hover:border-purple-300 transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
+          <svg className="w-5 h-5 text-purple-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+          </svg>
+          How often should I update my resume?
+        </h3>
+        <p className="text-gray-700 leading-relaxed">
+          You should update your resume every 6-12 months, or whenever you achieve significant accomplishments, 
+          complete major projects, or acquire new skills. Even if you're not actively job searching, maintaining 
+          an up-to-date resume ensures you're prepared for unexpected opportunities and can quickly apply for 
+          positions that interest you.
+        </p>
+      </div>
+    </div>
+
+    <div className="mt-8 text-center">
+      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-200 inline-block">
+        <h4 className="text-lg font-bold text-purple-800 mb-2">Need More Help?</h4>
+        <p className="text-purple-700 mb-4">
+          Have additional questions about resume creation or PDF document management?
+        </p>
+        <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 
+                         text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 
+                         transform hover:scale-105 shadow-lg hover:shadow-xl">
+          Contact Our Support Team
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
       </div>
     </>

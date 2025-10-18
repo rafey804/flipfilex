@@ -22,7 +22,12 @@ from routers import (
     # Finance tools
     defi_yield, jwt_decoder,
     # Medical tools
-    dicom_to_jpeg
+    dicom_to_jpeg,
+    # Contact form
+    contact_form,
+    # AI Tools
+    video_script_writer,
+    ai_image_generator
 )
 from utils.config import UPLOAD_DIR
 from utils.dependencies import check_dependencies, cleanup_old_files, get_dependency_status
@@ -99,6 +104,13 @@ app.include_router(jwt_decoder.router, prefix="/tools", tags=["JWT Token Decoder
 
 # Medical tools
 app.include_router(dicom_to_jpeg.router, prefix="/convert", tags=["DICOM to JPEG"])
+
+# Contact form
+app.include_router(contact_form.router, prefix="/api", tags=["Contact Form"])
+
+# AI Tools
+app.include_router(video_script_writer.router, prefix="/ai", tags=["AI Video Script Writer"])
+app.include_router(ai_image_generator.router, prefix="/ai", tags=["AI Image Generator"])
 
 app.include_router(download.router, tags=["Download"])
 

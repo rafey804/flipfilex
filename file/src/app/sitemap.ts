@@ -39,6 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'pdf-password-protection', 'split-pdf-pages', 'excel-to-pdf',
     'powerpoint-to-pdf', 'text-to-pdf', 'html-to-pdf', 'csv-to-excel',
     'json-to-csv', 'bib-to-pdf', 'mathml-to-image', 'png-to-webp-converter',
+    'ai-video-script-writer', 'ai-image-generator',
   ]
 
   // Dynamically get all tool slugs from toolsConfig

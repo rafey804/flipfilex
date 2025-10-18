@@ -49,7 +49,7 @@ const Notification = ({ message, type, onClose }: NotificationProps) => {
     const timer = setTimeout(() => {
       onClose();
     }, 5000);
-    
+
     return () => clearTimeout(timer);
   }, [onClose]);
 
@@ -76,6 +76,799 @@ const Notification = ({ message, type, onClose }: NotificationProps) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
+    </div>
+  );
+};
+
+// Dynamic Document SEO Content Component
+interface DynamicDocumentSEOContentProps {
+  conversionType: string;
+  conversionTypes: Record<string, {
+    name: string;
+    inputFormats: string[];
+    outputFormat: string;
+    color: string;
+    bgColor: string;
+    icon: string;
+    description: string;
+  }>;
+}
+
+const DynamicDocumentSEOContent = ({ conversionType, conversionTypes }: DynamicDocumentSEOContentProps) => {
+  const currentType = conversionTypes[conversionType];
+  const typeName = currentType?.name || 'Document Conversion';
+
+  // Ensure we always have a valid conversion type
+  if (!currentType) {
+    console.warn('No matching conversion type found for:', conversionType);
+    console.log('Available types:', Object.keys(conversionTypes));
+    return null;
+  }
+
+  // UNIQUE DOCUMENT SECTION TITLES for each conversion type
+  const getDocumentSectionTitles = (type: string) => {
+    const uniqueDocumentTitles: Record<string, {
+      howTo: string;
+      whyFrom: string;
+      whyTo: string;
+      whyMatters: string;
+      benefits: string;
+      technical: string;
+      useCases: string;
+      faq: string;
+      relatedTools: string;
+    }> = {
+      'excel_to_pdf': {
+        howTo: `Transform Excel Spreadsheets to Professional PDF Documents`,
+        whyFrom: `Excel Limitations in Document Distribution and Presentation`,
+        whyTo: `PDF Excellence for Professional Document Sharing`,
+        whyMatters: `Business Communication Enhancement Through Excel to PDF Conversion`,
+        benefits: `Professional Benefits of Converting Excel to PDF Format`,
+        technical: `Excel vs PDF: Spreadsheet vs Document Technology Analysis`,
+        useCases: `Business Applications for Excel to PDF Conversion`,
+        faq: `Excel to PDF Professional Conversion: Business Guide`,
+        relatedTools: `Professional Excel and PDF Business Document Tools`
+      },
+      'powerpoint_to_pdf': {
+        howTo: `Convert PowerPoint Presentations to Portable PDF Documents`,
+        whyFrom: `PowerPoint Software Dependencies in Professional Presentations`,
+        whyTo: `PDF Universal Compatibility for Presentation Distribution`,
+        whyMatters: `Presentation Accessibility Through PowerPoint to PDF Conversion`,
+        benefits: `Distribution Benefits of PowerPoint to PDF Transformation`,
+        technical: `PowerPoint vs PDF: Presentation vs Document Analysis`,
+        useCases: `Professional Presentation Applications for PowerPoint to PDF`,
+        faq: `PowerPoint to PDF Presentation Distribution: Professional Guide`,
+        relatedTools: `Professional PowerPoint and PDF Presentation Tools`
+      },
+      'text_to_pdf': {
+        howTo: `Transform Plain Text Files to Formatted PDF Documents`,
+        whyFrom: `Text File Limitations in Professional Document Creation`,
+        whyTo: `PDF Professional Formatting for Enhanced Document Presentation`,
+        whyMatters: `Document Professionalization Through Text to PDF Enhancement`,
+        benefits: `Formatting Benefits of Text to PDF Document Creation`,
+        technical: `Text vs PDF: Plain Text vs Formatted Document Analysis`,
+        useCases: `Professional Documentation Applications for Text to PDF`,
+        faq: `Text to PDF Document Creation: Professional Formatting Guide`,
+        relatedTools: `Professional Text and PDF Document Creation Tools`
+      },
+      'html_to_pdf': {
+        howTo: `Convert Web Pages to Printable PDF Documents`,
+        whyFrom: `HTML Web Format Limitations for Offline Document Use`,
+        whyTo: `PDF Offline Access for Permanent Document Storage`,
+        whyMatters: `Web Content Preservation Through HTML to PDF Conversion`,
+        benefits: `Archival Benefits of HTML to PDF Web Preservation`,
+        technical: `HTML vs PDF: Web Content vs Document Format Analysis`,
+        useCases: `Web Archival Applications for HTML to PDF Conversion`,
+        faq: `HTML to PDF Web Preservation: Digital Archiving Guide`,
+        relatedTools: `Professional HTML and PDF Web Archival Tools`
+      },
+      'csv_to_excel': {
+        howTo: `Transform CSV Data Files to Professional Excel Spreadsheets`,
+        whyFrom: `CSV Data Format Limitations in Business Analysis`,
+        whyTo: `Excel Advanced Features for Professional Data Management`,
+        whyMatters: `Data Analysis Enhancement Through CSV to Excel Conversion`,
+        benefits: `Business Intelligence Benefits of CSV to Excel Transformation`,
+        technical: `CSV vs Excel: Raw Data vs Business Intelligence Analysis`,
+        useCases: `Business Analytics Applications for CSV to Excel Conversion`,
+        faq: `CSV to Excel Data Analysis: Business Intelligence Guide`,
+        relatedTools: `Professional CSV and Excel Business Analytics Tools`
+      },
+      'json_to_csv': {
+        howTo: `Convert JSON Data to Tabular CSV Format`,
+        whyFrom: `JSON Structure Complexity in Traditional Data Analysis`,
+        whyTo: `CSV Simplicity for Universal Data Processing`,
+        whyMatters: `Data Accessibility Through JSON to CSV Simplification`,
+        benefits: `Data Processing Benefits of JSON to CSV Conversion`,
+        technical: `JSON vs CSV: Structured vs Tabular Data Analysis`,
+        useCases: `Data Science Applications for JSON to CSV Conversion`,
+        faq: `JSON to CSV Data Processing: Data Science Guide`,
+        relatedTools: `Professional JSON and CSV Data Processing Tools`
+      },
+      'epub_to_pdf': {
+        howTo: `Transform EPUB eBooks to Universal PDF Documents`,
+        whyFrom: `EPUB Reader Dependencies and Platform Limitations`,
+        whyTo: `PDF Universal Accessibility for eBook Content`,
+        whyMatters: `Digital Publishing Enhancement Through EPUB to PDF Conversion`,
+        benefits: `Professional Benefits of EPUB to PDF Document Creation`,
+        technical: `EPUB vs PDF: eBook vs Document Format Analysis`,
+        useCases: `Publishing Applications for EPUB to PDF Conversion`,
+        faq: `EPUB to PDF eBook Publishing: Professional Guide`,
+        relatedTools: `Professional EPUB and PDF Publishing Tools`
+      },
+      'mobi_to_epub': {
+        howTo: `Convert Kindle MOBI Books to Standard EPUB Format`,
+        whyFrom: `MOBI Format Restrictions and Kindle Ecosystem Lock-in`,
+        whyTo: `EPUB Standard Compatibility for Universal eBook Access`,
+        whyMatters: `Digital Library Freedom Through MOBI to EPUB Liberation`,
+        benefits: `Cross-Platform Benefits of MOBI to EPUB Conversion`,
+        technical: `MOBI vs EPUB: Proprietary vs Open eBook Standards`,
+        useCases: `Digital Library Applications for MOBI to EPUB Migration`,
+        faq: `MOBI to EPUB eBook Liberation: Cross-Platform Guide`,
+        relatedTools: `Professional MOBI and EPUB eBook Management Tools`
+      },
+      'txt_to_epub': {
+        howTo: `Transform Plain Text Files to Professional EPUB eBooks`,
+        whyFrom: `Text File Limitations in Digital Publishing and Distribution`,
+        whyTo: `EPUB Professional eBook Features for Enhanced Reading`,
+        whyMatters: `Content Publishing Enhancement Through Text to EPUB Creation`,
+        benefits: `Digital Publishing Benefits of Text to EPUB Transformation`,
+        technical: `Text vs EPUB: Plain Content vs Rich eBook Format Analysis`,
+        useCases: `Self-Publishing Applications for Text to EPUB Conversion`,
+        faq: `Text to EPUB eBook Creation: Self-Publishing Guide`,
+        relatedTools: `Professional Text and EPUB Publishing Tools`
+      },
+      'docx_to_epub': {
+        howTo: `Convert Microsoft Word Documents to Interactive EPUB eBooks`,
+        whyFrom: `Word Document Limitations in Digital Reading Experience`,
+        whyTo: `EPUB Interactive Features for Enhanced Digital Publishing`,
+        whyMatters: `Content Transformation Through DOCX to EPUB Innovation`,
+        benefits: `Digital Publishing Benefits of DOCX to EPUB Enhancement`,
+        technical: `DOCX vs EPUB: Document vs eBook Technology Comparison`,
+        useCases: `Professional Publishing Applications for DOCX to EPUB`,
+        faq: `DOCX to EPUB Publishing Workflow: Professional Guide`,
+        relatedTools: `Professional DOCX and EPUB Publishing Solutions`
+      },
+      'bib_to_pdf': {
+        howTo: `Convert Bibliography Files to Formatted PDF Documents`,
+        whyFrom: `BibTeX File Limitations in Academic Document Presentation`,
+        whyTo: `PDF Professional Formatting for Academic Bibliography Display`,
+        whyMatters: `Academic Publishing Enhancement Through BIB to PDF Creation`,
+        benefits: `Research Benefits of BibTeX to PDF Documentation`,
+        technical: `BibTeX vs PDF: Reference Data vs Formatted Document Analysis`,
+        useCases: `Academic Research Applications for BIB to PDF Conversion`,
+        faq: `BibTeX to PDF Academic Publishing: Research Guide`,
+        relatedTools: `Professional BibTeX and PDF Academic Tools`
+      },
+      'latex_to_pdf': {
+        howTo: `Compile LaTeX Documents to Professional PDF Publications`,
+        whyFrom: `LaTeX Source Complexity in Document Distribution`,
+        whyTo: `PDF Professional Output for Academic and Technical Publishing`,
+        whyMatters: `Academic Excellence Through LaTeX to PDF Compilation`,
+        benefits: `Professional Publishing Benefits of LaTeX to PDF Generation`,
+        technical: `LaTeX vs PDF: Source Code vs Publication Format Analysis`,
+        useCases: `Academic and Technical Applications for LaTeX to PDF`,
+        faq: `LaTeX to PDF Academic Publishing: Technical Guide`,
+        relatedTools: `Professional LaTeX and PDF Academic Publishing Tools`
+      }
+    };
+
+    if (uniqueDocumentTitles[type]) {
+      return uniqueDocumentTitles[type];
+    }
+
+    // Create completely unique fallback titles for documents
+    const dynamicDocumentTitles = {
+      howTo: `Master ${typeName} Processing Workflow`,
+      whyFrom: `${typeName} Source Format Challenges and Requirements`,
+      whyTo: `${typeName} Target Format Excellence for Your Needs`,
+      whyMatters: `Strategic Enhancement: ${typeName} Document Evolution`,
+      benefits: `Professional Benefits: ${typeName} Document Advancement`,
+      technical: `${typeName}: Comprehensive Format Technology Specification`,
+      useCases: `Professional Applications: ${typeName} Document Processing`,
+      faq: `${typeName}: Advanced Processing Documentation`,
+      relatedTools: `${typeName} Professional Document Technology Suite`
+    };
+
+    return dynamicDocumentTitles;
+  };
+
+  // UNIQUE DOCUMENT CONVERSION-SPECIFIC DESCRIPTIONS - NO DUPLICATE CONTENT
+  const getDocumentConversionSpecificDescription = (type: string) => {
+    const uniqueDocumentConversions: Record<string, { sourceDesc: string; targetDesc: string; why: string }> = {
+      'excel_to_pdf': {
+        sourceDesc: 'Excel spreadsheets contain dynamic calculations, formulas, and data analysis capabilities but require specific software to view and may lose formatting when shared across different platforms and devices.',
+        targetDesc: 'PDF format preserves exact visual appearance of spreadsheets while ensuring universal accessibility across all devices and platforms without requiring specialized software or losing formatting integrity.',
+        why: 'Converting Excel to PDF is essential for sharing financial reports, data analysis, and business presentations where consistent appearance and universal accessibility are critical for professional communication.'
+      },
+      'powerpoint_to_pdf': {
+        sourceDesc: 'PowerPoint presentations provide interactive features and editing capabilities but create compatibility challenges when sharing with audiences who may not have PowerPoint software or when consistent visual presentation is required.',
+        targetDesc: 'PDF format ensures presentations display identically across all devices and platforms while maintaining slide layouts, fonts, and visual elements without requiring PowerPoint software for viewing.',
+        why: 'Converting PowerPoint to PDF is crucial for distributing presentations to diverse audiences, ensuring consistent appearance regardless of viewing device, and creating permanent records of presentation content.'
+      },
+      'text_to_pdf': {
+        sourceDesc: 'Plain text files contain raw content without formatting, visual structure, or professional presentation elements, making them unsuitable for formal documents and professional communication.',
+        targetDesc: 'PDF format transforms plain text into professionally formatted documents with proper typography, layout, and visual structure suitable for business and formal communication.',
+        why: 'Converting text to PDF is essential for creating professional documents from raw content, ensuring proper formatting for reports, letters, and formal communication that represents your organization professionally.'
+      },
+      'html_to_pdf': {
+        sourceDesc: 'HTML web pages require internet connectivity and browsers to view, may change over time, and cannot be reliably archived or shared as permanent documents for offline reference.',
+        targetDesc: 'PDF format captures web content as permanent, offline-accessible documents that preserve the exact appearance and content for archival purposes and reliable future reference.',
+        why: 'Converting HTML to PDF is vital for archiving web content, creating permanent records of online information, and ensuring important web-based documents remain accessible regardless of internet connectivity.'
+      },
+      'csv_to_excel': {
+        sourceDesc: 'CSV files contain raw data in simple comma-separated format but lack advanced features like formulas, charts, formatting, and data analysis tools needed for comprehensive business intelligence.',
+        targetDesc: 'Excel format provides advanced data analysis capabilities including formulas, pivot tables, charts, conditional formatting, and business intelligence features for comprehensive data management.',
+        why: 'Converting CSV to Excel is essential for transforming raw data into actionable business intelligence, enabling advanced analysis, visualization, and reporting capabilities for informed decision-making.'
+      },
+      'json_to_csv': {
+        sourceDesc: 'JSON format stores data in nested, hierarchical structures that are excellent for applications but complex for traditional data analysis tools and spreadsheet applications.',
+        targetDesc: 'CSV format provides simple, tabular data structure that works universally with spreadsheet applications, databases, and data analysis tools for straightforward data processing.',
+        why: 'Converting JSON to CSV is necessary for making complex data structures accessible to traditional analysis tools, enabling data scientists and analysts to work with application data using familiar spreadsheet tools.'
+      },
+      'epub_to_pdf': {
+        sourceDesc: 'EPUB format is designed for reflowable content and requires specialized eBook readers or apps, creating barriers for universal access and limiting distribution options for authors and publishers seeking broader audience reach.',
+        targetDesc: 'PDF format ensures universal document accessibility across all devices and platforms while preserving the exact layout and formatting of eBook content for consistent presentation and professional distribution.',
+        why: 'Converting EPUB to PDF is essential for academic institutions, libraries, and publishers who need to distribute eBook content to audiences without requiring specialized eReader software, ensuring accessibility compliance and broader content reach.'
+      },
+      'mobi_to_epub': {
+        sourceDesc: 'MOBI format is proprietary to Amazon\'s Kindle ecosystem, creating platform lock-in that restricts users to Amazon devices and limits the ability to share or access content across different eReader platforms and applications.',
+        targetDesc: 'EPUB format is the open industry standard for eBooks, providing universal compatibility across all major eReader devices, applications, and platforms while supporting advanced features like accessibility options and interactive content.',
+        why: 'Converting MOBI to EPUB is crucial for digital library management, cross-platform accessibility, and breaking free from proprietary restrictions, enabling users to access their eBook collections on any device or platform of their choice.'
+      },
+      'txt_to_epub': {
+        sourceDesc: 'Plain text files contain raw content without any formatting, structure, or metadata, making them unsuitable for professional digital publishing and lacking the interactive features that enhance modern reading experiences.',
+        targetDesc: 'EPUB format transforms plain text into richly formatted eBooks with professional typography, table of contents, metadata, search capabilities, and accessibility features that provide superior reading experiences across all devices.',
+        why: 'Converting text to EPUB is essential for self-publishers, content creators, and educators who want to transform written content into professional digital publications that can be distributed through major eBook platforms and accessed on any eReader device.'
+      },
+      'docx_to_epub': {
+        sourceDesc: 'Microsoft Word documents are designed for traditional document workflows and lack the reflowable, responsive design features necessary for optimal digital reading experiences across various screen sizes and eReader devices.',
+        targetDesc: 'EPUB format provides adaptive layouts, responsive typography, and device-optimized reading experiences while maintaining the content structure and formatting elements essential for professional digital publishing and distribution.',
+        why: 'Converting DOCX to EPUB is vital for publishers, educators, and content creators who need to transform traditional documents into interactive digital publications that provide optimal reading experiences across tablets, eReaders, and mobile devices.'
+      },
+      'bib_to_pdf': {
+        sourceDesc: 'BibTeX files contain structured reference data in a specialized format that requires specific software to interpret and lacks the visual formatting necessary for professional academic document presentation and citation display.',
+        targetDesc: 'PDF format transforms bibliography data into professionally formatted reference lists with proper academic styling, consistent formatting, and universal accessibility for inclusion in research papers, theses, and academic publications.',
+        why: 'Converting BibTeX to PDF is essential for academic researchers, graduate students, and scholars who need to generate professionally formatted bibliography sections for research papers, dissertations, and academic publications with proper citation formatting.'
+      },
+      'latex_to_pdf': {
+        sourceDesc: 'LaTeX source files contain markup code and commands that require specialized compilation software and technical expertise, making them inaccessible to readers and unsuitable for direct distribution or publication.',
+        targetDesc: 'PDF format compiles LaTeX source into polished, professionally typeset documents with precise formatting, mathematical equations, figures, and references that meet the highest academic and technical publishing standards.',
+        why: 'Converting LaTeX to PDF is fundamental for academic publishing, technical documentation, and scientific communication, enabling researchers to produce publication-ready documents with professional typography and mathematical formatting for journals, conferences, and institutional repositories.'
+      }
+    };
+
+    const conversion = uniqueDocumentConversions[type];
+    if (conversion) {
+      return conversion;
+    }
+
+    // Fallback for other combinations
+    return {
+      sourceDesc: `${typeName} source format serves specific document workflow purposes but may face limitations in distribution, compatibility, or feature requirements for your intended use case.`,
+      targetDesc: `${typeName} target format provides enhanced capabilities in accessibility, distribution, or functionality that better match your specific document processing needs and professional requirements.`,
+      why: `${typeName} conversion helps optimize your documents for specific workflows, platform requirements, and professional communication standards.`
+    };
+  };
+
+  // Get document technical specifications
+  const getDocumentTechnicalSpecs = (type: string) => {
+    const specs: Record<string, { source: string[], target: string[] }> = {
+      'epub_to_pdf': {
+        source: [
+          'Reflowable text layout adapts to different screen sizes and reading preferences',
+          'Supports rich media integration including images, audio, and interactive elements',
+          'Metadata structure enables detailed book information and cataloging',
+          'Accessibility features support screen readers and assistive technologies',
+          'DRM compatibility allows protected content distribution'
+        ],
+        target: [
+          'Fixed layout ensures consistent appearance across all viewing platforms',
+          'Universal compatibility works on any device without specialized software',
+          'Optimized for printing with proper page breaks and formatting',
+          'Searchable text content maintains full-text search capabilities',
+          'File compression reduces storage space while preserving quality'
+        ]
+      },
+      'mobi_to_epub': {
+        source: [
+          'Optimized for Kindle devices with proprietary formatting features',
+          'Supports Amazon-specific DRM and content protection mechanisms',
+          'Integrated with Kindle ecosystem for seamless device synchronization',
+          'Compressed format reduces file size for efficient device storage',
+          'Whispersync compatibility enables cross-device reading progress'
+        ],
+        target: [
+          'Open standard format ensures broad device and application compatibility',
+          'Rich formatting support includes advanced CSS styling and layouts',
+          'Accessibility compliance meets international web accessibility standards',
+          'Cross-platform synchronization works with multiple reading applications',
+          'Future-proof format backed by industry consortium standards'
+        ]
+      },
+      'txt_to_epub': {
+        source: [
+          'Plain text format ensures maximum compatibility across all systems',
+          'Minimal file size enables efficient storage and transmission',
+          'Simple structure allows easy content editing and modification',
+          'Universal readability requires no specialized software or applications',
+          'Character encoding flexibility supports multiple languages'
+        ],
+        target: [
+          'Rich typography enhances reading experience with proper formatting',
+          'Interactive table of contents enables easy navigation through content',
+          'Metadata support provides author information and publication details',
+          'Responsive design adapts to different screen sizes and orientations',
+          'Enhanced accessibility features support diverse reading needs'
+        ]
+      },
+      'docx_to_epub': {
+        source: [
+          'Advanced formatting capabilities including styles, tables, and graphics',
+          'Collaboration features enable multiple authors and revision tracking',
+          'Template system provides consistent document structure and branding',
+          'Integration with Microsoft Office ecosystem and cloud services',
+          'Robust editing tools support complex document creation workflows'
+        ],
+        target: [
+          'Reflowable layout optimizes content for various screen sizes and devices',
+          'Enhanced reading experience with adjustable fonts and reading settings',
+          'Cross-platform compatibility works with all major eReader applications',
+          'Improved accessibility features support screen readers and navigation',
+          'Distribution-ready format enables publishing to major eBook platforms'
+        ]
+      },
+      'bib_to_pdf': {
+        source: [
+          'Structured data format enables automated citation management',
+          'LaTeX integration provides seamless academic document workflow',
+          'Machine-readable format supports bibliographic database systems',
+          'Version control compatibility tracks changes in reference lists',
+          'Cross-reference capabilities link citations to full bibliographic data'
+        ],
+        target: [
+          'Professional formatting meets academic journal and publication standards',
+          'Consistent citation style ensures proper academic presentation',
+          'Portable format enables easy sharing with advisors and colleagues',
+          'Print-ready output supports both digital and physical distribution',
+          'Universal accessibility works without specialized bibliography software'
+        ]
+      },
+      'latex_to_pdf': {
+        source: [
+          'Precise typographical control enables professional document layout',
+          'Mathematical equation support with advanced formatting capabilities',
+          'Automated cross-referencing for figures, tables, and citations',
+          'Template system ensures consistent academic and technical formatting',
+          'Version control compatibility supports collaborative document development'
+        ],
+        target: [
+          'Professional typography meets highest academic and technical standards',
+          'Universal compatibility ensures consistent appearance across all platforms',
+          'Print-ready quality suitable for journal submission and publication',
+          'Optimized file size balances quality with efficient distribution',
+          'Searchable content maintains full-text search and indexing capabilities'
+        ]
+      }
+    };
+
+    return specs[type] || {
+      source: ['Source format provides specific capabilities for document creation and editing'],
+      target: ['Target format offers enhanced compatibility and distribution advantages']
+    };
+  };
+
+  // Get document use cases
+  const getDocumentUseCases = (type: string) => {
+    const useCases: Record<string, Array<{ title: string, description: string, icon: string }>> = {
+      'epub_to_pdf': [
+        {
+          title: 'Academic Institution Libraries',
+          description: 'Universities and colleges need to provide eBook content to students who may not have specialized eReader software or devices. Converting EPUB to PDF ensures all students can access required reading materials on any device, supports accessibility compliance for students with disabilities, and enables integration with existing learning management systems without requiring additional software installations.',
+          icon: '🎓'
+        },
+        {
+          title: 'Corporate Training Materials',
+          description: 'Companies distributing training content and employee handbooks require universal access across diverse device ecosystems. PDF conversion ensures consistent formatting for compliance documentation, enables offline access for field workers, supports printing for reference materials, and eliminates the need for specialized eReader software licensing across the organization.',
+          icon: '🏢'
+        },
+        {
+          title: 'Legal Document Distribution',
+          description: 'Law firms and legal departments need to distribute case materials, contracts, and legal documents with guaranteed formatting consistency. PDF conversion ensures document integrity for legal compliance, provides universal access for clients and opposing counsel, supports digital signatures and annotations, and maintains admissibility standards for court submissions.',
+          icon: '⚖️'
+        },
+        {
+          title: 'Research Publication Archives',
+          description: 'Academic publishers and research institutions require long-term preservation of scholarly content with consistent formatting. PDF conversion creates archival-quality documents for institutional repositories, ensures future accessibility without dependency on changing eReader technologies, supports citation and reference systems, and maintains publication standards for academic integrity.',
+          icon: '📚'
+        }
+      ],
+      'mobi_to_epub': [
+        {
+          title: 'Digital Library Migration',
+          description: 'Libraries and educational institutions transitioning away from proprietary formats need to ensure continued access to digital collections. EPUB conversion enables cross-platform accessibility for patrons using various devices, supports integration with open-source library management systems, provides long-term format sustainability, and eliminates vendor lock-in for digital collection management.',
+          icon: '📖'
+        },
+        {
+          title: 'Personal eBook Collection Management',
+          description: 'Readers with extensive eBook libraries want freedom to access their content across multiple devices and platforms. EPUB conversion breaks the Kindle ecosystem lock-in, enables reading on preferred applications and devices, supports synchronization across multiple platforms, and provides backup compatibility for personal digital libraries.',
+          icon: '📱'
+        },
+        {
+          title: 'Educational Content Development',
+          description: 'Educators and content creators developing digital learning materials need format flexibility for distribution across various platforms. EPUB conversion enables integration with multiple learning management systems, supports accessibility features for diverse learners, allows customization for specific educational needs, and provides broader distribution opportunities for educational content.',
+          icon: '👨‍🏫'
+        },
+        {
+          title: 'Publishing Platform Diversification',
+          description: 'Authors and publishers seeking to expand distribution beyond Amazon\'s ecosystem require format flexibility. EPUB conversion enables publishing on multiple platforms simultaneously, reaches broader international markets, supports independent bookstore partnerships, and provides greater revenue diversification opportunities for content creators.',
+          icon: '✍️'
+        }
+      ],
+      'txt_to_epub': [
+        {
+          title: 'Self-Publishing Authors',
+          description: 'Independent authors working with manuscripts in plain text format need professional eBook creation capabilities. EPUB conversion transforms raw content into distribution-ready digital books with proper formatting, navigation, and metadata for major eBook platforms including Apple Books, Google Play Books, and Barnes & Noble, enabling global distribution and professional presentation.',
+          icon: '📝'
+        },
+        {
+          title: 'Content Creator Communities',
+          description: 'Writers, bloggers, and online content creators want to compile their work into professional digital publications. EPUB conversion enables monetization of existing content through eBook sales, provides readers with offline access to favorite content, supports fan fiction and community-driven publishing, and creates professional portfolios for content creators.',
+          icon: '👥'
+        },
+        {
+          title: 'Educational Material Development',
+          description: 'Teachers and educators creating course materials, study guides, and educational resources need accessible digital formats. EPUB conversion enables distribution to students across various devices, supports accessibility features for diverse learning needs, allows interactive elements and multimedia integration, and provides cost-effective alternatives to traditional textbooks.',
+          icon: '📚'
+        },
+        {
+          title: 'Technical Documentation Publishing',
+          description: 'Software developers and technical writers creating documentation need reader-friendly formats for complex information. EPUB conversion enables responsive layouts for technical guides, supports code syntax highlighting and formatting, provides searchable documentation for developers, and creates portable reference materials for technical teams.',
+          icon: '💻'
+        }
+      ],
+      'docx_to_epub': [
+        {
+          title: 'Academic Publishing Workflow',
+          description: 'Researchers and academics writing papers, theses, and dissertations in Word need digital publication formats. EPUB conversion enables thesis submission to digital repositories, supports academic conference proceedings distribution, provides accessible formats for academic content sharing, and enables broader dissemination of research findings beyond traditional publication channels.',
+          icon: '🎓'
+        },
+        {
+          title: 'Corporate Content Publishing',
+          description: 'Businesses creating white papers, reports, and thought leadership content need professional digital distribution formats. EPUB conversion enables lead generation through content marketing, provides responsive layouts for mobile business readers, supports brand consistency across digital publications, and enhances customer engagement through professional content presentation.',
+          icon: '📊'
+        },
+        {
+          title: 'Newsletter and Magazine Publishing',
+          description: 'Publishers transitioning from traditional print formats to digital need responsive, reader-friendly alternatives. EPUB conversion enables mobile-optimized magazine layouts, supports subscription-based digital content distribution, provides interactive elements for enhanced reader engagement, and reduces distribution costs while expanding global reach.',
+          icon: '📰'
+        },
+        {
+          title: 'Professional Service Documentation',
+          description: 'Consultants, lawyers, and professional service providers creating client deliverables need professional presentation formats. EPUB conversion enables branded content delivery to clients, supports interactive proposals and presentations, provides accessible documentation for diverse client needs, and enhances professional credibility through polished digital presentations.',
+          icon: '💼'
+        }
+      ],
+      'bib_to_pdf': [
+        {
+          title: 'Thesis and Dissertation Preparation',
+          description: 'Graduate students and doctoral candidates need professionally formatted bibliography sections for their research work. PDF conversion creates publication-ready reference lists that meet university formatting requirements, ensures consistent citation styles across academic disciplines, supports both digital submission and print requirements, and provides backup documentation for thesis defense and publication.',
+          icon: '🎓'
+        },
+        {
+          title: 'Academic Paper Submission',
+          description: 'Researchers submitting to academic journals require precise bibliography formatting that meets publisher specifications. PDF conversion ensures citation style compliance for different journals, provides clean formatting for peer review processes, supports both digital and print publication requirements, and maintains formatting integrity throughout the publication workflow.',
+          icon: '📄'
+        },
+        {
+          title: 'Research Grant Applications',
+          description: 'Principal investigators preparing grant proposals need professional reference sections that demonstrate research foundation and relevance. PDF conversion creates compelling bibliography presentations for funding committees, ensures formatting consistency across multi-institutional proposals, supports both digital submission and review processes, and enhances proposal professionalism and credibility.',
+          icon: '💰'
+        },
+        {
+          title: 'Conference Proceedings Publication',
+          description: 'Academic conference organizers need formatted bibliography sections for published proceedings. PDF conversion ensures consistent reference formatting across multiple authors and papers, supports conference publication standards and requirements, provides professional presentation for conference archives, and enables both digital and print conference proceedings distribution.',
+          icon: '🏛️'
+        }
+      ],
+      'latex_to_pdf': [
+        {
+          title: 'Academic Journal Publication',
+          description: 'Researchers and academics preparing manuscripts for peer-reviewed journals require professional typesetting that meets stringent publication standards. PDF compilation ensures mathematical equations render correctly, maintains precise formatting for tables and figures, supports complex citation systems and cross-references, and produces publication-ready documents that meet journal submission requirements.',
+          icon: '📚'
+        },
+        {
+          title: 'Technical Documentation Creation',
+          description: 'Software engineers and technical writers creating comprehensive documentation need professional formatting for complex technical content. PDF generation enables precise control over code listings and syntax highlighting, supports mathematical formulas and technical diagrams, provides consistent formatting for API documentation, and creates professional references for technical teams and users.',
+          icon: '⚙️'
+        },
+        {
+          title: 'Scientific Research Papers',
+          description: 'Scientists and researchers presenting experimental results and theoretical work require precise typographical control for complex scientific content. PDF compilation ensures accurate representation of mathematical models and equations, supports high-quality figure and chart integration, maintains scientific notation and symbol accuracy, and produces documents suitable for scientific publication and peer review.',
+          icon: '🔬'
+        },
+        {
+          title: 'Educational Material Production',
+          description: 'Educators and textbook authors creating instructional materials need professional formatting for complex educational content. PDF generation supports mathematical textbooks with precise equation formatting, enables creation of professional course materials and handouts, provides consistent formatting for educational publishers, and produces high-quality materials for both digital and print distribution.',
+          icon: '📖'
+        }
+      ]
+    };
+
+    return useCases[type] || [
+      {
+        title: 'Professional Document Creation',
+        description: 'Convert documents for professional use with enhanced formatting and compatibility.',
+        icon: '📄'
+      },
+      {
+        title: 'Cross-Platform Compatibility',
+        description: 'Ensure documents work seamlessly across different devices and platforms.',
+        icon: '🔄'
+      }
+    ];
+  };
+
+  const documentSectionTitles = getDocumentSectionTitles(conversionType);
+
+  return (
+    <div className="space-y-16">
+      {/* How to Convert Section */}
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {documentSectionTitles.howTo}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <p className="text-gray-700 leading-relaxed mb-6 text-lg">
+            Converting documents with our {typeName} converter is simple and efficient. Follow these easy steps to transform your documents:
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-white">1</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Upload Document Files</h3>
+              <p className="text-gray-600 text-sm">Select your {currentType?.inputFormats.join(', ').toUpperCase()} files or drag and drop them into the upload area. Up to 3 files supported.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-white">2</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Process Conversion</h3>
+              <p className="text-gray-600 text-sm">Click convert and our server will process your documents with professional quality settings and formatting preservation.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-white">3</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Download Results</h3>
+              <p className="text-gray-600 text-sm">Download your converted {currentType?.outputFormat.toUpperCase()} files immediately with preserved formatting and quality.</p>
+            </div>
+          </div>
+
+          <p className="text-gray-700 leading-relaxed">
+            Our {typeName} converter maintains document integrity while optimizing for your specific needs. The conversion process is completely free, secure, and preserves formatting, structure, and content quality. Your files are automatically deleted after processing for complete privacy.
+          </p>
+        </div>
+      </div>
+
+      {/* UNIQUE DOCUMENT CONVERSION-SPECIFIC CONTENT - NO DUPLICATE */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-teal-200">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+            {documentSectionTitles.whyFrom}
+          </h2>
+          <div className="max-w-2xl mx-auto">
+            <p className="text-gray-700 leading-relaxed mb-6">
+              {getDocumentConversionSpecificDescription(conversionType).sourceDesc}
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-amber-200">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+            {documentSectionTitles.whyTo}
+          </h2>
+          <div className="max-w-2xl mx-auto">
+            <p className="text-gray-700 leading-relaxed mb-6">
+              {getDocumentConversionSpecificDescription(conversionType).targetDesc}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* WHY THIS CONVERSION MATTERS - UNIQUE SECTION */}
+      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-indigo-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {documentSectionTitles.whyMatters}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <p className="text-gray-700 leading-relaxed text-lg">
+            {getDocumentConversionSpecificDescription(conversionType).why}
+          </p>
+        </div>
+      </div>
+
+      {/* Document Processing Benefits Section */}
+      <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-emerald-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {documentSectionTitles.benefits}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center mb-4">
+                <div className="text-3xl mr-4">📄</div>
+                <h3 className="text-xl font-semibold text-gray-900">Perfect Formatting Preservation</h3>
+              </div>
+              <p className="text-gray-700 leading-relaxed">Our converter maintains document structure, formatting, fonts, and layout integrity, ensuring professional appearance across all viewing platforms and devices.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center mb-4">
+                <div className="text-3xl mr-4">🚀</div>
+                <h3 className="text-xl font-semibold text-gray-900">Lightning Fast Processing</h3>
+              </div>
+              <p className="text-gray-700 leading-relaxed">Advanced conversion technology processes documents quickly while maintaining quality, ensuring rapid turnaround for time-sensitive business needs.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center mb-4">
+                <div className="text-3xl mr-4">🌍</div>
+                <h3 className="text-xl font-semibold text-gray-900">Universal Compatibility</h3>
+              </div>
+              <p className="text-gray-700 leading-relaxed">Converted documents work seamlessly across all operating systems, devices, and software platforms, eliminating compatibility concerns for document sharing.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center mb-4">
+                <div className="text-3xl mr-4">🔐</div>
+                <h3 className="text-xl font-semibold text-gray-900">Enterprise-Grade Security</h3>
+              </div>
+              <p className="text-gray-700 leading-relaxed">Documents are processed with bank-level security protocols and automatically deleted after conversion, ensuring complete confidentiality for sensitive business information.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Document Format FAQ Section */}
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 text-center">
+          {documentSectionTitles.faq}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="space-y-6">
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Will my document formatting be preserved during {typeName} conversion?</h3>
+              <p className="text-gray-700 leading-relaxed">Yes! Our converter maintains all formatting elements including fonts, colors, layouts, tables, and visual elements. The converted document will appear identical to the original while gaining the benefits of the target format.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">What file size limits apply to {typeName} conversion?</h3>
+              <p className="text-gray-700 leading-relaxed">Our converter supports documents up to 100MB in size, accommodating most business documents, presentations, spreadsheets, and data files. This covers everything from simple documents to complex presentations with multimedia elements.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Can I convert multiple documents simultaneously?</h3>
+              <p className="text-gray-700 leading-relaxed">Yes! Our batch processing feature allows you to convert up to 3 documents at once. Upload multiple files and convert them all in one operation, saving time for bulk document processing tasks.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Is my document data secure during conversion?</h3>
+              <p className="text-gray-700 leading-relaxed">Absolutely! All uploads are encrypted with HTTPS and processed on secure servers. Your original documents and converted files are automatically deleted after processing. We never store, access, or analyze your document content.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">How long does {typeName} conversion typically take?</h3>
+              <p className="text-gray-700 leading-relaxed">Most document conversions complete within 15-45 seconds, depending on file size and complexity. Our optimized processing servers ensure quick turnaround while maintaining professional quality output.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Do I need to install any software for {typeName} conversion?</h3>
+              <p className="text-gray-700 leading-relaxed">No software installation required! Our web-based converter works directly in your browser across all operating systems. Simply upload your documents, convert online, and download the results immediately.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Document Technical Specifications Section */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-blue-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {documentSectionTitles.technical}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <span className="text-2xl mr-3">📤</span>
+                Source Format Capabilities
+              </h3>
+              <div className="space-y-3">
+                {getDocumentTechnicalSpecs(conversionType).source.map((spec, index) => (
+                  <div key={index} className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <p className="text-gray-700 text-sm leading-relaxed">{spec}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <span className="text-2xl mr-3">📥</span>
+                Target Format Advantages
+              </h3>
+              <div className="space-y-3">
+                {getDocumentTechnicalSpecs(conversionType).target.map((spec, index) => (
+                  <div key={index} className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <p className="text-gray-700 text-sm leading-relaxed">{spec}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Document Use Cases Section */}
+      <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-purple-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {documentSectionTitles.useCases}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {getDocumentUseCases(conversionType).map((useCase, index) => (
+              <div key={index} className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-xl">{useCase.icon}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">{useCase.title}</h3>
+                    <p className="text-gray-700 leading-relaxed text-sm">{useCase.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Related Document Tools Section */}
+      <div className="bg-gradient-to-br from-slate-50 to-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {documentSectionTitles.relatedTools}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <p className="text-gray-700 leading-relaxed mb-8 text-center">
+            Explore our complete suite of document conversion tools for all your business and professional needs:
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.entries(conversionTypes)
+              .filter(([key]) => key !== conversionType)
+              .slice(0, 5)
+              .map(([key, type]) => (
+                <a key={key} href={`/${key.replace(/_/g, '-')}`} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-teal-300 group">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-amber-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-xl">{type.icon}</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-teal-600 transition-colors duration-300">{type.name}</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm">{type.description}</p>
+                </a>
+              ))
+            }
+
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -135,6 +928,60 @@ const conversionTypes = {
     bgColor: 'bg-indigo-50',
     icon: '🔄',
     description: 'Convert JSON data to CSV format'
+  },
+  'epub_to_pdf': {
+    name: 'EPUB to PDF',
+    inputFormats: ['epub'],
+    outputFormat: 'pdf',
+    color: 'text-rose-600',
+    bgColor: 'bg-rose-50',
+    icon: '📚',
+    description: 'Convert eBooks to PDF documents'
+  },
+  'mobi_to_epub': {
+    name: 'MOBI to EPUB',
+    inputFormats: ['mobi', 'azw', 'azw3'],
+    outputFormat: 'epub',
+    color: 'text-violet-600',
+    bgColor: 'bg-violet-50',
+    icon: '📖',
+    description: 'Convert Kindle books to EPUB format'
+  },
+  'txt_to_epub': {
+    name: 'TXT to EPUB',
+    inputFormats: ['txt', 'text'],
+    outputFormat: 'epub',
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-50',
+    icon: '📄',
+    description: 'Convert text files to EPUB eBooks'
+  },
+  'docx_to_epub': {
+    name: 'DOCX to EPUB',
+    inputFormats: ['docx', 'doc'],
+    outputFormat: 'epub',
+    color: 'text-lime-600',
+    bgColor: 'bg-lime-50',
+    icon: '📘',
+    description: 'Convert Word documents to EPUB eBooks'
+  },
+  'bib_to_pdf': {
+    name: 'BIB to PDF',
+    inputFormats: ['bib', 'bibtex'],
+    outputFormat: 'pdf',
+    color: 'text-slate-600',
+    bgColor: 'bg-slate-50',
+    icon: '📑',
+    description: 'Convert bibliography files to PDF'
+  },
+  'latex_to_pdf': {
+    name: 'LaTeX to PDF',
+    inputFormats: ['tex', 'latex'],
+    outputFormat: 'pdf',
+    color: 'text-amber-600',
+    bgColor: 'bg-amber-50',
+    icon: '📜',
+    description: 'Convert LaTeX documents to PDF'
   }
 };
 
@@ -147,8 +994,10 @@ export default function DocumentConverter({
   const [files, setFiles] = useState<FileWithId[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [conversionType, setConversionType] = useState(() => {
-    // Initialize with the prop value, fallback to excel_to_pdf
-    return initialConversionType || 'excel_to_pdf';
+    // Initialize with the prop value, fallback to epub_to_pdf
+    // Convert dashes to underscores if needed
+    const normalizedType = initialConversionType?.replace(/-/g, '_') || 'epub_to_pdf';
+    return normalizedType;
   });
   const [dragActive, setDragActive] = useState(false);
   const [supportedFormats, setSupportedFormats] = useState<any>({ conversion_types: {} });
@@ -196,14 +1045,17 @@ export default function DocumentConverter({
   }, []); // Empty dependency array since conversionTypes is now stable
 
   const [seoConfig, setSeoConfig] = useState<ConversionConfig>(() => {
-    const initialType = initialConversionType || 'excel_to_pdf';
+    const initialType = initialConversionType?.replace(/-/g, '_') || 'epub_to_pdf';
     return generateSEOConfig(initialType);
   });
 
   // Update conversion type when prop changes (URL changes)
   useEffect(() => {
-    if (initialConversionType && initialConversionType !== conversionType) {
-      setConversionType(initialConversionType);
+    if (initialConversionType) {
+      const normalizedType = initialConversionType.replace(/-/g, '_');
+      if (normalizedType !== conversionType) {
+        setConversionType(normalizedType);
+      }
     }
   }, [initialConversionType, conversionType]);
 
@@ -899,31 +1751,61 @@ export default function DocumentConverter({
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           <div className="bg-teal-50 border-2 border-teal-200 rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="text-4xl mb-6">🚀</div>
             <h3 className="font-bold text-lg text-teal-600 mb-4">Ultra Fast</h3>
             <p className="text-gray-700 text-sm leading-relaxed">High-speed document conversion with optimized processing</p>
           </div>
-          
+
           <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="text-4xl mb-6">🎯</div>
             <h3 className="font-bold text-lg text-amber-600 mb-4">Perfect Quality</h3>
             <p className="text-gray-700 text-sm leading-relaxed">Maintain document integrity with professional formatting</p>
           </div>
-          
+
           <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="text-4xl mb-6">🔄</div>
             <h3 className="font-bold text-lg text-green-600 mb-4">All Formats</h3>
             <p className="text-gray-700 text-sm leading-relaxed">Support for Excel, PowerPoint, Word, HTML, CSV, and JSON</p>
           </div>
-          
+
           <div className="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="text-4xl mb-6">🔒</div>
             <h3 className="font-bold text-lg text-indigo-600 mb-4">Secure Processing</h3>
             <p className="text-gray-700 text-sm leading-relaxed">Files processed securely with automatic cleanup</p>
           </div>
         </div>
+
+        {/* Supported Conversion Types */}
+        <div className="bg-white rounded-2xl p-8 shadow-lg mb-16">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Supported Document Conversions</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(conversionTypes).map(([key, type]) => (
+              <div key={key} className={`${type.bgColor} border-2 border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-all duration-300 cursor-pointer`}
+                   onClick={() => handleConversionTypeChange(key)}>
+                <div className="text-2xl mb-2">{type.icon}</div>
+                <div className={`text-lg font-bold ${type.color} mb-2`}>{type.name}</div>
+                <div className="text-xs text-gray-500 mb-1">{type.inputFormats.join(', ').toUpperCase()} → {type.outputFormat.toUpperCase()}</div>
+                <div className="text-xs text-gray-400">{type.description}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 p-4 bg-teal-50 border border-teal-200 rounded-lg">
+            <p className="text-sm text-teal-800">
+              <strong>Note:</strong> All conversions preserve document structure, formatting, and metadata while ensuring
+              professional output quality. Perfect for business, academic, and personal use.
+            </p>
+          </div>
+        </div>
+
+        {/* Dynamic Document SEO Content Sections */}
+        <DynamicDocumentSEOContent
+          conversionType={conversionType}
+          conversionTypes={conversionTypes}
+        />
+
       </div>
     </div>
   );

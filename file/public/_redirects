@@ -1,0 +1,12 @@
+# Netlify redirects file for handling www to non-www
+https://www.flipfilex.com/* https://flipfilex.com/:splat 301!
+http://www.flipfilex.com/* https://flipfilex.com/:splat 301!
+http://flipfilex.com/* https://flipfilex.com/:splat 301!
+
+# Additional redirect rules for common URL patterns
+/help /about 301
+/api-docs /tools 301
+/contact /about 301
+/merge-pdf /merge-pdf-files-free 301
+/wav-to-mp3-converter /wav-to-mp3 301
+/png-to-webp-converter /png-to-webp-converter 301

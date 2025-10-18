@@ -82,6 +82,8 @@ export default function Footer({ children }: FooterProps) {
 
   // Ready/built Utility Tools
   const utilityTools = [
+    { name: 'AI Image Generator', href: '/ai-image-generator', icon: '✨', popular: true },
+    { name: 'AI Video Script Writer', href: '/ai-video-script-writer', icon: '🎬', popular: true },
     { name: 'Invoice Generator', href: '/invoice-generator', icon: '📄', popular: true },
     { name: 'Resume Builder', href: '/resume-builder', icon: '📝', popular: true },
     { name: 'QR Code Generator', href: '/qr-code-generator', icon: '🔳', popular: true },

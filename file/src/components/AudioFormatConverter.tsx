@@ -81,7 +81,7 @@ const Notification = ({ message, type, onClose }: NotificationProps) => {
     const timer = setTimeout(() => {
       onClose();
     }, 5000);
-    
+
     return () => clearTimeout(timer);
   }, [onClose]);
 
@@ -108,6 +108,447 @@ const Notification = ({ message, type, onClose }: NotificationProps) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
+    </div>
+  );
+};
+
+// Dynamic Audio SEO Content Component
+interface DynamicAudioSEOContentProps {
+  sourceFormat: string;
+  targetFormat: string;
+  audioFormats: Record<string, { name: string; color: string; bgColor: string; category: string }>;
+}
+
+const DynamicAudioSEOContent = ({ sourceFormat, targetFormat, audioFormats }: DynamicAudioSEOContentProps) => {
+  const fromFormat = audioFormats[sourceFormat]?.name || sourceFormat.toUpperCase();
+  const toFormat = audioFormats[targetFormat]?.name || targetFormat.toUpperCase();
+
+  // Force component to be stable and not unmount
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Always render to prevent SSR mismatches, but add mounted class for styling
+  const renderClass = mounted ? 'opacity-100' : 'opacity-0';
+
+  // UNIQUE AUDIO SECTION TITLES for each conversion combination
+  const getAudioSectionTitles = (from: string, to: string) => {
+    const conversionKey = `${from.toLowerCase()}_to_${to.toLowerCase()}`;
+
+    const uniqueAudioTitles: Record<string, {
+      howTo: string;
+      whyFrom: string;
+      whyTo: string;
+      whyMatters: string;
+      benefits: string;
+      technical: string;
+      useCases: string;
+      faq: string;
+      relatedTools: string;
+    }> = {
+      'wav_to_mp3': {
+        howTo: `Transform Lossless WAV Audio to Compact MP3 Format`,
+        whyFrom: `WAV Uncompressed Audio Storage vs Practical File Management`,
+        whyTo: `MP3 Universal Compatibility for Effortless Audio Sharing`,
+        whyMatters: `Audio File Efficiency Through WAV to MP3 Compression`,
+        benefits: `Storage Optimization Benefits of WAV to MP3 Conversion`,
+        technical: `WAV vs MP3: Lossless vs Compressed Audio Technology Analysis`,
+        useCases: `Music Distribution Applications for WAV to MP3`,
+        faq: `WAV to MP3 Audio Compression: Quality Balance Guide`,
+        relatedTools: `Professional WAV and MP3 Audio Production Tools`
+      },
+      'mp3_to_wav': {
+        howTo: `Upgrade Compressed MP3 to Professional WAV Quality`,
+        whyFrom: `MP3 Compression Limitations in Professional Audio Production`,
+        whyTo: `WAV Lossless Quality for Studio-Grade Audio Processing`,
+        whyMatters: `Professional Audio Enhancement Through MP3 to WAV Upgrade`,
+        benefits: `Audio Quality Benefits of MP3 to WAV Professional Enhancement`,
+        technical: `MP3 vs WAV: Compressed vs Lossless Audio Quality Comparison`,
+        useCases: `Professional Audio Production with MP3 to WAV`,
+        faq: `MP3 to WAV Quality Enhancement: Professional Audio Guide`,
+        relatedTools: `Professional MP3 and WAV Audio Production Suite`
+      },
+      'flac_to_mp3': {
+        howTo: `Convert High-Fidelity FLAC to Portable MP3 Format`,
+        whyFrom: `FLAC Audiophile Quality vs Portable Device Compatibility`,
+        whyTo: `MP3 Device Compatibility for Universal Music Playback`,
+        whyMatters: `Music Accessibility Through FLAC to MP3 Portability`,
+        benefits: `Device Compatibility Benefits of FLAC to MP3 Conversion`,
+        technical: `FLAC vs MP3: Audiophile vs Portable Audio Analysis`,
+        useCases: `Mobile Music Applications for FLAC to MP3`,
+        faq: `FLAC to MP3 Music Portability: Device Compatibility Guide`,
+        relatedTools: `Audiophile FLAC and MP3 Music Management Platform`
+      },
+      'mp3_to_aac': {
+        howTo: `Modernize MP3 Audio with Advanced AAC Technology`,
+        whyFrom: `MP3 Traditional Compression vs Modern Audio Efficiency`,
+        whyTo: `AAC Advanced Compression for Superior Audio Quality`,
+        whyMatters: `Audio Technology Evolution Through MP3 to AAC Advancement`,
+        benefits: `Compression Efficiency Benefits of MP3 to AAC Modernization`,
+        technical: `MP3 vs AAC: Traditional vs Advanced Audio Compression`,
+        useCases: `Modern Audio Applications for MP3 to AAC`,
+        faq: `MP3 to AAC Audio Modernization: Technology Upgrade Guide`,
+        relatedTools: `Modern MP3 and AAC Audio Technology Platform`
+      },
+      'aac_to_mp3': {
+        howTo: `Convert AAC Audio to Universal MP3 Standard`,
+        whyFrom: `AAC Apple Integration vs Universal Audio Compatibility`,
+        whyTo: `MP3 Universal Standard for Cross-Platform Audio`,
+        whyMatters: `Universal Audio Access Through AAC to MP3 Standardization`,
+        benefits: `Platform Independence Benefits of AAC to MP3 Conversion`,
+        technical: `AAC vs MP3: Apple-Optimized vs Universal Audio Analysis`,
+        useCases: `Cross-Platform Audio Distribution with AAC to MP3`,
+        faq: `AAC to MP3 Universal Audio: Platform Independence Guide`,
+        relatedTools: `Universal AAC and MP3 Audio Distribution Tools`
+      },
+      'ogg_to_mp3': {
+        howTo: `Convert Open-Source OGG to Compatible MP3 Format`,
+        whyFrom: `OGG Open Standard vs Mainstream Audio Compatibility`,
+        whyTo: `MP3 Mainstream Compatibility for Universal Audio Access`,
+        whyMatters: `Audio Mainstream Access Through OGG to MP3 Conversion`,
+        benefits: `Compatibility Assurance Benefits of OGG to MP3 Conversion`,
+        technical: `OGG vs MP3: Open Source vs Mainstream Audio Analysis`,
+        useCases: `Mainstream Audio Distribution with OGG to MP3`,
+        faq: `OGG to MP3 Audio Compatibility: Mainstream Access Guide`,
+        relatedTools: `Open Source OGG and MP3 Audio Compatibility Suite`
+      }
+    };
+
+    // If no predefined titles exist, create unique dynamic ones for audio
+    if (uniqueAudioTitles[conversionKey]) {
+      return uniqueAudioTitles[conversionKey];
+    }
+
+    // Create completely unique fallback titles for audio that will never be duplicated
+    const dynamicAudioTitles = {
+      howTo: `Master ${fromFormat}-to-${toFormat} Audio Processing Workflow`,
+      whyFrom: `${fromFormat} Audio Format Constraints and Upgrade Requirements`,
+      whyTo: `${toFormat} Audio Format Excellence for Your Sound Production`,
+      whyMatters: `Strategic Audio Enhancement: ${fromFormat}-to-${toFormat} Sound Evolution`,
+      benefits: `Audio Quality Revolution: ${fromFormat} to ${toFormat} Sound Advancement`,
+      technical: `${fromFormat} vs ${toFormat}: Comprehensive Audio Technology Specification`,
+      useCases: `Professional Sound Production: ${fromFormat}-to-${toFormat} Audio Applications`,
+      faq: `${fromFormat}-to-${toFormat} Audio Processing: Advanced Sound Documentation`,
+      relatedTools: `${fromFormat} and ${toFormat} Professional Audio Production Technology`
+    };
+
+    return dynamicAudioTitles;
+  };
+
+  // UNIQUE AUDIO CONVERSION-SPECIFIC DESCRIPTIONS - NO DUPLICATE CONTENT
+  const getAudioConversionSpecificDescription = (from: string, to: string) => {
+    const conversionKey = `${from.toLowerCase()}_to_${to.toLowerCase()}`;
+
+    const uniqueAudioConversions: Record<string, { sourceDesc: string; targetDesc: string; why: string }> = {
+      // WAV conversions - lossless quality focus
+      'wav_to_mp3': {
+        sourceDesc: 'WAV files preserve every detail of audio recordings with uncompressed quality but create enormous file sizes that are impractical for modern digital distribution, streaming, and portable device storage.',
+        targetDesc: 'MP3 format provides intelligent compression that reduces file sizes by up to 90% while maintaining excellent audio quality for music listening, making it the universal standard for digital music distribution.',
+        why: 'Converting WAV to MP3 becomes essential for music distribution, streaming services, and portable device compatibility while maintaining high audio quality that satisfies most listening scenarios and dramatically reducing storage requirements.'
+      },
+      'wav_to_aac': {
+        sourceDesc: 'WAV format stores audio in uncompressed form, ensuring perfect fidelity but creating files too large for efficient streaming, mobile devices, and cloud storage in modern audio workflows.',
+        targetDesc: 'AAC format delivers superior compression efficiency compared to MP3 while maintaining excellent audio quality, making it ideal for Apple devices, streaming services, and modern audio applications.',
+        why: 'Converting WAV to AAC is crucial for Apple ecosystem integration, streaming optimization, and modern audio distribution where file size efficiency and quality balance are paramount for user experience.'
+      },
+      'wav_to_flac': {
+        sourceDesc: 'WAV files contain raw audio data without compression, ensuring perfect quality but lacking efficient storage and metadata capabilities needed for organized digital music libraries.',
+        targetDesc: 'FLAC format provides lossless compression that reduces file sizes by 50-70% while maintaining identical audio quality to WAV, plus superior metadata support for music organization.',
+        why: 'Converting WAV to FLAC is essential for audiophile music collections, efficient storage management, and maintaining perfect audio quality while gaining advanced metadata capabilities for music library organization.'
+      },
+
+      // MP3 conversions - universal compatibility focus
+      'mp3_to_wav': {
+        sourceDesc: 'MP3 files use lossy compression that removes audio data to achieve small file sizes, but this limits their usefulness in professional audio editing and high-fidelity audio production workflows.',
+        targetDesc: 'WAV format provides uncompressed audio that preserves every detail of the original recording, making it essential for professional audio editing, mastering, and studio production work.',
+        why: 'Converting MP3 to WAV becomes necessary for professional audio editing, remixing, and production work where maximum audio quality and editing flexibility are required for professional results.'
+      },
+      'mp3_to_aac': {
+        sourceDesc: 'MP3 format uses older compression technology that is less efficient than modern audio codecs, resulting in larger file sizes or reduced quality compared to contemporary alternatives.',
+        targetDesc: 'AAC format employs advanced compression algorithms that provide better quality at the same file size or smaller files at the same quality level, optimized for modern devices and streaming.',
+        why: 'Converting MP3 to AAC is beneficial for Apple device optimization, streaming efficiency, and achieving better audio quality while maintaining or reducing file sizes for modern audio distribution.'
+      },
+      'mp3_to_flac': {
+        sourceDesc: 'MP3 compression permanently removes audio data to achieve small file sizes, making it unsuitable for audiophile listening and scenarios requiring perfect audio reproduction.',
+        targetDesc: 'FLAC format provides lossless compression that preserves every detail of the original audio while still achieving significant file size reduction compared to uncompressed formats.',
+        why: 'Converting MP3 to FLAC enhances audio quality for audiophile listening, though the quality will be limited by the original MP3 compression, making it useful for preserving the best possible quality from existing MP3 collections.'
+      },
+
+      // FLAC conversions - audiophile to practical
+      'flac_to_mp3': {
+        sourceDesc: 'FLAC files maintain perfect audio quality through lossless compression but create large file sizes that are impractical for portable devices, streaming, and users with limited storage capacity.',
+        targetDesc: 'MP3 format provides excellent compression that makes audio files practical for everyday use, portable devices, and streaming while maintaining quality that satisfies most listening scenarios.',
+        why: 'Converting FLAC to MP3 is essential for creating portable music collections, streaming compatibility, and sharing high-quality audio files that work on all devices while dramatically reducing storage requirements.'
+      },
+      'flac_to_aac': {
+        sourceDesc: 'FLAC format preserves perfect audio quality but creates files too large for efficient mobile streaming, cloud storage, and devices with limited storage capacity.',
+        targetDesc: 'AAC format provides superior compression efficiency that maintains excellent audio quality while creating files practical for modern streaming services, mobile devices, and efficient distribution.',
+        why: 'Converting FLAC to AAC optimizes audiophile-quality audio for modern streaming platforms, Apple devices, and efficient distribution while maintaining quality that satisfies discerning listeners.'
+      },
+
+      // AAC conversions - Apple ecosystem to universal
+      'aac_to_mp3': {
+        sourceDesc: 'AAC files provide excellent compression and quality but may face compatibility limitations with older devices, certain software, and platforms that prioritize universal format support.',
+        targetDesc: 'MP3 format ensures universal compatibility across all devices, software, and platforms while maintaining excellent audio quality for general listening and distribution purposes.',
+        why: 'Converting AAC to MP3 is necessary for ensuring universal playback compatibility, sharing audio across diverse platforms, and maximizing accessibility for audiences using various devices and software.'
+      },
+      'aac_to_wav': {
+        sourceDesc: 'AAC format uses advanced compression that is excellent for distribution but limits professional audio editing capabilities and maximum quality preservation for studio work.',
+        targetDesc: 'WAV format provides uncompressed audio that preserves every detail, enabling professional editing, remixing, and production work that requires maximum audio fidelity.',
+        why: 'Converting AAC to WAV is essential for professional audio production, enabling detailed editing and processing of compressed audio files while maximizing the available audio quality for studio work.'
+      },
+
+      // OGG conversions - open source to mainstream
+      'ogg_to_mp3': {
+        sourceDesc: 'OGG format provides excellent compression and open-source advantages but faces compatibility limitations with mainstream devices, software, and commercial audio platforms.',
+        targetDesc: 'MP3 format ensures universal compatibility across all devices, media players, and platforms while maintaining excellent audio quality for widespread audio distribution.',
+        why: 'Converting OGG to MP3 is necessary for mainstream audio distribution, ensuring compatibility with all devices and platforms while maintaining high audio quality for universal accessibility.'
+      },
+
+      // WMA conversions - Windows-specific to universal
+      'wma_to_mp3': {
+        sourceDesc: 'WMA format works well within Microsoft ecosystems but creates compatibility challenges when sharing audio across diverse devices, platforms, and non-Windows environments.',
+        targetDesc: 'MP3 format provides universal audio compatibility that works seamlessly across all operating systems, devices, and audio software without compatibility concerns.',
+        why: 'Converting WMA to MP3 eliminates platform-specific limitations and ensures audio files work universally across all devices, making them accessible to any audience regardless of their technology preferences.'
+      },
+
+      // M4A conversions - Apple format to universal
+      'm4a_to_mp3': {
+        sourceDesc: 'M4A format provides excellent quality and Apple device integration but may face compatibility issues with non-Apple devices and older audio software systems.',
+        targetDesc: 'MP3 format ensures universal playback compatibility across all devices and platforms while maintaining excellent audio quality for comprehensive audio distribution.',
+        why: 'Converting M4A to MP3 maximizes audio accessibility by ensuring files work on all devices and platforms, eliminating compatibility barriers for sharing and distributing audio content.'
+      }
+    };
+
+    const conversion = uniqueAudioConversions[conversionKey];
+    if (conversion) {
+      return conversion;
+    }
+
+    // Fallback for other combinations
+    return {
+      sourceDesc: `${fromFormat} format serves specific audio workflow purposes but may not be optimal for your current distribution requirements and intended audience.`,
+      targetDesc: `${toFormat} format offers advantages in compatibility, file size optimization, or quality features that better match your specific audio project needs and distribution requirements.`,
+      why: `Converting ${fromFormat} to ${toFormat} helps optimize your audio for your specific workflow, platform requirements, and intended audience engagement.`
+    };
+  };
+
+  const audioSectionTitles = getAudioSectionTitles(sourceFormat, targetFormat);
+
+  return (
+    <div className={`space-y-16 transition-opacity duration-1000 ${renderClass}`}>
+      {/* How to Convert Section */}
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {audioSectionTitles.howTo}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <p className="text-gray-700 leading-relaxed mb-6 text-lg">
+            Converting {fromFormat} audio to {toFormat} format is simple with our free online converter. Follow these easy steps to optimize your audio files:
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-white">1</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Upload {fromFormat} Files</h3>
+              <p className="text-gray-600 text-sm">Select your {fromFormat} audio files or drag and drop them into the upload area. Up to 5 files supported.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-white">2</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Convert to {toFormat}</h3>
+              <p className="text-gray-600 text-sm">Click the convert button and our server will process your {fromFormat} audio with high quality settings.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-white">3</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Download {toFormat}</h3>
+              <p className="text-gray-600 text-sm">Download your converted {toFormat} files immediately. No registration required.</p>
+            </div>
+          </div>
+
+          <p className="text-gray-700 leading-relaxed">
+            Our {fromFormat} to {toFormat} converter maintains audio quality while optimizing for your specific needs. The conversion process is completely free, secure, and works with high-quality settings by default. Your files are automatically deleted after processing for complete privacy.
+          </p>
+        </div>
+      </div>
+
+      {/* UNIQUE AUDIO CONVERSION-SPECIFIC CONTENT - NO DUPLICATE */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-purple-200">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+            {audioSectionTitles.whyFrom}
+          </h2>
+          <div className="max-w-2xl mx-auto">
+            <p className="text-gray-700 leading-relaxed mb-6">
+              {getAudioConversionSpecificDescription(sourceFormat, targetFormat).sourceDesc}
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-orange-200">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+            {audioSectionTitles.whyTo}
+          </h2>
+          <div className="max-w-2xl mx-auto">
+            <p className="text-gray-700 leading-relaxed mb-6">
+              {getAudioConversionSpecificDescription(sourceFormat, targetFormat).targetDesc}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* WHY THIS CONVERSION MATTERS - UNIQUE SECTION */}
+      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-emerald-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {audioSectionTitles.whyMatters}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <p className="text-gray-700 leading-relaxed text-lg">
+            {getAudioConversionSpecificDescription(sourceFormat, targetFormat).why}
+          </p>
+        </div>
+      </div>
+
+      {/* Audio Quality Benefits Section */}
+      <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-pink-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {audioSectionTitles.benefits}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center mb-4">
+                <div className="text-3xl mr-4">🎵</div>
+                <h3 className="text-xl font-semibold text-gray-900">Audio Quality Preservation</h3>
+              </div>
+              <p className="text-gray-700 leading-relaxed">Our converter maintains maximum audio quality during conversion, ensuring your music retains its clarity, depth, and dynamic range for professional results.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center mb-4">
+                <div className="text-3xl mr-4">⚡</div>
+                <h3 className="text-xl font-semibold text-gray-900">Lightning Fast Processing</h3>
+              </div>
+              <p className="text-gray-700 leading-relaxed">High-speed audio conversion technology processes your files quickly while maintaining quality, getting your audio ready for distribution in seconds.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center mb-4">
+                <div className="text-3xl mr-4">📱</div>
+                <h3 className="text-xl font-semibold text-gray-900">Universal Device Compatibility</h3>
+              </div>
+              <p className="text-gray-700 leading-relaxed">Converted audio files work seamlessly across all devices, operating systems, and media players, ensuring your music reaches every audience.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center mb-4">
+                <div className="text-3xl mr-4">🔒</div>
+                <h3 className="text-xl font-semibold text-gray-900">Secure & Private Processing</h3>
+              </div>
+              <p className="text-gray-700 leading-relaxed">Your audio files are processed securely with automatic deletion after conversion, ensuring complete privacy and security for your valuable music content.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Audio Format FAQ Section */}
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 text-center">
+          {audioSectionTitles.faq}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="space-y-6">
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Will converting {fromFormat} to {toFormat} reduce audio quality?</h3>
+              <p className="text-gray-700 leading-relaxed">Audio quality depends on the source and target formats. Our converter uses optimal settings to maintain the highest possible quality while achieving the benefits of the target format. Lossless conversions preserve original quality, while compressed formats balance quality with file size efficiency.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">What bitrate settings are used for {toFormat} conversion?</h3>
+              <p className="text-gray-700 leading-relaxed">We use high-quality settings by default (320kbps for MP3, equivalent quality for other formats) to ensure excellent audio quality. This provides the best balance between file size and audio fidelity for most use cases.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Can I convert multiple {fromFormat} files to {toFormat} at once?</h3>
+              <p className="text-gray-700 leading-relaxed">Yes! Our converter supports batch processing of up to 5 {fromFormat} files simultaneously. Upload multiple files and convert them all to {toFormat} in one operation, saving time and effort.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Is my {fromFormat} audio safe during conversion?</h3>
+              <p className="text-gray-700 leading-relaxed">Absolutely! All uploads are processed securely over HTTPS encryption. Your original {fromFormat} files and converted {toFormat} audio are automatically deleted from our servers after processing. We never store, share, or analyze your audio content.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">What's the maximum file size for {fromFormat} conversion?</h3>
+              <p className="text-gray-700 leading-relaxed">Our converter supports {fromFormat} files up to 1GB in size, accommodating everything from single songs to long-form audio content like podcasts, audiobooks, and extended musical pieces.</p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">How long does {fromFormat} to {toFormat} conversion take?</h3>
+              <p className="text-gray-700 leading-relaxed">Conversion time depends on file size and length, but most {fromFormat} to {toFormat} conversions complete within 15-60 seconds. Our optimized servers ensure fast processing while maintaining high quality output.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Related Audio Tools Section */}
+      <div className="bg-gradient-to-br from-slate-50 to-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          {audioSectionTitles.relatedTools}
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <p className="text-gray-700 leading-relaxed mb-8 text-center">
+            Explore our complete suite of audio conversion tools for all your sound processing needs:
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href={`/${targetFormat}-to-${sourceFormat}`} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-purple-300 group">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-orange-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">{toFormat} to {fromFormat} Converter</h3>
+              </div>
+              <p className="text-gray-600 text-sm">Convert {toFormat} back to {fromFormat} format for different workflow requirements.</p>
+            </a>
+
+            <a href="/wav-to-flac" className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-purple-300 group">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-orange-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">Lossless Audio Converter</h3>
+              </div>
+              <p className="text-gray-600 text-sm">Convert between lossless formats like WAV, FLAC, and AIFF for audiophile quality.</p>
+            </a>
+
+            <a href="/audio-compressor" className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-purple-300 group">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-orange-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">Audio Compressor</h3>
+              </div>
+              <p className="text-gray-600 text-sm">Reduce audio file sizes while maintaining quality across multiple formats.</p>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -865,31 +1306,60 @@ export default function AudioFormatConverter({
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           <div className="bg-purple-50 border-2 border-purple-200 rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="text-4xl mb-6">🚀</div>
             <h3 className="font-bold text-lg text-purple-600 mb-4">Ultra Fast</h3>
             <p className="text-gray-700 text-sm leading-relaxed">High-speed audio conversion with optimized processing</p>
           </div>
-          
+
           <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="text-4xl mb-6">🎯</div>
             <h3 className="font-bold text-lg text-orange-600 mb-4">Crystal Quality</h3>
             <p className="text-gray-700 text-sm leading-relaxed">Maintain audio fidelity with automatic high-quality settings</p>
           </div>
-          
+
           <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="text-4xl mb-6">🔄</div>
             <h3 className="font-bold text-lg text-green-600 mb-4">All Formats</h3>
             <p className="text-gray-700 text-sm leading-relaxed">Support for MP3, WAV, FLAC, AAC, OGG, and more</p>
           </div>
-          
+
           <div className="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="text-4xl mb-6">🔒</div>
             <h3 className="font-bold text-lg text-indigo-600 mb-4">Large File Support</h3>
             <p className="text-gray-700 text-sm leading-relaxed">Support for files up to 1GB with secure processing</p>
           </div>
         </div>
+
+        {/* Format Comparison */}
+        <div className="bg-white rounded-2xl p-8 shadow-lg mb-16">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Supported Audio Formats</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {Object.entries(audioFormats).map(([key, format]) => (
+              <div key={key} className={`${format.bgColor} border-2 border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-all duration-300`}>
+                <div className={`text-xl font-bold ${format.color} mb-2`}>{format.name}</div>
+                <div className="text-xs text-gray-500 uppercase">.{key}</div>
+                <div className="text-xs text-gray-400 mt-1">{format.category}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <p className="text-sm text-purple-800">
+              <strong>Note:</strong> All conversions are performed at maximum quality (320kbps) by default to ensure the best audio output.
+              Both lossless and compressed formats are supported for professional audio workflows.
+            </p>
+          </div>
+        </div>
+
+        {/* Dynamic Audio SEO Content Sections */}
+        <DynamicAudioSEOContent
+          sourceFormat={sourceFormat}
+          targetFormat={targetFormat}
+          audioFormats={audioFormats}
+        />
+
       </div>
     </div>
   );

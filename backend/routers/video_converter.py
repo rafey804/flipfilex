@@ -252,6 +252,7 @@ async def get_conversion_progress(conversion_id: str):
 @router.get("/supported-video-formats")
 async def get_supported_formats():
     """Get comprehensive list of supported video formats"""
+    print(f"DEBUG: SUPPORTED_VIDEO_FORMATS output = {SUPPORTED_VIDEO_FORMATS['output']}")
     return {
         "input_formats": SUPPORTED_VIDEO_FORMATS['input'],
         "output_formats": SUPPORTED_VIDEO_FORMATS['output'],
