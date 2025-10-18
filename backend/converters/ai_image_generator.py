@@ -1,22 +1,24 @@
 """
-AI Image Generator using Google Gemini API
-Generates images from text descriptions using Google's Imagen model
+AI Image Generator using Stable Diffusion XL via Hugging Face
+Generates actual images from text descriptions
 """
 
-import google.generativeai as genai
 import base64
 import os
 import io
 from typing import Dict, Any, Optional
 import logging
+import requests
+from PIL import Image
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Google API Configuration
-GOOGLE_API_KEY = "AIzaSyB2klA37dXr37gUebpeox5Z2sHoEKuJFwY"
-genai.configure(api_key=GOOGLE_API_KEY)
+# Hugging Face API Configuration
+HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN", "")
+API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
+HEADERS = {"Authorization": f"Bearer {HUGGINGFACE_API_TOKEN}"}
 
 
 class AIImageGenerator:
@@ -73,9 +75,8 @@ class AIImageGenerator:
     def __init__(self):
         """Initialize the AI Image Generator"""
         try:
-            # Use Imagen 3.0 Fast for actual image generation
-            self.model = genai.ImageGenerationModel('imagen-3.0-fast-generate-001')
-            logger.info("AI Image Generator initialized successfully with Imagen 3.0 Fast")
+            # Initialize Stable Diffusion XL via Hugging Face API
+            logger.info("AI Image Generator initialized successfully with Stable Diffusion XL")
         except Exception as e:
             logger.error(f"Failed to initialize AI Image Generator: {e}")
             raise
@@ -136,32 +137,36 @@ class AIImageGenerator:
 
             for i in range(num_images):
                 try:
-                    # Generate image with Imagen API
-                    result = self.model.generate_images(
-                        prompt=enhanced_prompt,
-                        number_of_images=1,
-                        aspect_ratio="1:1" if "square" in size else ("9:16" if size == "portrait" else ("16:9" if size == "landscape" else "16:9")),
-                        safety_filter_level="block_some",
-                        person_generation="allow_adult"
-                    )
+                    # Call Hugging Face Stable Diffusion XL API
+                    payload = {
+                        "inputs": enhanced_prompt,
+                        "options": {"wait_for_model": True}
+                    }
 
-                    # Convert image to base64
-                    image = result.images[0]
+                    response = requests.post(API_URL, headers=HEADERS, json=payload, timeout=60)
 
-                    # Save to bytes
-                    img_byte_arr = io.BytesIO()
-                    image._pil_image.save(img_byte_arr, format='PNG')
-                    img_byte_arr = img_byte_arr.getvalue()
+                    if response.status_code == 200:
+                        # Convert response to PIL Image
+                        image = Image.open(io.BytesIO(response.content))
 
-                    # Convert to base64
-                    base64_image = base64.b64encode(img_byte_arr).decode('utf-8')
+                        # Resize image based on size option
+                        target_size = (size_info['width'], size_info['height'])
+                        image = image.resize(target_size, Image.Resampling.LANCZOS)
 
-                    generated_images.append({
-                        "image_data": f"data:image/png;base64,{base64_image}",
-                        "index": i + 1
-                    })
+                        # Convert to base64
+                        img_byte_arr = io.BytesIO()
+                        image.save(img_byte_arr, format='PNG')
+                        img_byte_arr = img_byte_arr.getvalue()
+                        base64_image = base64.b64encode(img_byte_arr).decode('utf-8')
 
-                    logger.info(f"Generated image {i+1}/{num_images}")
+                        generated_images.append({
+                            "image_data": f"data:image/png;base64,{base64_image}",
+                            "index": i + 1
+                        })
+
+                        logger.info(f"Generated image {i+1}/{num_images} successfully")
+                    else:
+                        logger.error(f"API Error {response.status_code}: {response.text}")
 
                 except Exception as img_error:
                     logger.error(f"Error generating image {i+1}: {img_error}")
@@ -185,7 +190,7 @@ class AIImageGenerator:
                     "original_prompt": prompt,
                     "style_used": style_info['description'],
                     "dimensions": f"{size_info['width']}x{size_info['height']}",
-                    "model": "imagen-3.0-fast-generate-001"
+                    "model": "Stable Diffusion XL"
                 },
                 "message": f"Successfully generated {len(generated_images)} image(s)!"
             }

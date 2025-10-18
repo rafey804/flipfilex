@@ -63,11 +63,11 @@ export default function AIImageGeneratorClient() {
   ];
 
   const sizeOptions = [
-    { value: 'square_small', label: 'Square Small', size: '512×512', icon: '⬜' },
-    { value: 'square_medium', label: 'Square Medium', size: '1024×1024', icon: '🟦' },
-    { value: 'portrait', label: 'Portrait', size: '768×1024', icon: '📱' },
-    { value: 'landscape', label: 'Landscape', size: '1024×768', icon: '🖼️' },
-    { value: 'wide', label: 'Wide', size: '1920×1080', icon: '📺' },
+    { value: 'square_small', label: 'Square', size: '1:1', icon: '⬜' },
+    { value: 'square_medium', label: 'Square HD', size: '1:1', icon: '🟦' },
+    { value: 'portrait', label: 'Portrait', size: '9:16', icon: '📱' },
+    { value: 'landscape', label: 'Landscape', size: '16:9', icon: '🖼️' },
+    { value: 'wide', label: 'Wide', size: '16:9', icon: '📺' },
   ];
 
   const handleGenerate = async () => {
@@ -346,7 +346,7 @@ export default function AIImageGeneratorClient() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Generating Guidance...
+                  Generating Image...
                 </span>
               ) : (
                 '✨ Generate Image'
