@@ -58,51 +58,64 @@ export default function URLShortenerClient() {
     setError('');
     setSuccessMessage('');
 
-    // Simulate API call
-    setTimeout(() => {
-      try {
-        const shortCode = customAlias || generateShortCode();
-        const shortened = `https://flipfilex.com/${shortCode}`;
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_URL}/api/url/shorten`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          original_url: originalUrl,
+          custom_alias: customAlias || undefined
+        })
+      });
 
-        const newUrl: ShortenedUrl = {
-          original: originalUrl,
-          shortened,
-          clicks: 0,
-          created: new Date().toLocaleDateString()
-        };
-
-        setShortenedUrls(prev => {
-          const updated = [newUrl, ...prev];
-          // Store in localStorage for redirect functionality
-          localStorage.setItem('shortenedUrls', JSON.stringify(updated));
-          return updated;
-        });
-
-        // Set success message
-        setSuccessMessage('✅ URL shortened successfully!');
-
-        // Auto-scroll to results section
-        setTimeout(() => {
-          const resultsSection = document.getElementById('shortened-results');
-          if (resultsSection) {
-            resultsSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-        }, 100);
-
-        // Clear success message after 3 seconds
-        setTimeout(() => setSuccessMessage(''), 3000);
-
-        setOriginalUrl('');
-        setCustomAlias('');
-        setIsLoading(false);
-      } catch (err) {
-        setError('❌ Failed to shorten URL. Please try again.');
-        setIsLoading(false);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to shorten URL');
       }
-    }, 1500);
+
+      const data = await response.json();
+
+      const newUrl: ShortenedUrl = {
+        original: data.original,
+        shortened: data.shortened,
+        clicks: data.clicks,
+        created: data.created
+      };
+
+      setShortenedUrls(prev => {
+        const updated = [newUrl, ...prev];
+        // Also store in localStorage for persistence
+        localStorage.setItem('shortenedUrls', JSON.stringify(updated));
+        return updated;
+      });
+
+      // Set success message
+      setSuccessMessage('✅ URL shortened successfully!');
+
+      // Auto-scroll to results section
+      setTimeout(() => {
+        const resultsSection = document.getElementById('shortened-results');
+        if (resultsSection) {
+          resultsSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 100);
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(''), 3000);
+
+      setOriginalUrl('');
+      setCustomAlias('');
+      setIsLoading(false);
+    } catch (err: any) {
+      setError(`❌ ${err.message || 'Failed to shorten URL. Please try again.'}`);
+      setIsLoading(false);
+    }
   };
 
   const copyToClipboard = async (url: string) => {

@@ -29,7 +29,9 @@ from routers import (
     video_script_writer,
     ai_image_generator,
     # Voice and Dubbing
-    voice_dubbing
+    voice_dubbing,
+    # URL Shortener
+    url_shortener
 )
 from utils.config import UPLOAD_DIR
 from utils.dependencies import check_dependencies, cleanup_old_files, get_dependency_status
@@ -116,6 +118,9 @@ app.include_router(ai_image_generator.router, prefix="/ai", tags=["AI Image Gene
 
 # Voice and Dubbing
 app.include_router(voice_dubbing.router, prefix="/ai", tags=["Voice and Dubbing"])
+
+# URL Shortener
+app.include_router(url_shortener.router, prefix="/api/url", tags=["URL Shortener"])
 
 app.include_router(download.router, tags=["Download"])
 

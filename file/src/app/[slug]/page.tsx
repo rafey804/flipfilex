@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import { getToolBySlug, getAllToolSlugs, getToolMetadata } from '@/lib/toolsConfig';
 import { generateToolStructuredData, generateFAQStructuredData, getDefaultFAQs } from '@/lib/structuredData';
@@ -11,6 +11,7 @@ import PDFCompressor from '@/components/PDFCompressor';
 import PDFPasswordProtection from '@/components/PDFPasswordProtection';
 import PDFSplitter from '@/components/PDFSplitter';
 import EpubToPdfClient from '@/components/EpubToPdfClient';
+import URLRedirect from '@/components/URLRedirect';
 
 // Component mapping
 const componentMap: Record<string, React.ComponentType<any>> = {
@@ -116,8 +117,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+// Helper function to check if it's a shortened URL
+async function checkShortUrl(shortCode: string): Promise<string | null> {
+  try {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${API_URL}/api/url/redirect/${shortCode}`, {
+      cache: 'no-store' // Don't cache redirects
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.original_url;
+    }
+  } catch (error) {
+    console.error('Error checking short URL:', error);
+  }
+  return null;
+}
+
 export default async function DynamicToolPage({ params }: PageProps) {
   const { slug } = await params;
+
+  // First, check if this is a shortened URL
+  const originalUrl = await checkShortUrl(slug);
+  if (originalUrl) {
+    // If it's a shortened URL, show the redirect component
+    return <URLRedirect shortCode={slug} />;
+  }
 
   // If this is a standalone page, redirect to 404 since it should be handled by its own route
   if (standalonePages.includes(slug)) {

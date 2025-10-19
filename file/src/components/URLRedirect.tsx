@@ -16,40 +16,22 @@ export default function URLRedirect({ shortCode }: URLRedirectProps) {
   const [originalUrl, setOriginalUrl] = useState('');
 
   useEffect(() => {
-    // ✅ FIXED: Check if window is defined first
-    if (typeof window === 'undefined') {
-      setError(true);
-      setLoading(false);
-      return;
-    }
+    // Fetch URL from backend API
+    const fetchUrl = async () => {
+      try {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${API_URL}/api/url/redirect/${shortCode}`);
 
-    // ✅ FIXED: Safe localStorage access
-    try {
-      const storedUrls = window.localStorage.getItem('shortenedUrls');
-      if (storedUrls) {
-        const urls = JSON.parse(storedUrls);
-        const foundUrl = urls.find((url: any) =>
-          url.shortened.endsWith(`/${shortCode}`)
-        );
-
-        if (foundUrl) {
-          setOriginalUrl(foundUrl.original);
-
-          // Update click count
-          const updatedUrls = urls.map((url: any) => {
-            if (url.shortened.endsWith(`/${shortCode}`)) {
-              return { ...url, clicks: (url.clicks || 0) + 1 };
-            }
-            return url;
-          });
-          window.localStorage.setItem('shortenedUrls', JSON.stringify(updatedUrls));
+        if (response.ok) {
+          const data = await response.json();
+          setOriginalUrl(data.original_url);
 
           // Start countdown
           const timer = setInterval(() => {
             setCountdown(prev => {
               if (prev <= 1) {
                 clearInterval(timer);
-                window.location.href = foundUrl.original;
+                window.location.href = data.original_url;
                 return 0;
               }
               return prev - 1;
@@ -58,15 +40,19 @@ export default function URLRedirect({ shortCode }: URLRedirectProps) {
 
           setLoading(false);
           return () => clearInterval(timer);
+        } else {
+          // URL not found in backend
+          setError(true);
+          setLoading(false);
         }
+      } catch (error) {
+        console.error('Error fetching URL:', error);
+        setError(true);
+        setLoading(false);
       }
-    } catch (e) {
-      console.error('Error accessing localStorage:', e);
-    }
+    };
 
-    // If URL not found
-    setError(true);
-    setLoading(false);
+    fetchUrl();
   }, [shortCode]);
 
   // Rest of your component remains same...
