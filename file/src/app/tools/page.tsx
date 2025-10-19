@@ -114,6 +114,7 @@ export default function ToolsPage() {
 
   // Utility tools
   const utilityTools = [
+    { path: '/ai-voice-dubbing', fromName: 'Text', toName: 'AI Voice', description: 'Generate natural voices and clone voices with AI in multiple languages', icon: '🎤', gradient: 'from-pink-600 to-purple-600' },
     { path: '/ai-image-generator', fromName: 'Text', toName: 'AI Image', description: 'Create stunning AI-generated images from text descriptions', icon: '✨', gradient: 'from-emerald-600 to-violet-600' },
     { path: '/invoice-generator', fromName: 'Data', toName: 'Invoice', description: 'Create professional invoices with custom themes', icon: '📄', gradient: 'from-emerald-600 to-teal-600' },
     { path: '/resume-builder', fromName: 'Profile', toName: 'Resume', description: 'AI-powered professional resume builder with ATS optimization', icon: '📝', gradient: 'from-blue-600 to-indigo-600' },

@@ -27,7 +27,9 @@ from routers import (
     contact_form,
     # AI Tools
     video_script_writer,
-    ai_image_generator
+    ai_image_generator,
+    # Voice and Dubbing
+    voice_dubbing
 )
 from utils.config import UPLOAD_DIR
 from utils.dependencies import check_dependencies, cleanup_old_files, get_dependency_status
@@ -111,6 +113,9 @@ app.include_router(contact_form.router, prefix="/api", tags=["Contact Form"])
 # AI Tools
 app.include_router(video_script_writer.router, prefix="/ai", tags=["AI Video Script Writer"])
 app.include_router(ai_image_generator.router, prefix="/ai", tags=["AI Image Generator"])
+
+# Voice and Dubbing
+app.include_router(voice_dubbing.router, prefix="/ai", tags=["Voice and Dubbing"])
 
 app.include_router(download.router, tags=["Download"])
 

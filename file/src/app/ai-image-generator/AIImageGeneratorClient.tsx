@@ -123,13 +123,69 @@ export default function AIImageGeneratorClient() {
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: theme.darkBg }}>
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-500 via-violet-500 to-blue-500">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,white_1px,transparent_1px)] bg-[length:50px_50px]" />
-        </div>
+    <div className="min-h-screen relative overflow-hidden" style={{
+      background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)'
+    }}>
+      {/* Animated Background Blobs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute top-40 right-20 w-72 h-72 bg-violet-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-20 left-40 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
 
+      {/* Animated Background Effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Glowing Orbs */}
+        <div className="absolute w-96 h-96 rounded-full opacity-20 blur-3xl animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, #FF6B6B 0%, transparent 70%)',
+            top: '10%',
+            left: '10%',
+            animation: 'float 8s ease-in-out infinite'
+          }}
+        />
+        <div className="absolute w-80 h-80 rounded-full opacity-20 blur-3xl animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, #4ECDC4 0%, transparent 70%)',
+            top: '60%',
+            right: '10%',
+            animation: 'float 10s ease-in-out infinite reverse'
+          }}
+        />
+        <div className="absolute w-72 h-72 rounded-full opacity-20 blur-3xl animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, #FFE66D 0%, transparent 70%)',
+            bottom: '20%',
+            left: '50%',
+            animation: 'float 12s ease-in-out infinite'
+          }}
+        />
+        <div className="absolute w-64 h-64 rounded-full opacity-20 blur-3xl animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, #A78BFA 0%, transparent 70%)',
+            top: '30%',
+            right: '30%',
+            animation: 'float 9s ease-in-out infinite reverse'
+          }}
+        />
+        <div className="absolute w-56 h-56 rounded-full opacity-20 blur-3xl animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, #FB7185 0%, transparent 70%)',
+            bottom: '40%',
+            left: '20%',
+            animation: 'float 11s ease-in-out infinite'
+          }}
+        />
+
+        {/* Moving Gradient Lines */}
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.1) 50%, transparent 70%)',
+          animation: 'shimmer 3s linear infinite'
+        }} />
+      </div>
+
+      {/* Hero Section */}
+      <div className="relative overflow-hidden" style={{ background: 'transparent' }}>
         <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -137,10 +193,10 @@ export default function AIImageGeneratorClient() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg" style={{ color: theme.text }}>
               ✨ AI Image Generator
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white opacity-95 max-w-3xl mx-auto drop-shadow-md">
+            <p className="text-xl md:text-2xl mb-8 opacity-95 max-w-3xl mx-auto drop-shadow-md" style={{ color: theme.text }}>
               Transform your imagination into stunning visuals with AI-powered image generation
             </p>
 
@@ -169,14 +225,14 @@ export default function AIImageGeneratorClient() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-6">
         <div className="max-w-5xl mx-auto">
           {/* Input Form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="p-8 rounded-3xl shadow-2xl mb-12"
+            className="p-8 rounded-3xl shadow-2xl mb-8"
             style={{ background: theme.cardBg }}
           >
             <h2 className="text-3xl font-bold mb-6 text-center" style={{ color: theme.text }}>
@@ -634,8 +690,187 @@ export default function AIImageGeneratorClient() {
         </div>
       </div>
 
+      {/* SEO Blog Articles Section */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-4" style={{ color: theme.text }}>
+            Latest AI Image Generation Insights
+          </h2>
+          <p className="text-center text-lg mb-12" style={{ color: 'rgba(241, 245, 249, 0.7)' }}>
+            Expert guides and tutorials to master AI-powered image creation
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                icon: '🎨',
+                title: 'Complete Guide to AI Image Styles',
+                excerpt: 'Learn how to choose the perfect art style for your project. From photorealistic images to anime art, discover which style works best for different use cases.',
+                readTime: '5 min read',
+                category: 'Tutorial',
+                url: '/blog/ai-image-styles-guide'
+              },
+              {
+                icon: '💡',
+                title: 'Writing Effective AI Prompts',
+                excerpt: 'Master the art of prompt engineering. Learn proven techniques to get exactly what you want from AI image generators every single time.',
+                readTime: '7 min read',
+                category: 'Best Practices',
+                url: '/blog/writing-effective-prompts'
+              },
+              {
+                icon: '🚀',
+                title: 'AI Images for Marketing Success',
+                excerpt: 'Discover how businesses are using AI-generated images to create stunning marketing campaigns, save thousands in costs, and boost engagement.',
+                readTime: '6 min read',
+                category: 'Case Study',
+                url: '/blog/ai-images-marketing'
+              },
+            ].map((article, index) => (
+              <motion.article
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                style={{ background: theme.cardBg }}
+                whileHover={{ scale: 1.02 }}
+                onClick={() => window.location.href = article.url}
+              >
+                <div className="text-5xl mb-4">{article.icon}</div>
+                <div className="flex gap-2 mb-3">
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold" style={{ background: theme.primary, color: 'white' }}>
+                    {article.category}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.1)', color: theme.text }}>
+                    {article.readTime}
+                  </span>
+                </div>
+                <h3 className="text-2xl font-bold mb-3" style={{ color: theme.text }}>
+                  {article.title}
+                </h3>
+                <p className="mb-4 leading-relaxed" style={{ color: 'rgba(241, 245, 249, 0.7)' }}>
+                  {article.excerpt}
+                </p>
+                <div className="flex items-center gap-2 font-semibold" style={{ color: theme.primary }}>
+                  Read More <span>→</span>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Use Cases with Images Section */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-4" style={{ color: theme.text }}>
+            Popular Use Cases for AI Image Generation
+          </h2>
+          <p className="text-center text-lg mb-12" style={{ color: 'rgba(241, 245, 249, 0.7)' }}>
+            See how professionals use AI to create stunning visuals
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              {
+                icon: '📱',
+                title: 'Social Media Content',
+                description: 'Create eye-catching posts, stories, and ads for Instagram, Facebook, Twitter, and LinkedIn in seconds.',
+                features: ['Custom brand visuals', 'Consistent style', 'Unlimited variations', 'Perfect sizing'],
+                color: '#EC4899'
+              },
+              {
+                icon: '🛍️',
+                title: 'E-commerce Product Images',
+                description: 'Generate professional product mockups, lifestyle photos, and promotional banners without expensive photoshoots.',
+                features: ['Product visualization', 'Multiple angles', 'Lifestyle contexts', 'Seasonal themes'],
+                color: '#10B981'
+              },
+              {
+                icon: '📚',
+                title: 'Blog & Article Headers',
+                description: 'Design unique featured images for your blog posts and articles that grab attention and improve SEO.',
+                features: ['Topic-specific images', 'Custom dimensions', 'SEO-optimized', 'High quality'],
+                color: '#3B82F6'
+              },
+              {
+                icon: '🎮',
+                title: 'Game Assets & Concept Art',
+                description: 'Create characters, environments, items, and concept art for games and creative projects.',
+                features: ['Character designs', 'Environment concepts', 'Item illustrations', 'Multiple styles'],
+                color: '#8B5CF6'
+              },
+            ].map((useCase, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-8 rounded-2xl shadow-xl"
+                style={{ background: theme.cardBg, borderLeft: `4px solid ${useCase.color}` }}
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="text-5xl">{useCase.icon}</div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2" style={{ color: theme.text }}>
+                      {useCase.title}
+                    </h3>
+                  </div>
+                </div>
+                <p className="mb-6 leading-relaxed" style={{ color: 'rgba(241, 245, 249, 0.8)' }}>
+                  {useCase.description}
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  {useCase.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full" style={{ background: useCase.color }} />
+                      <span className="text-sm" style={{ color: 'rgba(241, 245, 249, 0.7)' }}>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Stats & Social Proof Section */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { number: '1M+', label: 'Images Generated', icon: '🖼️' },
+              { number: '50K+', label: 'Happy Users', icon: '😊' },
+              { number: '8', label: 'Art Styles', icon: '🎨' },
+              { number: '100%', label: 'Free Forever', icon: '🎁' },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center p-6 rounded-2xl"
+                style={{ background: theme.cardBg }}
+              >
+                <div className="text-4xl mb-2">{stat.icon}</div>
+                <div className="text-3xl font-bold mb-2" style={{ color: theme.primary }}>
+                  {stat.number}
+                </div>
+                <div className="text-sm" style={{ color: 'rgba(241, 245, 249, 0.7)' }}>
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* FAQ Section */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12" style={{ color: theme.text }}>
             Frequently Asked Questions
@@ -656,7 +891,7 @@ export default function AIImageGeneratorClient() {
               },
               {
                 q: 'Is this free to use?',
-                a: 'Yes! Our AI Image Generator provides professional image generation guidance completely free with no signup required.',
+                a: 'Yes! Our AI Image Generator provides professional image generation completely free with no signup required.',
               },
               {
                 q: 'How do I get the best results?',
@@ -683,7 +918,7 @@ export default function AIImageGeneratorClient() {
       </div>
 
       {/* CTA Section */}
-      <div className="py-20 relative overflow-hidden bg-gradient-to-br from-emerald-500 via-violet-500 to-blue-500">
+      <div className="py-12 relative overflow-hidden bg-gradient-to-br from-emerald-500 via-violet-500 to-blue-500">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,white_2px,transparent_2px),radial-gradient(circle_at_70%_80%,white_2px,transparent_2px)] bg-[length:60px_60px]" />
         </div>

@@ -43,6 +43,8 @@ export const metadata: Metadata = {
     'resume builder', 'invoice generator', 'font converter',
     'AI video script writer', 'video script generator', 'YouTube script writer', 'TikTok script generator',
     'AI image generator', 'text to image AI', 'AI art generator', 'image generation AI', 'AI image creator',
+    'AI voice generator', 'text to speech', 'voice cloning', 'AI dubbing', 'TTS online', 'voice over generator', 'AI narrator',
+    'multilingual voice over', 'natural voice synthesis', 'speech synthesis', 'AI voice cloning', 'free voice generator',
     'online converter', 'free file converter', 'file conversion tools', 'FlipFileX'
   ],
   authors: [{ name: 'Rafey-ul-din' }],

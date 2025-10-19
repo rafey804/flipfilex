@@ -64,7 +64,8 @@ export default function HomePage() {
     { name: 'Color Picker', href: '/color-palette-generator', description: 'Generate color palettes', category: 'Utility' },
     { name: 'Font Converter', href: '/font-converter', description: 'Convert fonts between different formats', category: 'Font' },
     { name: 'AI Video Script Writer', href: '/ai-video-script-writer', description: 'Generate professional video scripts with AI for YouTube, TikTok, Instagram', category: 'AI Tools' },
-    { name: 'AI Image Generator', href: '/ai-image-generator', description: 'Create stunning AI-generated images from text descriptions with multiple styles', category: 'AI Tools' }
+    { name: 'AI Image Generator', href: '/ai-image-generator', description: 'Create stunning AI-generated images from text descriptions with multiple styles', category: 'AI Tools' },
+    { name: 'AI Voice Dubbing', href: '/ai-voice-dubbing', description: 'Generate natural voices and clone voices with AI in multiple languages', category: 'AI Tools' }
   ];
 
   // Handle search
@@ -632,7 +633,7 @@ export default function HomePage() {
                     {!searchQuery && (
                       <div className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-1.5 sm:gap-2 px-2">
                         <div className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2 w-full text-center">Popular searches:</div>
-                        {['PDF to Word', 'Image Compress', 'AI Video Script', 'AI Image Generator', 'QR Code', 'Resume Builder'].map((suggestion, index) => (
+                        {['PDF to Word', 'Image Compress', 'AI Voice Dubbing', 'AI Image Generator', 'QR Code', 'Resume Builder'].map((suggestion, index) => (
                           <button
                             key={suggestion}
                             onClick={() => handleSearch(suggestion)}
@@ -782,14 +783,14 @@ export default function HomePage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-12 sm:mb-14 md:mb-16">
             {[
+              { name: 'AI Voice Dubbing', href: '/ai-voice-dubbing', icon: '🎤', badge: 'NEW', badgeColor: 'bg-gradient-to-r from-pink-500 to-purple-600' },
               { name: 'AI Image Generator', href: '/ai-image-generator', icon: '✨', badge: 'NEW', badgeColor: 'bg-gradient-to-r from-emerald-500 to-violet-600' },
               { name: 'AI Video Script Writer', href: '/ai-video-script-writer', icon: '🎬', badge: 'NEW', badgeColor: 'bg-gradient-to-r from-indigo-500 to-purple-600' },
               { name: 'PDF to Word', href: '/convert-pdf-to-word-online', icon: '📝', badge: 'HOT', badgeColor: 'bg-red-500' },
               { name: 'Image Compress', href: '/image-compressor', icon: '🗜️', badge: 'HOT', badgeColor: 'bg-red-500' },
               { name: 'Compress PDF', href: '/compress-pdf', icon: '📄', badge: 'TOP', badgeColor: 'bg-orange-500' },
               { name: 'Resume Builder', href: '/resume-builder', icon: '📋', badge: 'Featured', badgeColor: 'bg-purple-500' },
-              { name: 'QR Code Generator', href: '/qr-code-generator', icon: '🔳', badge: 'Popular', badgeColor: 'bg-green-500' },
-              { name: 'Color Picker', href: '/color-palette-generator', icon: '🎨', badge: 'New', badgeColor: 'bg-blue-500' }
+              { name: 'QR Code Generator', href: '/qr-code-generator', icon: '🔳', badge: 'Popular', badgeColor: 'bg-green-500' }
             ].map((tool, index) => (
               <Link key={tool.name} href={tool.href} className="relative group bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-gray-100 hover-lift hover-glow click-effect animate-bounce-in" style={{animationDelay: `${index * 100}ms`}}>
                 <div className={`absolute top-1.5 right-1.5 sm:top-2 sm:right-2 ${tool.badgeColor} text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full`}>
