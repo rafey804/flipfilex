@@ -4,6 +4,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Head from 'next/head';
 
+// API Base URL - uses environment variable or defaults to production
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.flipfilex.com';
+
 interface AudioHistoryItem {
   id: string;
   filename: string;
@@ -118,7 +121,7 @@ export default function AIVoiceDubbing() {
 
   const loadVoiceSamples = async () => {
     try {
-      const response = await fetch('http://localhost:8000/ai/voice-dubbing/voice-samples');
+      const response = await fetch(`${API_BASE_URL}/ai/voice-dubbing/voice-samples`);
       const data = await response.json();
       if (data.success) {
         setVoiceSamples(data.samples);
@@ -130,7 +133,7 @@ export default function AIVoiceDubbing() {
 
   const loadAudioHistory = async () => {
     try {
-      const response = await fetch('http://localhost:8000/ai/voice-dubbing/history');
+      const response = await fetch(`${API_BASE_URL}/ai/voice-dubbing/history`);
       const data = await response.json();
       if (data.success) {
         setAudioHistory(data.history);
@@ -212,7 +215,7 @@ export default function AIVoiceDubbing() {
     formData.append('sample_name', speakerAudio.name);
 
     try {
-      const response = await fetch('http://localhost:8000/ai/voice-dubbing/upload-voice-sample', {
+      const response = await fetch(`${API_BASE_URL}/ai/voice-dubbing/upload-voice-sample`, {
         method: 'POST',
         body: formData,
       });
@@ -260,10 +263,10 @@ export default function AIVoiceDubbing() {
     formData.append('apply_noise_reduction', noiseReduction.toString());
     formData.append('quality', quality);
 
-    let endpoint = 'http://localhost:8000/ai/voice-dubbing/generate-gtts';
+    let endpoint = `${API_BASE_URL}/ai/voice-dubbing/generate-gtts`;
 
     if (voiceMode === 'clone') {
-      endpoint = 'http://localhost:8000/ai/voice-dubbing/generate-clone';
+      endpoint = `${API_BASE_URL}/ai/voice-dubbing/generate-clone`;
 
       if (speakerAudio) {
         console.log('Using uploaded audio file:', speakerAudio.name);
@@ -293,7 +296,7 @@ export default function AIVoiceDubbing() {
       setProgress(100);
 
       if (data.success) {
-        setGeneratedAudio(`http://localhost:8000${data.download_url}`);
+        setGeneratedAudio(`${API_BASE_URL}${data.download_url}`);
         showNotification('success', 'Voice generated successfully!');
         loadAudioHistory();
 
@@ -327,7 +330,7 @@ export default function AIVoiceDubbing() {
     setIsGenerating(true);
 
     try {
-      const response = await fetch('http://localhost:8000/ai/voice-dubbing/batch-generate', {
+      const response = await fetch(`${API_BASE_URL}/ai/voice-dubbing/batch-generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -373,7 +376,7 @@ export default function AIVoiceDubbing() {
 
   const deleteFromHistory = async (audioId: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/ai/voice-dubbing/history/${audioId}`, {
+      const response = await fetch(`${API_BASE_URL}/ai/voice-dubbing/history/${audioId}`, {
         method: 'DELETE',
       });
       const data = await response.json();
@@ -1040,7 +1043,7 @@ export default function AIVoiceDubbing() {
                           </button>
                         </div>
                         <a
-                          href={`http://localhost:8000/download/${item.filename}`}
+                          href={`${API_BASE_URL}/download/${item.filename}`}
                           download
                           className="inline-block px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold transition-all"
                         >
