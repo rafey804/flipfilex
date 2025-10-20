@@ -160,7 +160,7 @@ export default function RootLayout({
             contactPoint: {
               '@type': 'ContactPoint',
               contactType: 'customer support',
-              email: 'support@flipfilex.com'
+              email: 'flipfilex.com@gmail.com'
             }
           })}
         </Script>

@@ -633,7 +633,7 @@ export default function HomePage() {
                     {!searchQuery && (
                       <div className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-1.5 sm:gap-2 px-2">
                         <div className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2 w-full text-center">Popular searches:</div>
-                        {['PDF to Word', 'Image Compress', 'AI Voice Dubbing', 'AI Image Generator', 'QR Code', 'Resume Builder'].map((suggestion, index) => (
+                        {['PDF to Word', 'Image Compress', 'AI Voice Dubbing', 'AI Image Generator', 'Background Remover', 'QR Code', 'Resume Builder'].map((suggestion, index) => (
                           <button
                             key={suggestion}
                             onClick={() => handleSearch(suggestion)}
@@ -785,6 +785,7 @@ export default function HomePage() {
             {[
               { name: 'AI Voice Dubbing', href: '/ai-voice-dubbing', icon: '🎤', badge: 'NEW', badgeColor: 'bg-gradient-to-r from-pink-500 to-purple-600' },
               { name: 'AI Image Generator', href: '/ai-image-generator', icon: '✨', badge: 'NEW', badgeColor: 'bg-gradient-to-r from-emerald-500 to-violet-600' },
+              { name: 'AI Background Remover', href: '/ai-background-remover', icon: '🖼️', badge: 'NEW', badgeColor: 'bg-gradient-to-r from-cyan-500 to-blue-600' },
               { name: 'AI Video Script Writer', href: '/ai-video-script-writer', icon: '🎬', badge: 'NEW', badgeColor: 'bg-gradient-to-r from-indigo-500 to-purple-600' },
               { name: 'PDF to Word', href: '/convert-pdf-to-word-online', icon: '📝', badge: 'HOT', badgeColor: 'bg-red-500' },
               { name: 'Image Compress', href: '/image-compressor', icon: '🗜️', badge: 'HOT', badgeColor: 'bg-red-500' },

@@ -458,6 +458,13 @@
           description: 'Create stunning AI-generated images from text descriptions',
           icon: '✨',
           popular: true
+        },
+        {
+          name: 'AI Background Remover',
+          href: '/ai-background-remover',
+          description: 'Remove image backgrounds automatically with AI - 100% free',
+          icon: '🖼️',
+          popular: true
         }
       ]
     },
@@ -574,7 +581,7 @@
     // Prevent hydration mismatch by not rendering until mounted
     if (!isMounted) {
       return (
-        <nav className="fixed top-0 left-0 right-0 z-[100] bg-white/60 backdrop-blur-2xl shadow-xl border-b border-white/30">
+        <nav suppressHydrationWarning className="fixed top-0 left-0 right-0 z-[100] bg-white/60 backdrop-blur-2xl shadow-xl border-b border-white/30">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-50/20 via-white/40 to-purple-50/20"></div>
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/30 to-transparent backdrop-blur-sm"></div>
           <div className="absolute inset-0 bg-noise opacity-5"></div>
@@ -599,7 +606,7 @@
 
     return (
       <>
-        <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ease-out ${
+        <nav suppressHydrationWarning className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ease-out ${
           isScrolled
             ? 'bg-white/70 backdrop-blur-3xl shadow-2xl border-b border-white/20'
             : 'bg-white/60 backdrop-blur-2xl shadow-xl border-b border-white/30'
