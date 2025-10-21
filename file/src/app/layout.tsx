@@ -84,9 +84,6 @@ export const metadata: Metadata = {
     images: ['https://flipfilex.com/og-image.png'],
     creator: '@flipfilex',
   },
-  alternates: {
-    canonical: 'https://flipfilex.com',
-  },
   verification: {
     google: '5XJNsNLnPHPvtfmI-dLp8pVKl053JPfj6b8G4rLi-cw',
   },
@@ -217,6 +214,45 @@ export default function RootLayout({
               },
               'query-input': 'required name=search_term_string'
             }
+          })}
+        </Script>
+
+        {/* Featured Tools - Sitelinks Suggestion */}
+        <Script id="featured-tools-schema" type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Featured Tools',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Resume Builder',
+                url: 'https://flipfilex.com/resume-builder',
+                description: 'Create professional resumes in minutes with our free resume builder'
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Invoice Generator',
+                url: 'https://flipfilex.com/invoice-generator',
+                description: 'Generate professional invoices instantly with our free invoice generator'
+              },
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: 'AI Image Generator',
+                url: 'https://flipfilex.com/ai-image-generator',
+                description: 'Create stunning AI-generated images from text prompts'
+              },
+              {
+                '@type': 'ListItem',
+                position: 4,
+                name: 'PNG to WebP Converter',
+                url: 'https://flipfilex.com/png-to-webp-converter',
+                description: 'Convert PNG images to WebP format for better web performance'
+              }
+            ]
           })}
         </Script>
       </head>

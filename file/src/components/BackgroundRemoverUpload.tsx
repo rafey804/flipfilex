@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Upload } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -10,6 +10,16 @@ export default function BackgroundRemoverUpload() {
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Don't clear file memory automatically - let it persist for navigation
+  // Only clear when component unmounts (user navigates away from upload page)
+  useEffect(() => {
+    return () => {
+      // This runs when component unmounts (navigation happens)
+      // Don't delete here either - let edit page handle it
+      console.log('[Upload Page] Component unmounting');
+    };
+  }, []);
 
   // Handle file selection and navigate to editor
   const handleFileSelect = useCallback((file: File) => {
@@ -27,14 +37,19 @@ export default function BackgroundRemoverUpload() {
 
     setError('');
 
-    // Store file in memory
+    // Store file in memory AND sessionStorage flag
     if (typeof window !== 'undefined') {
       (window as any).__uploadedFile = file;
-      console.log('[Upload] File stored:', file.name);
-    }
 
-    // Navigate to editing page with upload=true parameter to prevent redirect
-    router.push('/ai-background-remover/edit?upload=true');
+      // Store minimal data in sessionStorage (just filename for verification)
+      sessionStorage.setItem('bg_remover_uploading', file.name);
+
+      console.log('[Upload] File stored:', file.name);
+      console.log('[Upload] Navigating to edit page...');
+
+      // Use router.push (should work now with proper cleanup)
+      router.push('/ai-background-remover/edit?upload=true');
+    }
   }, [router]);
 
   // Drag and drop handlers

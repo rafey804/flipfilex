@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { ApiService } from '@/lib/api';
 import { HealthStatus } from '@/types';
@@ -544,6 +545,9 @@ export default function HomePage() {
 
   return (
     <>
+      <Head>
+        <link rel="canonical" href="https://flipfilex.com" />
+      </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 bg-pattern-dots">
         {/* Particle Background */}

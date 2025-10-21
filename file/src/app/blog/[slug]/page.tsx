@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: BlogPostParams): Promise<Meta
       description: post.excerpt,
     },
     alternates: {
-      canonical: `https://yourdomain.com/blog/${resolvedParams.slug}`,
+      canonical: `https://flipfilex.com/blog/${resolvedParams.slug}`,
     },
   };
 }
@@ -137,7 +137,7 @@ export default async function BlogPost({ params }: BlogPostParams) {
               <h3 className="text-lg font-medium text-gray-900 mb-4">Share this article</h3>
               <div className="flex space-x-4">
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://yourdomain.com/blog/${resolvedParams.slug}`)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://flipfilex.com/blog/${resolvedParams.slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-400 hover:text-blue-500"
@@ -148,7 +148,7 @@ export default async function BlogPost({ params }: BlogPostParams) {
                   </svg>
                 </a>
                 <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://yourdomain.com/blog/${resolvedParams.slug}`)}`}
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://flipfilex.com/blog/${resolvedParams.slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-700"
@@ -159,7 +159,7 @@ export default async function BlogPost({ params }: BlogPostParams) {
                   </svg>
                 </a>
                 <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://yourdomain.com/blog/${resolvedParams.slug}`)}`}
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://flipfilex.com/blog/${resolvedParams.slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-700"

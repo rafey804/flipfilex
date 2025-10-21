@@ -59,6 +59,18 @@ const TEXTURE_BACKGROUNDS = [
   { id: 4, name: 'Abstract', url: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=400', thumb: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=100' },
 ];
 
+// Image layer type for composition
+type ImageLayer = {
+  id: string;
+  file: File;
+  preview: string;
+  processedImage: string;
+  position: { x: number; y: number };
+  scale: number;
+  rotation: number;
+  flipH: boolean;
+};
+
 function EditPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -91,18 +103,26 @@ function EditPageContent() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const backgroundInputRef = useRef<HTMLInputElement>(null);
 
-  // Get file from window memory (no sessionStorage to avoid quota issues)
+  // Image layers state - for multiple images composition
+  const [imageLayers, setImageLayers] = useState<ImageLayer[]>([]);
+  const [activeLayerId, setActiveLayerId] = useState<string | null>(null); // Current active layer
+
+  // State for custom background URL (for CSS background-image)
+  const [customBackgroundUrl, setCustomBackgroundUrl] = useState<string>('');
+
+  // Get file from window memory
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const uploadedFile = (window as any).__uploadedFile;
     const isFromUpload = searchParams.get('upload') === 'true';
+    const uploadingFlag = sessionStorage.getItem('bg_remover_uploading');
 
-    console.log('[Edit Page] useEffect triggered:', {
+    console.log('[Edit Page] Check:', {
       hasFile: !!uploadedFile,
       isFromUpload,
-      hasSelectedFile: !!selectedFile,
-      hasPreview: !!preview
+      uploadingFlag,
+      hasState: !!(selectedFile || preview)
     });
 
     // Case 1: File exists in memory - load it
@@ -110,31 +130,40 @@ function EditPageContent() {
       console.log('[Edit Page] Loading file from memory...');
       setSelectedFile(uploadedFile);
 
-      // Create preview URL
       const reader = new FileReader();
       reader.onload = (e) => {
         setPreview(e.target?.result as string);
       };
       reader.readAsDataURL(uploadedFile);
 
-      // Clear from memory and URL param
       delete (window as any).__uploadedFile;
+      sessionStorage.removeItem('bg_remover_uploading');
       router.replace('/ai-background-remover/edit', { scroll: false });
       return;
     }
 
-    // Case 2: Coming from upload (URL param) - wait for file
-    if (isFromUpload) {
-      console.log('[Edit Page] From upload, waiting for file or state...');
-      return; // Don't redirect, wait for file to be set
+    // Case 2: Has file/preview - stay on page
+    if (selectedFile || preview) {
+      console.log('[Edit Page] Has file/preview, staying...');
+      return;
     }
 
-    // Case 3: Direct navigation without file - redirect back
-    if (!selectedFile && !preview && !uploadedFile) {
-      console.log('[Edit Page] No file found, redirecting back...');
-      router.push('/ai-background-remover');
+    // Case 3: Coming from upload with flag - wait for file
+    if (isFromUpload || uploadingFlag) {
+      console.log('[Edit Page] From upload, waiting for file...');
+      return;
     }
-  }, [searchParams]); // Only re-run when URL params change
+
+    // Case 4: Nothing - redirect
+    console.log('[Edit Page] No file, redirecting...');
+    const timer = setTimeout(() => {
+      if (!selectedFile && !preview && !uploadingFlag) {
+        router.push('/ai-background-remover');
+      }
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [searchParams, selectedFile, preview]); // Depend on these to re-check
 
   // Auto-process on file load
   useEffect(() => {
@@ -143,7 +172,44 @@ function EditPageContent() {
     }
   }, [selectedFile]);
 
-  // Process image
+  // Window-level mouse event listeners for smooth dragging
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDraggingImage) {
+        setImagePosition({
+          x: e.clientX - dragStart.x,
+          y: e.clientY - dragStart.y
+        });
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (isDraggingImage) {
+        setIsDraggingImage(false);
+
+        // Save the layer position when dragging stops
+        if (activeLayerId) {
+          setImageLayers(prev => prev.map(layer =>
+            layer.id === activeLayerId
+              ? { ...layer, position: imagePosition, scale: zoom, rotation, flipH }
+              : layer
+          ));
+        }
+      }
+    };
+
+    if (isDraggingImage) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDraggingImage, dragStart, activeLayerId, imagePosition, zoom, rotation, flipH]);
+
+  // Process image (and create layer automatically)
   const processImage = useCallback(async () => {
     if (!selectedFile) return;
 
@@ -161,91 +227,133 @@ function EditPageContent() {
       setProcessedImage(url);
       setIsProcessing(false);
       setProgress(100);
+
+      // Create layer for this image (if not already exists)
+      const existingLayer = imageLayers.find(l => l.file === selectedFile);
+      if (!existingLayer && preview) {
+        const newLayer: ImageLayer = {
+          id: `layer-${Date.now()}`,
+          file: selectedFile,
+          preview: preview,
+          processedImage: url,
+          position: { x: 0, y: 0 },
+          scale: 1,
+          rotation: 0,
+          flipH: false
+        };
+        setImageLayers(prev => [...prev, newLayer]);
+        setActiveLayerId(newLayer.id);
+      }
     } catch (err: any) {
       console.error('Processing failed:', err);
       setIsProcessing(false);
       setProgress(0);
     }
-  }, [selectedFile]);
+  }, [selectedFile, preview, imageLayers]);
 
-  // Apply background change instantly
-  const applyBackground = useCallback(async (mode: string, value?: any) => {
-    if (!selectedFile) return;
+  // Add new image as layer with automatic background removal
+  const addNewImageLayer = useCallback(async (file: File) => {
+    try {
+      // Create preview
+      const reader = new FileReader();
+      const previewUrl = await new Promise<string>((resolve) => {
+        reader.onload = (e) => resolve(e.target?.result as string);
+        reader.readAsDataURL(file);
+      });
+
+      // Automatically remove background
+      setIsProcessing(true);
+      const blob = await BackgroundRemovalAPI.removeBackground(file, 'png');
+      const processedUrl = URL.createObjectURL(blob);
+
+      // Create new layer
+      const newLayer: ImageLayer = {
+        id: `layer-${Date.now()}`,
+        file,
+        preview: previewUrl,
+        processedImage: processedUrl,
+        position: { x: 0, y: 0 },
+        scale: 1,
+        rotation: 0,
+        flipH: false
+      };
+
+      // Add to layers and set as active
+      setImageLayers(prev => [...prev, newLayer]);
+      setActiveLayerId(newLayer.id);
+
+      // Also update the main image states for compatibility
+      setSelectedFile(file);
+      setPreview(previewUrl);
+      setProcessedImage(processedUrl);
+      setIsProcessing(false);
+    } catch (err) {
+      console.error('Failed to add image layer:', err);
+      setIsProcessing(false);
+    }
+  }, []);
+
+  // INSTANT background change - NO API calls, pure CSS (even for photos!)
+  const applyBackgroundInstant = useCallback((mode: string, value?: any) => {
+    if (!processedImage) return;
+
+    // Just update the state - CSS will handle the visual change
+    setCurrentBackground(mode);
+
+    switch (mode) {
+      case 'solid':
+        setSelectedColor(value);
+        break;
+      case 'gradient':
+        setSelectedGradient(value);
+        break;
+      case 'blur':
+        // Only blur needs API processing
+        setBlurIntensity(value);
+        setIsBlurEnabled(true);
+        applyBackgroundWithAPI('blur', value);
+        break;
+      case 'custom':
+        // For photo backgrounds, use CSS background-image (NO API!)
+        setCustomBackgroundUrl(value);
+        break;
+    }
+  }, [processedImage]);
+
+  // Only for blur background that needs API processing
+  const applyBackgroundWithAPI = useCallback(async (mode: string, value?: any) => {
+    if (!selectedFile || mode !== 'blur') return;
 
     try {
-      let blob: Blob;
-
-      switch (mode) {
-        case 'solid':
-          blob = await BackgroundRemovalAPI.removeBackground(
-            selectedFile,
-            { outputFormat: 'png', backgroundColor: value, edgeRefinement: 0, quality: 95 }
-          );
-          break;
-
-        case 'gradient':
-          blob = await BackgroundRemovalAPI.addGradientBackground(
-            selectedFile,
-            {
-              gradientType: value.type,
-              colorStart: value.start,
-              colorEnd: value.end,
-              outputFormat: 'png'
-            }
-          );
-          break;
-
-        case 'blur':
-          blob = await BackgroundRemovalAPI.blurBackground(
-            selectedFile,
-            value,
-            'png'
-          );
-          break;
-
-        case 'custom':
-          if (!value) return;
-          const response = await fetch(value);
-          const bgBlob = await response.blob();
-          const bgFile = new File([bgBlob], 'background.jpg', { type: 'image/jpeg' });
-
-          blob = await BackgroundRemovalAPI.replaceBackground(
-            selectedFile,
-            bgFile,
-            'png'
-          );
-          break;
-
-        default:
-          return;
-      }
+      const blob = await BackgroundRemovalAPI.blurBackground(
+        selectedFile,
+        value,
+        'png'
+      );
 
       const url = URL.createObjectURL(blob);
       setProcessedImage(url);
       setCurrentBackground(mode);
     } catch (err: any) {
-      console.error('Background change failed:', err);
+      console.error('Blur background failed:', err);
     }
   }, [selectedFile]);
 
-  // One-click handlers
+  // One-click handlers - INSTANT (no API calls for colors/gradients)
   const handleColorClick = (color: string) => {
-    setSelectedColor(color);
-    applyBackground('solid', color);
+    applyBackgroundInstant('solid', color);
   };
 
   const handleGradientClick = (gradient: typeof GRADIENT_PRESETS[0]) => {
-    setSelectedGradient(gradient);
-    applyBackground('gradient', gradient);
+    applyBackgroundInstant('gradient', gradient);
   };
 
   const handlePhotoClick = (url: string) => {
-    applyBackground('custom', url);
+    applyBackgroundInstant('custom', url);
   };
 
   const handleBlurChange = (intensity: number) => {
-    setBlurIntensity(intensity);
-    applyBackground('blur', intensity);
+    applyBackgroundWithAPI('blur', intensity);
   };
 
   // Download
@@ -355,15 +463,10 @@ function EditPageContent() {
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     const file = e.target.files[0];
-                    setSelectedFile(file);
-                    setProcessedImage('');
-
-                    // Create preview URL (no sessionStorage)
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                      setPreview(event.target?.result as string);
-                    };
-                    reader.readAsDataURL(file);
+                    // Add new image with automatic background removal
+                    addNewImageLayer(file);
+                    // Reset file input
+                    e.target.value = '';
                   }
                 }}
                 className="hidden"
@@ -399,8 +502,28 @@ function EditPageContent() {
           <div className="flex-1 flex flex-col items-center justify-center px-12 py-8 bg-white">
             {(processedImage || preview) ? (
               <>
-                {/* Fixed container - ONLY image drags, NOT container */}
-                <div className="relative w-[400px] h-[400px] flex items-center justify-center bg-gray-50 rounded-lg">
+                {/* Fixed container with INSTANT CSS background - Background stays FIXED, only subject moves */}
+                <div
+                  className="relative w-[400px] h-[400px] flex items-center justify-center rounded-lg border-2 border-gray-300 overflow-hidden"
+                  style={{
+                    backgroundImage:
+                      currentBackground === 'solid' && selectedColor
+                        ? 'none'
+                        : currentBackground === 'gradient' && selectedGradient
+                        ? `linear-gradient(135deg, rgb(${selectedGradient.start}), rgb(${selectedGradient.end}))`
+                        : currentBackground === 'custom' && customBackgroundUrl
+                        ? `url(${customBackgroundUrl})`
+                        : currentBackground === 'transparent'
+                        ? `repeating-conic-gradient(#ffffff 0% 25%, #e5e7eb 0% 50%)`
+                        : `repeating-conic-gradient(#ffffff 0% 25%, #e5e7eb 0% 50%)`,
+                    backgroundColor:
+                      currentBackground === 'solid' && selectedColor
+                        ? `rgba(${selectedColor})`
+                        : 'transparent',
+                    backgroundSize: currentBackground === 'custom' ? 'cover' : currentBackground === 'transparent' ? '16px 16px' : 'auto',
+                    backgroundPosition: currentBackground === 'custom' ? 'center' : currentBackground === 'transparent' ? '50%' : 'auto'
+                  }}
+                >
                   {/* Bouncing Stars Animation - Overlay on image during processing */}
                   {isProcessing && (
                     <div className="absolute inset-0 pointer-events-none z-10">
@@ -472,52 +595,157 @@ function EditPageContent() {
                     </div>
                   )}
 
-                  {/* Image - ONLY THIS drags, NOT the container */}
-                  <motion.img
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{
-                      opacity: 1,
-                      scale: zoom,
-                      rotate: rotation,
-                      scaleX: flipH ? -1 : 1,
-                      x: imagePosition.x,
-                      y: imagePosition.y
-                    }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    src={processedImage || preview}
-                    alt="Preview"
-                    className="max-w-full max-h-full object-contain cursor-move shadow-2xl relative z-0"
-                    style={{ maxWidth: '400px', maxHeight: '400px' }}
-                    draggable="false"
-                    onMouseDown={(e) => {
-                      e.stopPropagation();
-                      setIsDraggingImage(true);
-                      setDragStart({ x: e.clientX - imagePosition.x, y: e.clientY - imagePosition.y });
-                    }}
-                    onMouseMove={(e) => {
-                      if (isDraggingImage) {
+                  {/* All Image Layers - Multiple images composition */}
+                  {imageLayers.length > 0 ? (
+                    // Render all layers with stacking
+                    <>
+                      {imageLayers.map((layer, index) => (
+                        <motion.img
+                          key={layer.id}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{
+                            opacity: 1,
+                            scale: activeLayerId === layer.id ? zoom : layer.scale,
+                            rotate: activeLayerId === layer.id ? rotation : layer.rotation,
+                            scaleX: (activeLayerId === layer.id ? flipH : layer.flipH) ? -1 : 1,
+                            x: activeLayerId === layer.id ? imagePosition.x : layer.position.x,
+                            y: activeLayerId === layer.id ? imagePosition.y : layer.position.y
+                          }}
+                          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                          src={layer.processedImage}
+                          alt={`Layer ${index + 1}`}
+                          className={`max-w-full max-h-full object-contain absolute inset-0 m-auto ${
+                            activeLayerId === layer.id ? 'cursor-move z-10' : 'cursor-pointer z-0'
+                          }`}
+                          style={{ zIndex: activeLayerId === layer.id ? 10 : index }}
+                          draggable="false"
+                          onMouseDown={(e) => {
+                            e.stopPropagation();
+                            if (activeLayerId === layer.id) {
+                              setIsDraggingImage(true);
+                              setDragStart({ x: e.clientX - imagePosition.x, y: e.clientY - imagePosition.y });
+                            } else {
+                              // Switch to this layer
+                              setActiveLayerId(layer.id);
+                              setSelectedFile(layer.file);
+                              setPreview(layer.preview);
+                              setProcessedImage(layer.processedImage);
+                              setImagePosition(layer.position);
+                              setZoom(layer.scale);
+                              setRotation(layer.rotation);
+                              setFlipH(layer.flipH);
+                            }
+                          }}
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    // Fallback to single image (backward compatibility)
+                    <motion.img
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{
+                        opacity: 1,
+                        scale: zoom,
+                        rotate: rotation,
+                        scaleX: flipH ? -1 : 1,
+                        x: imagePosition.x,
+                        y: imagePosition.y
+                      }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                      src={processedImage || preview}
+                      alt="Preview"
+                      className="max-w-full max-h-full object-contain cursor-move relative z-0"
+                      draggable="false"
+                      onMouseDown={(e) => {
                         e.stopPropagation();
-                        setImagePosition({
-                          x: e.clientX - dragStart.x,
-                          y: e.clientY - dragStart.y
-                        });
-                      }
-                    }}
-                    onMouseUp={() => setIsDraggingImage(false)}
-                    onMouseLeave={() => setIsDraggingImage(false)}
-                  />
+                        setIsDraggingImage(true);
+                        setDragStart({ x: e.clientX - imagePosition.x, y: e.clientY - imagePosition.y });
+                      }}
+                    />
+                  )}
                 </div>
 
-                {/* Add More Images Button - Below image */}
-                <div className="mt-6 flex items-center gap-3">
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all border border-gray-300"
-                  >
-                    <Plus className="w-5 h-5 text-gray-700" />
-                    <span className="text-sm font-medium text-gray-700">Add more images to create compositions</span>
-                  </button>
-                </div>
+                {/* Image Layers Panel - Show previous images at bottom */}
+                {imageLayers.length > 0 && (
+                  <div className="mt-8 w-full max-w-[600px]">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-semibold text-gray-700">Image Layers ({imageLayers.length})</h3>
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-medium transition-all"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Add More
+                      </button>
+                    </div>
+
+                    {/* Horizontal scrollable layer thumbnails */}
+                    <div className="flex gap-3 overflow-x-auto pb-2">
+                      {imageLayers.map((layer, index) => (
+                        <motion.div
+                          key={layer.id}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className={`relative flex-shrink-0 cursor-pointer group`}
+                          onClick={() => {
+                            setActiveLayerId(layer.id);
+                            setSelectedFile(layer.file);
+                            setPreview(layer.preview);
+                            setProcessedImage(layer.processedImage);
+                            setImagePosition(layer.position);
+                            setZoom(layer.scale);
+                            setRotation(layer.rotation);
+                            setFlipH(layer.flipH);
+                          }}
+                        >
+                          {/* Thumbnail with checkered background */}
+                          <div className={`w-24 h-24 rounded-lg overflow-hidden border-2 transition-all ${
+                            activeLayerId === layer.id
+                              ? 'border-blue-500 ring-2 ring-blue-200'
+                              : 'border-gray-300 hover:border-blue-300'
+                          }`}
+                            style={{
+                              backgroundImage: 'repeating-conic-gradient(#ffffff 0% 25%, #e5e7eb 0% 50%)',
+                              backgroundSize: '12px 12px',
+                              backgroundPosition: '50%'
+                            }}
+                          >
+                            <img
+                              src={layer.processedImage}
+                              alt={`Layer ${index + 1}`}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+
+                          {/* Layer number badge */}
+                          <div className="absolute -top-2 -left-2 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-md">
+                            {index + 1}
+                          </div>
+
+                          {/* Delete button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setImageLayers(prev => prev.filter(l => l.id !== layer.id));
+                              if (activeLayerId === layer.id && imageLayers.length > 1) {
+                                const remainingLayers = imageLayers.filter(l => l.id !== layer.id);
+                                const newActive = remainingLayers[remainingLayers.length - 1];
+                                setActiveLayerId(newActive.id);
+                                setSelectedFile(newActive.file);
+                                setPreview(newActive.preview);
+                                setProcessedImage(newActive.processedImage);
+                              }
+                            }}
+                            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full items-center justify-center text-xs font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity hidden group-hover:flex"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
               </>
             ) : (
               <div className="text-center">
@@ -561,10 +789,7 @@ function EditPageContent() {
                 {/* Transparent Option */}
                 <div>
                   <button
-                    onClick={() => {
-                      setCurrentBackground('transparent');
-                      processImage();
-                    }}
+                    onClick={() => setCurrentBackground('transparent')}
                     className="w-full h-12 rounded-lg border-2 border-gray-300 hover:border-blue-600 transition-all flex items-center justify-center gap-2"
                     style={{
                       background: 'repeating-conic-gradient(#e5e7eb 0% 25%, #f3f4f6 0% 50%) 50% / 10px 10px'
@@ -726,12 +951,12 @@ function EditPageContent() {
                       const newState = !isBlurEnabled;
                       setIsBlurEnabled(newState);
                       if (newState) {
-                        // Apply blur
+                        // Apply blur (needs API call)
                         handleBlurChange(blurIntensity);
                       } else {
-                        // Remove blur (go back to transparent)
+                        // Remove blur (instant - just change state)
                         setCurrentBackground('transparent');
-                        processImage();
+                        setIsBlurEnabled(false);
                       }
                     }}
                     className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
