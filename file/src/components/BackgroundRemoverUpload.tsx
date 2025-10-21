@@ -27,20 +27,14 @@ export default function BackgroundRemoverUpload() {
 
     setError('');
 
-    // Convert file to base64 and store in session storage
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUrl = e.target?.result as string;
-      sessionStorage.setItem('uploadedFile', JSON.stringify({
-        name: file.name,
-        type: file.type,
-        dataUrl
-      }));
+    // Store file in memory
+    if (typeof window !== 'undefined') {
+      (window as any).__uploadedFile = file;
+      console.log('[Upload] File stored:', file.name);
+    }
 
-      // Navigate to editing page
-      router.push('/ai-background-remover/edit');
-    };
-    reader.readAsDataURL(file);
+    // Navigate to editing page with upload=true parameter to prevent redirect
+    router.push('/ai-background-remover/edit?upload=true');
   }, [router]);
 
   // Drag and drop handlers

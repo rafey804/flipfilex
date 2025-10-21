@@ -75,6 +75,7 @@ function EditPageContent() {
   const [selectedGradient, setSelectedGradient] = useState(GRADIENT_PRESETS[0]);
   const [blurIntensity, setBlurIntensity] = useState(20);
   const [currentBackground, setCurrentBackground] = useState<string>('transparent');
+  const [isBlurEnabled, setIsBlurEnabled] = useState(false);
 
   // Editing tools state
   const [zoom, setZoom] = useState(1);
@@ -90,25 +91,50 @@ function EditPageContent() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const backgroundInputRef = useRef<HTMLInputElement>(null);
 
-  // Get file from session storage on mount
+  // Get file from window memory (no sessionStorage to avoid quota issues)
   useEffect(() => {
-    const storedFile = sessionStorage.getItem('uploadedFile');
-    if (storedFile) {
-      const fileData = JSON.parse(storedFile);
-      setPreview(fileData.dataUrl);
+    if (typeof window === 'undefined') return;
 
-      // Convert base64 back to File
-      fetch(fileData.dataUrl)
-        .then(res => res.blob())
-        .then(blob => {
-          const file = new File([blob], fileData.name, { type: fileData.type });
-          setSelectedFile(file);
-        });
-    } else {
-      // No file found, redirect back
+    const uploadedFile = (window as any).__uploadedFile;
+    const isFromUpload = searchParams.get('upload') === 'true';
+
+    console.log('[Edit Page] useEffect triggered:', {
+      hasFile: !!uploadedFile,
+      isFromUpload,
+      hasSelectedFile: !!selectedFile,
+      hasPreview: !!preview
+    });
+
+    // Case 1: File exists in memory - load it
+    if (uploadedFile instanceof File && !selectedFile) {
+      console.log('[Edit Page] Loading file from memory...');
+      setSelectedFile(uploadedFile);
+
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(uploadedFile);
+
+      // Clear from memory and URL param
+      delete (window as any).__uploadedFile;
+      router.replace('/ai-background-remover/edit', { scroll: false });
+      return;
+    }
+
+    // Case 2: Coming from upload (URL param) - wait for file
+    if (isFromUpload) {
+      console.log('[Edit Page] From upload, waiting for file or state...');
+      return; // Don't redirect, wait for file to be set
+    }
+
+    // Case 3: Direct navigation without file - redirect back
+    if (!selectedFile && !preview && !uploadedFile) {
+      console.log('[Edit Page] No file found, redirecting back...');
       router.push('/ai-background-remover');
     }
-  }, [router]);
+  }, [searchParams]); // Only re-run when URL params change
 
   // Auto-process on file load
   useEffect(() => {
@@ -329,17 +355,13 @@ function EditPageContent() {
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     const file = e.target.files[0];
+                    setSelectedFile(file);
+                    setProcessedImage('');
+
+                    // Create preview URL (no sessionStorage)
                     const reader = new FileReader();
                     reader.onload = (event) => {
-                      const dataUrl = event.target?.result as string;
-                      sessionStorage.setItem('uploadedFile', JSON.stringify({
-                        name: file.name,
-                        type: file.type,
-                        dataUrl
-                      }));
-                      setSelectedFile(file);
-                      setPreview(dataUrl);
-                      setProcessedImage('');
+                      setPreview(event.target?.result as string);
                     };
                     reader.readAsDataURL(file);
                   }
@@ -691,23 +713,59 @@ function EditPageContent() {
             {/* Blur Tab */}
             {activeTab === 'blur' && (
               <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Blur Intensity: {blurIntensity}
-                  </label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    value={blurIntensity}
-                    onChange={(e) => handleBlurChange(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500 mt-2">
-                    <span>Light</span>
-                    <span>Strong</span>
+                {/* Blur ON/OFF Toggle */}
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border-2 border-gray-200">
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900">Blur Background</h3>
+                    <p className="text-xs text-gray-600 mt-1">
+                      {isBlurEnabled ? 'Blur is active' : 'Click to apply blur'}
+                    </p>
                   </div>
+                  <button
+                    onClick={() => {
+                      const newState = !isBlurEnabled;
+                      setIsBlurEnabled(newState);
+                      if (newState) {
+                        // Apply blur
+                        handleBlurChange(blurIntensity);
+                      } else {
+                        // Remove blur (go back to transparent)
+                        setCurrentBackground('transparent');
+                        processImage();
+                      }
+                    }}
+                    className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
+                      isBlurEnabled ? 'bg-blue-600' : 'bg-gray-300'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                        isBlurEnabled ? 'translate-x-7' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
                 </div>
+
+                {/* Blur Intensity Slider - Only show when blur is enabled */}
+                {isBlurEnabled && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Blur Intensity: {blurIntensity}
+                    </label>
+                    <input
+                      type="range"
+                      min="1"
+                      max="100"
+                      value={blurIntensity}
+                      onChange={(e) => handleBlurChange(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500 mt-2">
+                      <span>Light</span>
+                      <span>Strong</span>
+                    </div>
+                  </div>
+                )}
 
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <p className="text-sm text-blue-900">

@@ -47,26 +47,21 @@ class BackgroundRemover:
             img_array = np.array(image.convert('RGB'))
             hsv = cv2.cvtColor(img_array, cv2.COLOR_RGB2HSV)
 
-            # Multiple skin tone ranges to detect diverse skin tones
-            # Range 1: Lighter skin tones
-            lower_skin1 = np.array([0, 20, 70], dtype=np.uint8)
+            # More strict skin tone ranges to avoid false positives (cars, objects)
+            # Range 1: Primary skin tone range (most accurate)
+            lower_skin1 = np.array([0, 25, 80], dtype=np.uint8)
             upper_skin1 = np.array([20, 255, 255], dtype=np.uint8)
 
-            # Range 2: Medium to darker skin tones
-            lower_skin2 = np.array([0, 10, 60], dtype=np.uint8)
-            upper_skin2 = np.array([25, 170, 255], dtype=np.uint8)
-
-            # Range 3: Very light skin tones
-            lower_skin3 = np.array([0, 15, 80], dtype=np.uint8)
-            upper_skin3 = np.array([25, 255, 255], dtype=np.uint8)
+            # Range 2: Darker skin tones
+            lower_skin2 = np.array([0, 20, 50], dtype=np.uint8)
+            upper_skin2 = np.array([15, 150, 200], dtype=np.uint8)
 
             # Create masks for each skin tone range
             mask1 = cv2.inRange(hsv, lower_skin1, upper_skin1)
             mask2 = cv2.inRange(hsv, lower_skin2, upper_skin2)
-            mask3 = cv2.inRange(hsv, lower_skin3, upper_skin3)
 
-            # Combine all masks
-            skin_mask = cv2.bitwise_or(mask1, cv2.bitwise_or(mask2, mask3))
+            # Combine masks
+            skin_mask = cv2.bitwise_or(mask1, mask2)
 
             # Calculate skin percentage
             total_pixels = skin_mask.size
@@ -77,21 +72,42 @@ class BackgroundRemover:
             width, height = image.size
             aspect_ratio = width / height
 
-            # Detection logic:
-            # 1. If significant skin tone detected (>3%) -> likely human
-            # 2. If moderate skin (1-3%) AND portrait/square ratio -> likely human
-            # 3. Otherwise -> object/car
+            # Additional check: Calculate color saturation
+            # Cars and objects typically have higher saturation than skin
+            s_channel = hsv[:, :, 1]
+            avg_saturation = np.mean(s_channel)
 
-            if skin_percentage > 3.0:
+            # Detection logic with stricter thresholds:
+            # 1. Need HIGHER skin percentage (>8%) for definite human
+            # 2. Portrait ratio + moderate skin (>5%) + low saturation
+            # 3. Otherwise -> object/car (default to isnet-general-use)
+
+            print(f"[Detection] Skin: {skin_percentage:.2f}%, Ratio: {aspect_ratio:.2f}, Sat: {avg_saturation:.2f}")
+
+            # EXTREMELY strict detection - default to object model for cars/objects
+            # Cars often have orange/red colors that can be misidentified as skin
+            # Only very clear human images should use u2net_human_seg
+
+            # For definite human: need high skin + low saturation + reasonable aspect ratio
+            if (skin_percentage > 15.0 and
+                avg_saturation < 80 and
+                0.4 < aspect_ratio < 2.5):
+                print("[Detection] -> HUMAN detected (u2net_human_seg)")
                 return True
-            elif skin_percentage > 1.0 and 0.4 < aspect_ratio < 2.0:
+            # For likely human: very specific conditions
+            elif (skin_percentage > 20.0 and
+                  avg_saturation < 100 and
+                  0.5 < aspect_ratio < 2.0):
+                print("[Detection] -> HUMAN detected (u2net_human_seg)")
                 return True
             else:
+                # Default to object model for everything else (cars, products, etc.)
+                print("[Detection] -> OBJECT/CAR detected (isnet-general-use)")
                 return False
 
         except Exception as e:
-            # On error, default to object model (safer)
-            print(f"Human detection error: {e}, defaulting to object model")
+            # On error, default to object model (safer for cars/objects)
+            print(f"[Detection] Error: {e}, defaulting to OBJECT model (isnet-general-use)")
             return False
 
     @staticmethod
@@ -122,19 +138,13 @@ class BackgroundRemover:
             input_image = Image.open(input_path).convert("RGBA")
             original_size = input_image.size
 
-            # Intelligent model selection based on subject detection
-            is_human = BackgroundRemover._detect_human(input_image)
+            # Use ONLY isnet-general-use model for everything
+            session = BackgroundRemover._get_object_session()
+            model_used = "isnet-general-use"
 
-            if is_human:
-                # Use u2net_human_seg for humans (better accuracy for people)
-                session = BackgroundRemover._get_human_session()
-                model_used = "u2net_human_seg"
-            else:
-                # Use isnet-general-use for objects/cars
-                session = BackgroundRemover._get_object_session()
-                model_used = "isnet-general-use"
+            print(f"[Model] Using isnet-general-use for all images")
 
-            # Remove background with selected model
+            # Remove background with isnet-general-use model
             output_image = remove(input_image, session=session)
 
             # Apply edge refinement if requested
@@ -261,11 +271,11 @@ class BackgroundRemover:
             # Open and process
             input_image = Image.open(input_path).convert("RGBA")
 
-            # Intelligent model selection
-            is_human = BackgroundRemover._detect_human(input_image)
-            session = BackgroundRemover._get_human_session() if is_human else BackgroundRemover._get_object_session()
+            # Use ONLY isnet-general-use model
+            session = BackgroundRemover._get_object_session()
+            print(f"[Model] Using isnet-general-use for blur background")
 
-            # Remove background with auto-selected model
+            # Remove background with isnet-general-use model
             foreground = remove(input_image, session=session)
 
             # Extract alpha mask
@@ -309,10 +319,10 @@ class BackgroundRemover:
             output_format: Output format
         """
         try:
-            # Load foreground and remove background with intelligent model selection
+            # Load foreground and remove background with isnet-general-use model
             foreground_img = Image.open(foreground_path).convert("RGBA")
-            is_human = BackgroundRemover._detect_human(foreground_img)
-            session = BackgroundRemover._get_human_session() if is_human else BackgroundRemover._get_object_session()
+            session = BackgroundRemover._get_object_session()
+            print(f"[Model] Using isnet-general-use for replace background")
             foreground = remove(foreground_img, session=session)
 
             # Load and resize background to match foreground
@@ -361,10 +371,10 @@ class BackgroundRemover:
             output_format: Output format
         """
         try:
-            # Remove background with intelligent model selection
+            # Remove background with isnet-general-use model
             input_image = Image.open(input_path).convert("RGBA")
-            is_human = BackgroundRemover._detect_human(input_image)
-            session = BackgroundRemover._get_human_session() if is_human else BackgroundRemover._get_object_session()
+            session = BackgroundRemover._get_object_session()
+            print(f"[Model] Using isnet-general-use for gradient background")
             foreground = remove(input_image, session=session)
 
             # Create gradient background
