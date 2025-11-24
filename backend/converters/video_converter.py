@@ -12,40 +12,55 @@ import json
 
 logger = logging.getLogger(__name__)
 
+# Global to store the working FFmpeg path
+FFMPEG_PATH = 'ffmpeg'
+FFPROBE_PATH = 'ffprobe'
+
 def check_ffmpeg():
     """Check if FFmpeg is installed and accessible with detailed logging"""
-    try:
-        print("Checking FFmpeg installation...")
-        result = subprocess.run(
-            ['ffmpeg', '-version'], 
-            capture_output=True, 
-            text=True, 
-            timeout=10,
-            creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
-        )
-        
-        if result.returncode == 0:
-            version_line = result.stdout.split('\n')[0] if result.stdout else "Unknown"
-            print(f"[OK] FFmpeg found: {version_line}")
-            logger.info(f"FFmpeg available: {version_line}")
-            return True
-        else:
-            print(f"[FAILED] FFmpeg failed with return code: {result.returncode}")
-            logger.error(f"FFmpeg check failed: {result.stderr}")
-            return False
-            
-    except subprocess.TimeoutExpired:
-        print("[FAILED] FFmpeg check timed out")
-        logger.error("FFmpeg check timed out")
-        return False
-    except FileNotFoundError:
-        print("[FAILED] FFmpeg not found in system PATH")
-        logger.error("FFmpeg not found in PATH")
-        return False
-    except Exception as e:
-        print(f"[FAILED] FFmpeg check error: {str(e)}")
-        logger.error(f"FFmpeg check error: {str(e)}")
-        return False
+    global FFMPEG_PATH, FFPROBE_PATH
+
+    # Common FFmpeg installation paths on Windows
+    ffmpeg_paths = [
+        'ffmpeg',  # System PATH
+        r'C:\ffmpeg\bin\ffmpeg.exe',
+        r'C:\Program Files\ffmpeg\bin\ffmpeg.exe',
+        r'C:\Program Files (x86)\ffmpeg\bin\ffmpeg.exe',
+        os.path.expanduser(r'~\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe'),  # winget
+        os.path.expanduser(r'~\scoop\shims\ffmpeg.exe'),  # scoop
+        r'C:\tools\ffmpeg\bin\ffmpeg.exe',  # chocolatey
+    ]
+
+    print("Checking FFmpeg installation...")
+
+    for ffmpeg_path in ffmpeg_paths:
+        try:
+            result = subprocess.run(
+                [ffmpeg_path, '-version'],
+                capture_output=True,
+                text=True,
+                timeout=10,
+                creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
+            )
+
+            if result.returncode == 0:
+                version_line = result.stdout.split('\n')[0] if result.stdout else "Unknown"
+                print(f"[OK] FFmpeg found at {ffmpeg_path}: {version_line}")
+                logger.info(f"FFmpeg available at {ffmpeg_path}: {version_line}")
+                FFMPEG_PATH = ffmpeg_path
+                # Set ffprobe path based on ffmpeg path
+                if ffmpeg_path == 'ffmpeg':
+                    FFPROBE_PATH = 'ffprobe'
+                else:
+                    FFPROBE_PATH = ffmpeg_path.replace('ffmpeg', 'ffprobe')
+                return True
+
+        except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+            continue
+
+    print("[FAILED] FFmpeg not found in system PATH or common locations")
+    logger.error("FFmpeg not found in PATH or common locations")
+    return False
 
 FFMPEG_AVAILABLE = check_ffmpeg()
 
@@ -97,7 +112,7 @@ async def convert_video(input_path: str, output_path: str, target_format: str,
         }
         
         # Build FFmpeg command
-        cmd = ["ffmpeg", "-y", "-i", input_path]
+        cmd = [FFMPEG_PATH, "-y", "-i", input_path]
         
         # Add quality settings
         if quality in quality_settings:
@@ -216,7 +231,7 @@ async def get_video_info(input_path: str) -> Optional[dict]:
     
     try:
         cmd = [
-            "ffprobe", "-v", "quiet", "-print_format", "json", 
+            FFPROBE_PATH, "-v", "quiet", "-print_format", "json",
             "-show_format", "-show_streams", input_path
         ]
         

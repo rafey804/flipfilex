@@ -191,34 +191,41 @@ PYDUB_AVAILABLE = importlib.util.find_spec("pydub") is not None
 # ADDED: Better FFmpeg detection
 def detect_ffmpeg():
     """Detect FFmpeg installation with comprehensive checking"""
-    try:
-        # Try running ffmpeg -version
-        result = subprocess.run(
-            ['ffmpeg', '-version'], 
-            capture_output=True, 
-            text=True, 
-            timeout=10,
-            creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
-        )
-        
-        if result.returncode == 0:
-            # Extract version info
-            version_info = result.stdout.split('\n')[0] if result.stdout else "Unknown version"
-            print(f"[OK] FFmpeg detected: {version_info}")
-            return True, version_info
-        else:
-            print(f"[FAILED] FFmpeg check failed with return code {result.returncode}")
-            return False, None
-            
-    except subprocess.TimeoutExpired:
-        print("[FAILED] FFmpeg detection timed out")
-        return False, None
-    except FileNotFoundError:
-        print("[FAILED] FFmpeg not found in system PATH")
-        return False, None
-    except Exception as e:
-        print(f"[FAILED] FFmpeg detection error: {str(e)}")
-        return False, None
+    import os
+
+    # Common FFmpeg installation paths on Windows
+    ffmpeg_paths = [
+        'ffmpeg',  # System PATH
+        r'C:\ffmpeg\bin\ffmpeg.exe',
+        r'C:\Program Files\ffmpeg\bin\ffmpeg.exe',
+        r'C:\Program Files (x86)\ffmpeg\bin\ffmpeg.exe',
+        os.path.expanduser(r'~\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe'),  # winget
+        os.path.expanduser(r'~\scoop\shims\ffmpeg.exe'),  # scoop
+        r'C:\tools\ffmpeg\bin\ffmpeg.exe',  # chocolatey
+    ]
+
+    for ffmpeg_path in ffmpeg_paths:
+        try:
+            # Try running ffmpeg -version
+            result = subprocess.run(
+                [ffmpeg_path, '-version'],
+                capture_output=True,
+                text=True,
+                timeout=10,
+                creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
+            )
+
+            if result.returncode == 0:
+                # Extract version info
+                version_info = result.stdout.split('\n')[0] if result.stdout else "Unknown version"
+                print(f"[OK] FFmpeg detected at {ffmpeg_path}: {version_info}")
+                return True, version_info
+
+        except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+            continue
+
+    print("[FAILED] FFmpeg not found in system PATH or common locations")
+    return False, None
 
 FFMPEG_AVAILABLE, FFMPEG_VERSION = detect_ffmpeg()
 
@@ -226,8 +233,9 @@ FFMPEG_AVAILABLE, FFMPEG_VERSION = detect_ffmpeg()
 def find_poppler_path():
     """Find poppler installation path"""
     possible_paths = [
+        r"C:\poppler\poppler-24.08.0\Library\bin",  # New installation
         r"C:\poppler\Library\bin",
-        r"C:\poppler-windows\Library\bin", 
+        r"C:\poppler-windows\Library\bin",
         r"C:\Program Files\poppler\bin",
         r"C:\Program Files (x86)\poppler\bin",
         r"C:\poppler\bin",

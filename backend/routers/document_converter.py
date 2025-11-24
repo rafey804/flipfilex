@@ -11,8 +11,8 @@ from utils.config import UPLOAD_DIR
 from utils.helpers import generate_unique_filename, check_rate_limit, write_file
 from utils.dependencies import cleanup_old_files
 from converters.document_converter import (
-    excel_to_pdf, powerpoint_to_pdf, text_to_pdf, 
-    html_to_pdf, csv_to_excel, json_to_csv,
+    word_to_pdf, excel_to_pdf, powerpoint_to_pdf, text_to_pdf, pdf_to_text, pdf_to_word,
+    html_to_pdf, csv_to_excel, json_to_csv, word_to_html,
     LIBREOFFICE_AVAILABLE, SUPPORTED_DOCUMENT_FORMATS
 )
 
@@ -48,19 +48,27 @@ async def process_document_conversion(conversion_id: str, input_path: str, outpu
         
         # Run the actual conversion based on type
         success = False
-        
-        if conversion_type == 'excel_to_pdf':
+
+        if conversion_type == 'word_to_pdf':
+            success = await word_to_pdf(input_path, output_path)
+        elif conversion_type == 'excel_to_pdf':
             success = await excel_to_pdf(input_path, output_path)
         elif conversion_type == 'powerpoint_to_pdf':
             success = await powerpoint_to_pdf(input_path, output_path)
         elif conversion_type == 'text_to_pdf':
             success = await text_to_pdf(input_path, output_path)
+        elif conversion_type == 'pdf_to_text':
+            success = await pdf_to_text(input_path, output_path)
+        elif conversion_type == 'pdf_to_word':
+            success = await pdf_to_word(input_path, output_path)
         elif conversion_type == 'html_to_pdf':
             success = await html_to_pdf(input_path, output_path)
         elif conversion_type == 'csv_to_excel':
             success = await csv_to_excel(input_path, output_path)
         elif conversion_type == 'json_to_csv':
             success = await json_to_csv(input_path, output_path)
+        elif conversion_type == 'word_to_html':
+            success = await word_to_html(input_path, output_path)
         
         if success:
             if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
@@ -136,10 +144,11 @@ async def convert_document_endpoint(
         )
     
     # Check LibreOffice requirement for office documents
+    # Note: word_to_pdf now works without LibreOffice using pure Python
     if conversion_type in ['excel_to_pdf', 'powerpoint_to_pdf'] and not LIBREOFFICE_AVAILABLE:
         raise HTTPException(
-            status_code=503, 
-            detail="LibreOffice not available. Please install LibreOffice to enable office document conversion."
+            status_code=503,
+            detail="LibreOffice not available. Please install LibreOffice to enable Excel/PowerPoint conversion."
         )
     
     # Validate file size

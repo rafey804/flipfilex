@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Converter - Direct API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .upload-box {
+            border: 2px dashed #ccc;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:disabled {
+            background: #ccc;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Direct API Converter Test</h1>
+    <p>This page directly tests the backend API without Next.js</p>
+
+    <div class="upload-box">
+        <input type="file" id="fileInput" accept="image/*">
+        <br><br>
+        <label>
+            Target Format:
+            <select id="targetFormat">
+                <option value="jpg">JPG</option>
+                <option value="png">PNG</option>
+                <option value="webp">WebP</option>
+                <option value="avif">AVIF</option>
+                <option value="heic">HEIC</option>
+                <option value="gif">GIF</option>
+                <option value="bmp">BMP</option>
+            </select>
+        </label>
+        <br><br>
+        <button onclick="convertFile()" id="convertBtn">Convert File</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        async function convertFile() {
+            const fileInput = document.getElementById('fileInput');
+            const targetFormat = document.getElementById('targetFormat').value;
+            const resultDiv = document.getElementById('result');
+            const btn = document.getElementById('convertBtn');
+
+            if (!fileInput.files || !fileInput.files[0]) {
+                resultDiv.innerHTML = '<p class="error">Please select a file first!</p>';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            btn.disabled = true;
+            resultDiv.innerHTML = '<p>Converting... Please wait...</p>';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('target_format', targetFormat);
+
+                console.log('Sending request to:', 'http://localhost:8000/convert/convert-image');
+                console.log('File:', file.name);
+                console.log('Target format:', targetFormat);
+
+                const response = await fetch('http://localhost:8000/convert/convert-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (response.ok) {
+                    const downloadUrl = `http://localhost:8000${data.download_url}`;
+                    resultDiv.innerHTML = `
+                        <p class="success">${data.message}</p>
+                        <p><strong>Filename:</strong> ${data.filename}</p>
+                        <p><strong>Download URL:</strong> ${downloadUrl}</p>
+                        <p><a href="${downloadUrl}" download><button>Download Converted File</button></a></p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<p class="error">Error: ${data.detail || 'Conversion failed'}</p>`;
+                }
+            } catch (error) {
+                console.error('Conversion error:', error);
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

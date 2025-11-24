@@ -13,9 +13,23 @@ async def convert_image(input_path: str, output_path: str, target_format: str) -
     if not PIL_AVAILABLE:
         print("PIL/Pillow not available")
         return False
-    
+
     try:
         from PIL import Image
+
+        # Register AVIF and HEIF plugins at the start
+        try:
+            import pillow_avif
+            print("AVIF plugin loaded")
+        except ImportError:
+            print("AVIF plugin not available")
+
+        try:
+            import pillow_heif
+            pillow_heif.register_heif_opener()
+            print("HEIF plugin registered")
+        except ImportError:
+            print("HEIF plugin not available")
         
         # Handle PDF input (requires pdf2image)
         if input_path.lower().endswith('.pdf'):
@@ -61,99 +75,221 @@ async def convert_image(input_path: str, output_path: str, target_format: str) -
                 print(f"PDF processing error: {e}")
                 return False
         
-        # Handle SVG input - use multiple methods for best compatibility
+        # Handle SVG input - Canvas based rendering with proper dimensions
         elif input_path.lower().endswith('.svg'):
-            svg_converted = False
-
-            # Method 1: Try cairosvg first (best for web SVGs, preserves transparency)
             try:
-                import cairosvg
+                from html2image import Html2Image
+                import tempfile
+                import shutil
+                from lxml import etree
+                import base64
 
-                # Convert SVG to PNG bytes with transparency preserved
-                png_bytes = cairosvg.svg2png(url=input_path, dpi=300)
-                img = Image.open(io.BytesIO(png_bytes))
-                print(f"Converted SVG using cairosvg: {img.size} pixels")
-                svg_converted = True
+                print(f"Converting SVG file: {input_path}")
 
-            except ImportError:
-                print("cairosvg not installed - trying alternative methods")
-            except Exception as cairo_error:
-                print(f"cairosvg conversion failed: {cairo_error}")
+                # Read SVG content
+                with open(input_path, 'r', encoding='utf-8') as f:
+                    svg_content = f.read()
 
-            # Method 2: Try svglib + reportlab (good for standard SVGs)
-            if not svg_converted:
+                # Parse SVG to get exact dimensions from viewBox
                 try:
-                    from svglib.svglib import svg2rlg
-                    from reportlab.graphics import renderPM
+                    root = etree.fromstring(svg_content.encode('utf-8'))
 
-                    # Convert SVG to ReportLab drawing
-                    drawing = svg2rlg(input_path)
-                    if drawing:
-                        # Render to PNG bytes
-                        png_bytes = renderPM.drawToString(drawing, fmt='PNG', dpi=300)
-                        img = Image.open(io.BytesIO(png_bytes))
-                        print(f"Converted SVG using svglib: {img.size} pixels")
-                        svg_converted = True
+                    # Get viewBox - this is the most reliable source
+                    viewbox = root.get('viewBox')
+                    svg_width = root.get('width')
+                    svg_height = root.get('height')
 
-                except ImportError:
-                    print("svglib not installed - trying alternative methods")
-                except Exception as svglib_error:
-                    print(f"svglib conversion failed: {svglib_error}")
+                    vb_width, vb_height = None, None
 
-            # Method 3: Try Wand/ImageMagick (most reliable on Windows)
-            if not svg_converted:
+                    if viewbox:
+                        parts = viewbox.split()
+                        if len(parts) >= 4:
+                            vb_width = float(parts[2])
+                            vb_height = float(parts[3])
+
+                    # Parse width/height attributes
+                    def parse_dim(val):
+                        if not val or '%' in str(val):
+                            return None
+                        num = ''.join(c for c in str(val) if c.isdigit() or c == '.')
+                        return float(num) if num else None
+
+                    # Get original dimensions
+                    orig_w = parse_dim(svg_width) or vb_width or 800
+                    orig_h = parse_dim(svg_height) or vb_height or 600
+
+                    # Calculate aspect ratio
+                    aspect_ratio = orig_w / orig_h
+
+                    # Set minimum width for high quality (1920px)
+                    min_width = 1920
+
+                    # Calculate final dimensions maintaining aspect ratio
+                    if orig_w >= min_width:
+                        width = int(orig_w)
+                        height = int(orig_h)
+                    else:
+                        width = min_width
+                        height = int(min_width / aspect_ratio)
+
+                    print(f"Original SVG: {orig_w}x{orig_h}, Output: {width}x{height}")
+
+                except Exception as e:
+                    print(f"Could not parse SVG: {e}")
+                    width, height = 1920, 1080
+
+                # Create temp directory
+                temp_dir = tempfile.mkdtemp()
+
                 try:
-                    from wand.image import Image as WandImage
-                    from wand.color import Color
+                    # Convert SVG to base64 data URL
+                    svg_base64 = base64.b64encode(svg_content.encode('utf-8')).decode('utf-8')
+                    svg_data_url = f"data:image/svg+xml;base64,{svg_base64}"
 
-                    # Set ImageMagick path for Windows
-                    import os as os_module
-                    imagemagick_paths = [
-                        r'C:\Program Files\ImageMagick-7.1.2-Q16-HDRI',
-                        r'C:\Program Files\ImageMagick-7.1.1-Q16-HDRI',
-                        r'C:\Program Files\ImageMagick-7.1.0-Q16-HDRI',
-                        r'C:\Program Files\ImageMagick-7.0.11-Q16-HDRI',
-                    ]
+                    # Create HTML - canvas matches SVG natural dimensions exactly
+                    html_file = os.path.join(temp_dir, 'render.html')
+                    html_content = f'''<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {{ margin: 0; padding: 0; }}
+        html, body {{
+            overflow: hidden;
+            background: #FFFFFF;
+        }}
+        canvas {{
+            display: block;
+            background: #FFFFFF;
+        }}
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        (function() {{
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            var img = new Image();
 
-                    # Find ImageMagick installation
-                    magick_home = None
-                    for path in imagemagick_paths:
-                        if os_module.path.exists(path):
-                            magick_home = path
-                            break
+            img.onload = function() {{
+                // Get natural dimensions
+                var naturalWidth = img.naturalWidth || img.width;
+                var naturalHeight = img.naturalHeight || img.height;
 
-                    if magick_home:
-                        os_module.environ['MAGICK_HOME'] = magick_home
-                        print(f"Using ImageMagick from: {magick_home}")
+                // HD UPSCALING: Scale factor for high quality output
+                var scaleFactor = 4;
 
-                    # Read SVG with high resolution for better quality
-                    with WandImage(filename=input_path, resolution=300) as wand_img:
-                        # Set transparent background to properly render SVG
-                        wand_img.background_color = Color('transparent')
+                // Calculate HD dimensions
+                var hdWidth = naturalWidth * scaleFactor;
+                var hdHeight = naturalHeight * scaleFactor;
 
-                        # Flatten the image to remove any transparency issues
-                        # This ensures the SVG content is visible
-                        with Image.new('RGBA', (wand_img.width, wand_img.height), (255, 255, 255, 0)) as base:
-                            # Convert wand image to PIL
-                            wand_img.format = 'png'
-                            png_blob = wand_img.make_blob()
-                            img = Image.open(io.BytesIO(png_blob))
+                // Set canvas to HD dimensions
+                canvas.width = hdWidth;
+                canvas.height = hdHeight;
 
-                            # Ensure it's in RGBA mode
-                            if img.mode != 'RGBA':
-                                img = img.convert('RGBA')
+                // Update body/html size to match
+                document.body.style.width = hdWidth + 'px';
+                document.body.style.height = hdHeight + 'px';
+                document.documentElement.style.width = hdWidth + 'px';
+                document.documentElement.style.height = hdHeight + 'px';
 
-                            print(f"Converted SVG using Wand/ImageMagick: {img.size} pixels")
-                            svg_converted = True
+                // Enable high quality rendering
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
 
-                except ImportError:
-                    print("Wand not installed")
-                except Exception as wand_error:
-                    print(f"Wand conversion failed: {wand_error}")
+                // Fill canvas with WHITE background
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            if not svg_converted:
-                print("SVG conversion failed - please install cairosvg, svglib, or wand for SVG support")
-                print("Install with: pip install cairosvg OR pip install svglib reportlab OR pip install wand")
+                // Draw image at HD scale
+                ctx.drawImage(img, 0, 0, hdWidth, hdHeight);
+
+                // Mark as ready with actual dimensions
+                document.body.setAttribute('data-ready', 'true');
+                document.body.setAttribute('data-width', hdWidth);
+                document.body.setAttribute('data-height', hdHeight);
+            }};
+
+            img.onerror = function() {{
+                canvas.width = {width};
+                canvas.height = {height};
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                document.body.setAttribute('data-ready', 'error');
+            }};
+
+            img.src = "{svg_data_url}";
+        }})();
+    </script>
+</body>
+</html>'''
+
+                    with open(html_file, 'w', encoding='utf-8') as f:
+                        f.write(html_content)
+
+                    # Render using html2image with large viewport for HD output
+                    output_name = 'output.png'
+                    # 4x scale factor means we need larger viewport
+                    max_size = 8000  # Large enough for 4x scaled SVG
+
+                    hti = Html2Image(
+                        output_path=temp_dir,
+                        size=(max_size, max_size),
+                        custom_flags=['--default-background-color=FFFFFF', '--hide-scrollbars', '--force-device-scale-factor=1']
+                    )
+
+                    # Use file URL
+                    file_url = f'file:///{html_file.replace(os.sep, "/")}'
+                    hti.screenshot(url=file_url, save_as=output_name)
+
+                    # Load result
+                    rendered_path = os.path.join(temp_dir, output_name)
+                    if os.path.exists(rendered_path):
+                        img = Image.open(rendered_path)
+                        img.load()
+
+                        # Auto-crop to remove extra white space from large viewport
+                        from PIL import ImageOps
+
+                        # Convert to RGB first for processing
+                        if img.mode == 'RGBA':
+                            bg = Image.new('RGB', img.size, (255, 255, 255))
+                            bg.paste(img, mask=img.split()[3])
+                            img = bg
+                        elif img.mode != 'RGB':
+                            img = img.convert('RGB')
+
+                        # Find content bounds
+                        gray = img.convert('L')
+                        inverted = ImageOps.invert(gray)
+                        bbox = inverted.getbbox()
+
+                        if bbox:
+                            # Crop to content with small padding
+                            pad = 5
+                            bbox = (
+                                max(0, bbox[0] - pad),
+                                max(0, bbox[1] - pad),
+                                min(img.width, bbox[2] + pad),
+                                min(img.height, bbox[3] + pad)
+                            )
+                            img = img.crop(bbox)
+
+                        print(f"SVG converted: {img.size} pixels")
+                    else:
+                        print("ERROR: Failed to render SVG")
+                        return False
+
+                finally:
+                    shutil.rmtree(temp_dir, ignore_errors=True)
+
+            except ImportError as e:
+                print(f"ERROR: {e}")
+                return False
+            except Exception as svg_error:
+                print(f"ERROR: SVG conversion failed: {svg_error}")
+                import traceback
+                traceback.print_exc()
                 return False
         
         # Handle HEIC input (requires pillow-heif)

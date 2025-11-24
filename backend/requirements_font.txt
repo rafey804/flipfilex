@@ -1,0 +1,11 @@
+# Font Conversion Dependencies
+# Install with: pip install -r requirements_font.txt
+
+# Core font manipulation library
+fonttools>=4.38.0
+
+# WOFF2 compression support
+brotli>=1.0.9
+
+# Better compression (optional but recommended)
+zopfli>=0.2.2

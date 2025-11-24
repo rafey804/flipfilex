@@ -31,7 +31,7 @@ except (subprocess.TimeoutExpired, subprocess.CalledProcessError, FileNotFoundEr
 # Supported font formats
 SUPPORTED_FONT_FORMATS = {
     'input': ['ttf', 'otf', 'woff', 'woff2', 'eot', 'svg', 'ps1'],
-    'output': ['ttf', 'otf', 'woff', 'woff2', 'eot', 'svg']
+    'output': ['ttf', 'otf', 'woff', 'woff2']  # EOT and SVG conversion not supported
 }
 
 
@@ -169,51 +169,77 @@ class FontConverter:
 
     async def _convert_to_woff2(self, input_path: str, output_path: str,
                                input_format: str) -> Dict[str, Any]:
-        """Convert font to WOFF2 format"""
+        """Convert font to WOFF2 format using fontTools"""
         try:
-            if not WOFF2_TOOLS_AVAILABLE:
+            if not FONTTOOLS_AVAILABLE:
                 return {
                     'success': False,
-                    'error': 'WOFF2 tools not available'
+                    'error': 'fontTools not available for WOFF2 conversion'
                 }
 
-            # For WOFF2, we need TTF/OTF as intermediate
-            if input_format in ['woff', 'woff2']:
-                # First decompress to TTF
-                temp_ttf = tempfile.mktemp(suffix='.ttf')
-                self.temp_files.append(temp_ttf)
+            # Try using fontTools with brotli (pure Python solution)
+            try:
+                # Load font
+                font = TTFont(input_path)
 
-                if input_format == 'woff2':
-                    # Decompress WOFF2 to TTF
+                # Save as WOFF2 (fontTools handles compression with brotli)
+                font.flavor = 'woff2'
+                font.save(output_path)
+
+                return {
+                    'success': True,
+                    'input_format': input_format,
+                    'output_format': 'woff2',
+                    'conversion_method': 'fonttools_brotli'
+                }
+
+            except Exception as fonttools_error:
+                logger.warning(f"fontTools WOFF2 conversion failed: {fonttools_error}")
+
+                # Fallback: Try system woff2_compress if available
+                if WOFF2_TOOLS_AVAILABLE:
+                    # For WOFF2, we need TTF/OTF as intermediate
+                    if input_format in ['woff', 'woff2']:
+                        # First decompress to TTF
+                        temp_ttf = tempfile.mktemp(suffix='.ttf')
+                        self.temp_files.append(temp_ttf)
+
+                        if input_format == 'woff2':
+                            # Decompress WOFF2 to TTF
+                            result = subprocess.run([
+                                'woff2_decompress', input_path, temp_ttf
+                            ], capture_output=True, text=True, timeout=30)
+
+                            if result.returncode != 0:
+                                return {
+                                    'success': False,
+                                    'error': f'WOFF2 decompression failed: {result.stderr}'
+                                }
+
+                            input_path = temp_ttf
+
+                    # Convert to WOFF2
                     result = subprocess.run([
-                        'woff2_decompress', input_path, temp_ttf
+                        'woff2_compress', input_path, output_path
                     ], capture_output=True, text=True, timeout=30)
 
                     if result.returncode != 0:
                         return {
                             'success': False,
-                            'error': f'WOFF2 decompression failed: {result.stderr}'
+                            'error': f'WOFF2 compression failed: {result.stderr}'
                         }
 
-                    input_path = temp_ttf
-
-            # Convert to WOFF2
-            result = subprocess.run([
-                'woff2_compress', input_path, output_path
-            ], capture_output=True, text=True, timeout=30)
-
-            if result.returncode != 0:
-                return {
-                    'success': False,
-                    'error': f'WOFF2 compression failed: {result.stderr}'
-                }
-
-            return {
-                'success': True,
-                'input_format': input_format,
-                'output_format': 'woff2',
-                'conversion_method': 'woff2_compress'
-            }
+                    return {
+                        'success': True,
+                        'input_format': input_format,
+                        'output_format': 'woff2',
+                        'conversion_method': 'woff2_compress'
+                    }
+                else:
+                    return {
+                        'success': False,
+                        'error': f'WOFF2 conversion requires brotli library. Install with: pip install brotli'
+                    }
 
         except subprocess.TimeoutExpired:
             return {
@@ -239,7 +265,8 @@ class FontConverter:
             # Load font
             font = TTFont(input_path)
 
-            # Save as WOFF
+            # Set flavor to WOFF and save
+            font.flavor = 'woff'
             font.save(output_path)
 
             return {
@@ -279,6 +306,9 @@ class FontConverter:
 
             # Load font
             font = TTFont(input_path)
+
+            # Remove flavor to save as uncompressed TTF/OTF
+            font.flavor = None
 
             # Save in target format
             font.save(output_path)

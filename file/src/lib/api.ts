@@ -1,4 +1,5 @@
 // lib/api.ts - CORRECTED API service with proper SVG format validation
+// Updated: 2025-11-14 12:30 - Fixed document conversion polling
 import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -122,6 +123,52 @@ apiClient.interceptors.response.use(
 );
 
 type ProgressCallback = (progress: UploadProgress) => void;
+
+// Helper function to poll document conversion progress
+async function pollDocumentConversion(progressUrl: string, maxAttempts: number = 120): Promise<ConversionResponse> {
+  console.log('🔄 Starting to poll document conversion...');
+  console.log('Progress URL:', progressUrl);
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+
+    try {
+      const response = await apiClient.get<any>(progressUrl);
+      const { status, download_url, message } = response.data;
+
+      console.log(`📊 Poll attempt ${attempt}/${maxAttempts}: status=${status}`);
+
+      if (status === 'completed') {
+        console.log('✅ Document conversion completed!');
+        console.log('Download URL:', download_url);
+
+        const filename = download_url?.split('/').pop()?.split('?')[0] || 'converted-file.pdf';
+
+        return {
+          message: message || 'Conversion completed',
+          download_url: download_url,
+          filename: filename
+        };
+      } else if (status === 'error' || status === 'failed') {
+        const errorMsg = message || 'Conversion failed';
+        console.error('❌ Conversion failed:', errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      // Still processing, continue polling
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        throw new Error('Conversion not found. It may have expired.');
+      }
+      // If it's not a 404, and it's not our custom error, rethrow
+      if (error.message && !error.response) {
+        throw error;
+      }
+    }
+  }
+
+  throw new Error('Conversion timeout - please try again with a smaller file');
+}
 
 export class ApiService {
   
@@ -1216,6 +1263,226 @@ export class ApiService {
     }
   }
 
+  // GENERIC CONVERT FILE METHOD (for ConverterPageTemplate)
+  static async convertFile(
+    file: File,
+    targetFormat: string,
+    onProgress?: ProgressCallback
+  ): Promise<ConversionResponse> {
+    // Determine category based on file extension
+    const fileExtension = file.name.split('.').pop()?.toLowerCase() || '';
+
+    // Image formats
+    const imageFormats = ['avif', 'webp', 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'ico', 'heic', 'svg', 'psd', 'pcx'];
+    // Video formats
+    const videoFormats = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'wmv', 'flv', 'mpeg', 'mpg', 'h264', 'h265'];
+    // Audio formats
+    const audioFormats = ['wav', 'mp3', 'aac', 'm4a', 'ogg', 'opus', 'wma', 'flac', 'aiff'];
+    // Document formats
+    const documentFormats = ['pdf', 'docx', 'doc', 'txt', 'rtf', 'odt', 'html', 'htm', 'epub', 'mobi', 'markdown', 'md', 'latex', 'tex', 'xlsx', 'xls', 'xlsm', 'pptx', 'ppt', 'pptm', 'csv', 'json'];
+    // Font formats
+    const fontFormats = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
+
+    // Special handling for PDF: check target format to determine route
+    if (fileExtension === 'pdf') {
+      // If converting PDF to image format, use image converter
+      if (imageFormats.includes(targetFormat)) {
+        return this.convertImage(file, targetFormat, onProgress);
+      }
+      // Otherwise, treat as document conversion (PDF to text, PDF to word, etc.)
+      // Will be handled in documentFormats section below
+    }
+
+    if (imageFormats.includes(fileExtension)) {
+      return this.convertImage(file, targetFormat, onProgress);
+    } else if (videoFormats.includes(fileExtension)) {
+      return this.convertVideo(file, targetFormat, 'medium', onProgress);
+    } else if (audioFormats.includes(fileExtension)) {
+      // For audio, use generic conversion endpoint
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('target_format', targetFormat);
+
+      const requestConfig: RequestConfig = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 300000,
+      };
+
+      if (onProgress) {
+        requestConfig.onUploadProgress = (event: any) => {
+          if (event.total) {
+            const progress: UploadProgress = {
+              loaded: event.loaded,
+              total: event.total,
+              percentage: Math.round((event.loaded * 100) / event.total)
+            };
+            onProgress(progress);
+          }
+        };
+      }
+
+      try {
+        const response = await apiClient.post<ConversionResponse>('/convert/convert-audio', formData, requestConfig);
+        return response.data;
+      } catch (error: any) {
+        if (error.response?.data?.detail) {
+          throw new Error(error.response.data.detail);
+        }
+        throw new Error(`Audio conversion failed: ${error.message}`);
+      }
+    } else if (documentFormats.includes(fileExtension)) {
+      // For documents, determine conversion type based on input and output formats
+      let conversionType = '';
+
+      // PDF to other formats
+      if (fileExtension === 'pdf') {
+        if (targetFormat === 'txt' || targetFormat === 'text') {
+          conversionType = 'pdf_to_text';
+        } else if (targetFormat === 'docx' || targetFormat === 'doc') {
+          conversionType = 'pdf_to_word';
+        }
+      }
+      // Office to PDF
+      else if (['docx', 'doc'].includes(fileExtension) && targetFormat === 'pdf') {
+        conversionType = 'word_to_pdf';
+      }
+      else if (['xlsx', 'xls', 'xlsm'].includes(fileExtension) && targetFormat === 'pdf') {
+        conversionType = 'excel_to_pdf';
+      }
+      else if (['pptx', 'ppt', 'pptm'].includes(fileExtension) && targetFormat === 'pdf') {
+        conversionType = 'powerpoint_to_pdf';
+      }
+      else if (['txt', 'text'].includes(fileExtension) && targetFormat === 'pdf') {
+        conversionType = 'text_to_pdf';
+      }
+      else if (['html', 'htm'].includes(fileExtension) && targetFormat === 'pdf') {
+        conversionType = 'html_to_pdf';
+      }
+      else if (['html', 'htm'].includes(fileExtension) && targetFormat === 'docx') {
+        conversionType = 'html_to_docx';
+      }
+      else if (['markdown', 'md'].includes(fileExtension) && targetFormat === 'pdf') {
+        conversionType = 'markdown_to_pdf';
+      }
+      else if (['markdown', 'md'].includes(fileExtension) && targetFormat === 'html') {
+        conversionType = 'markdown_to_html';
+      }
+      else if (['latex', 'tex'].includes(fileExtension) && targetFormat === 'pdf') {
+        conversionType = 'latex_to_pdf';
+      }
+      else if (fileExtension === 'docx' && targetFormat === 'txt') {
+        conversionType = 'word_to_text';
+      }
+      else if (fileExtension === 'docx' && targetFormat === 'epub') {
+        conversionType = 'docx_to_epub';
+      }
+      else if (['docx', 'doc'].includes(fileExtension) && ['html', 'htm'].includes(targetFormat)) {
+        conversionType = 'word_to_html';
+      }
+      else if (fileExtension === 'txt' && targetFormat === 'epub') {
+        conversionType = 'txt_to_epub';
+      }
+      else if (fileExtension === 'txt' && targetFormat === 'docx') {
+        conversionType = 'text_to_word';
+      }
+      else if (fileExtension === 'epub' && targetFormat === 'pdf') {
+        conversionType = 'epub_to_pdf';
+      }
+      else if (fileExtension === 'mobi' && targetFormat === 'epub') {
+        conversionType = 'mobi_to_epub';
+      }
+      // Other conversions
+      else if (fileExtension === 'csv' && targetFormat === 'xlsx') {
+        conversionType = 'csv_to_excel';
+      }
+      else if (fileExtension === 'json' && targetFormat === 'csv') {
+        conversionType = 'json_to_csv';
+      }
+
+      if (!conversionType) {
+        throw new Error(`Unsupported document conversion: ${fileExtension} to ${targetFormat}`);
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('conversion_type', conversionType);
+
+      const requestConfig: RequestConfig = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 300000,
+      };
+
+      if (onProgress) {
+        requestConfig.onUploadProgress = (event: any) => {
+          if (event.total) {
+            const progress: UploadProgress = {
+              loaded: event.loaded,
+              total: event.total,
+              percentage: Math.round((event.loaded * 100) / event.total)
+            };
+            onProgress(progress);
+          }
+        };
+      }
+
+      try {
+        console.log('📄 Starting document conversion...');
+        const response = await apiClient.post<any>('/convert/convert-document', formData, requestConfig);
+
+        const { conversion_id, progress_url } = response.data;
+        console.log('Conversion ID:', conversion_id);
+
+        if (!progress_url) {
+          throw new Error('No progress URL returned from server');
+        }
+
+        // Use the helper function to poll for completion
+        return await pollDocumentConversion(progress_url);
+      } catch (error: any) {
+        console.error('❌ Document conversion error:', error.message);
+        if (error.response?.data?.detail) {
+          throw new Error(error.response.data.detail);
+        }
+        throw new Error(`Document conversion failed: ${error.message}`);
+      }
+    } else if (fontFormats.includes(fileExtension)) {
+      // Font conversion
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('target_format', targetFormat);
+
+      const requestConfig: RequestConfig = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 300000,
+      };
+
+      if (onProgress) {
+        requestConfig.onUploadProgress = (event: any) => {
+          if (event.total) {
+            const progress: UploadProgress = {
+              loaded: event.loaded,
+              total: event.total,
+              percentage: Math.round((event.loaded * 100) / event.total)
+            };
+            onProgress(progress);
+          }
+        };
+      }
+
+      try {
+        const response = await apiClient.post<ConversionResponse>('/convert/font', formData, requestConfig);
+        return response.data;
+      } catch (error: any) {
+        if (error.response?.data?.detail) {
+          throw new Error(error.response.data.detail);
+        }
+        throw new Error(`Font conversion failed: ${error.message}`);
+      }
+    } else {
+      throw new Error(`Unsupported file format: ${fileExtension}`);
+    }
+  }
+
   static async isApiReachable(): Promise<boolean> {
     try {
       await this.checkHealth();
@@ -1283,17 +1550,25 @@ export const validateFile = (file: File, allowedTypes: string[]): string | null 
     if (['avif', 'webp', 'png', 'gif', 'bmp', 'tiff', 'ico', 'heic', 'svg', 'psd', 'pcx'].includes(normalizedType)) {
       return fileExtension === normalizedType;
     }
-    
+
     // Handle JPEG variants
     if (['jpg', 'jpeg'].includes(normalizedType)) {
       return ['jpg', 'jpeg'].includes(fileExtension);
     }
-    
+
     // Handle document formats
-    if (normalizedType === 'pdf') return fileExtension === 'pdf';
-    if (normalizedType === 'docx') return fileExtension === 'docx';
-    if (normalizedType === 'doc') return fileExtension === 'doc';
-    
+    if (['pdf', 'docx', 'doc', 'txt', 'rtf', 'odt', 'html', 'htm', 'epub', 'mobi', 'markdown', 'md', 'latex', 'tex', 'xlsx', 'xls', 'xlsm', 'pptx', 'ppt', 'pptm', 'csv', 'json'].includes(normalizedType)) {
+      return fileExtension === normalizedType ||
+             (normalizedType === 'html' && fileExtension === 'htm') ||
+             (normalizedType === 'markdown' && fileExtension === 'md') ||
+             (normalizedType === 'latex' && fileExtension === 'tex');
+    }
+
+    // Handle font formats
+    if (['ttf', 'otf', 'woff', 'woff2', 'eot'].includes(normalizedType)) {
+      return fileExtension === normalizedType;
+    }
+
     // Handle audio formats
     if (normalizedType === 'wav') return fileExtension === 'wav';
     
