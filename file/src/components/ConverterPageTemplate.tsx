@@ -127,7 +127,7 @@ export default function ConverterPageTemplate({
 }: ConverterPageProps) {
   const [selectedFiles, setSelectedFiles] = useState<FileWithId[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [notification, setNotification] = useState<{message: string; type: 'success' | 'error' | 'info'} | null>(null);
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
   const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'info') => {
     setNotification({ message, type });
@@ -209,7 +209,7 @@ export default function ConverterPageTemplate({
 
         // Get download URL - convert relative path to absolute URL and add cache buster
         let downloadUrl: string;
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 
         if (result.download_url) {
           // If download_url starts with '/', it's relative - make it absolute
@@ -234,7 +234,7 @@ export default function ConverterPageTemplate({
         console.log('File Name:', fileWithId.file.name);
         console.log('API Response:', result);
         console.log('Download URL (final):', downloadUrl);
-        console.log('API URL:', process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
+        console.log('API URL:', process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000');
         console.log('========================');
 
         updateFileStatus(fileWithId.id, 'completed', 100, undefined, downloadUrl);
@@ -286,10 +286,9 @@ export default function ConverterPageTemplate({
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Notification */}
       {notification && (
-        <div className={`fixed top-20 right-4 ${
-          notification.type === 'success' ? 'bg-green-500' :
-          notification.type === 'error' ? 'bg-red-500' : 'bg-blue-500'
-        } text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center space-x-2`}>
+        <div className={`fixed top-20 right-4 ${notification.type === 'success' ? 'bg-green-500' :
+            notification.type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+          } text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center space-x-2`}>
           <span>{notification.message}</span>
           <button onClick={() => setNotification(null)} className="ml-4 text-white hover:text-gray-200">×</button>
         </div>
@@ -382,7 +381,7 @@ export default function ConverterPageTemplate({
                     bg-white border-2 rounded-2xl p-6 transition-all duration-300
                     ${fileWithId.status === 'completed' ? 'border-green-200 bg-green-50' :
                       fileWithId.status === 'error' ? 'border-red-200 bg-red-50' :
-                      'border-gray-200'}
+                        'border-gray-200'}
                   `}
                 >
                   <div className="flex items-center justify-between">

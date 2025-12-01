@@ -2140,7 +2140,10 @@ export function getToolMetadata(slug: string) {
       return {
         title: `Free ${fromUpper} to ${toUpper} Converter Online - Fast & Secure | FlipFileX`,
         description: `Convert ${fromUpper} to ${toUpper} online for free. Fast, secure, high-quality ${tool.type} conversion. No registration, no watermarks. Upload and convert ${fromUpper} files to ${toUpper} instantly.`,
-        keywords: `${from} to ${to}, ${from} to ${to} converter, convert ${from} to ${to}, ${from} to ${to} online, free ${from} to ${to}, ${from} converter, ${to} converter, online ${from} converter, ${tool.type} converter, convert ${from} file, ${from} file converter, free online converter, flipfilex`
+        keywords: `${from} to ${to}, ${from} to ${to} converter, convert ${from} to ${to}, ${from} to ${to} online, free ${from} to ${to}, ${from} converter, ${to} converter, online ${from} converter, ${tool.type} converter, convert ${from} file, ${from} file converter, free online converter, flipfilex`,
+        alternates: {
+          canonical: `https://flipfilex.com/${slug}`,
+        }
       };
     }
   }
@@ -2166,7 +2169,10 @@ export function getToolMetadata(slug: string) {
     return {
       title: `Free ${fromUpper} to ${toUpper} Converter - Convert ${fromUpper} to ${toUpper} Online | FlipFileX`,
       description: typeDescriptions[tool.type] || typeDescriptions['other'],
-      keywords: `${from} to ${to}, ${from} to ${to} converter, convert ${from} to ${to}, ${from} to ${to} online, free ${from} to ${to}, ${from} to ${to} converter free, online ${from} to ${to} converter, ${from} converter, ${to} converter, convert ${from} file to ${to}, ${tool.type} converter, free ${tool.type} converter, online converter, convert ${from}, how to convert ${from} to ${to}, best ${from} to ${to} converter, flipfilex ${from} to ${to}`
+      keywords: `${from} to ${to}, ${from} to ${to} converter, convert ${from} to ${to}, ${from} to ${to} online, free ${from} to ${to}, ${from} to ${to} converter free, online ${from} to ${to} converter, ${from} converter, ${to} converter, convert ${from} file to ${to}, ${tool.type} converter, free ${tool.type} converter, online converter, convert ${from}, how to convert ${from} to ${to}, best ${from} to ${to} converter, flipfilex ${from} to ${to}`,
+      alternates: {
+        canonical: `https://flipfilex.com/${slug}`,
+      }
     };
   }
 
@@ -2177,21 +2183,30 @@ export function getToolMetadata(slug: string) {
     .join(' ');
 
   // Enhanced descriptions for specific tool types
-  const specialTools: Record<string, { title: string; description: string; keywords: string }> = {
+  const specialTools: Record<string, { title: string; description: string; keywords: string; alternates?: { canonical: string } }> = {
     'compress-pdf': {
       title: 'Free PDF Compressor - Reduce PDF File Size Online | FlipFileX',
       description: 'Compress PDF files online for free. Reduce PDF file size without losing quality. Fast PDF compression with adjustable settings. No file limits, secure uploads.',
-      keywords: 'compress pdf, pdf compressor, reduce pdf size, pdf compression, compress pdf online, free pdf compressor, shrink pdf, make pdf smaller, pdf optimizer, reduce pdf file size'
+      keywords: 'compress pdf, pdf compressor, reduce pdf size, pdf compression, compress pdf online, free pdf compressor, shrink pdf, make pdf smaller, pdf optimizer, reduce pdf file size',
+      alternates: {
+        canonical: `https://flipfilex.com/${slug}`,
+      }
     },
     'split-pdf': {
       title: 'Free PDF Splitter - Split PDF Pages Online | FlipFileX',
       description: 'Split PDF files online for free. Extract pages from PDF, divide PDF into multiple files. Fast, secure PDF splitting tool. No registration required.',
-      keywords: 'split pdf, pdf splitter, divide pdf, extract pdf pages, split pdf pages, pdf page splitter, separate pdf pages, pdf split online, free pdf splitter'
+      keywords: 'split pdf, pdf splitter, divide pdf, extract pdf pages, split pdf pages, pdf page splitter, separate pdf pages, pdf split online, free pdf splitter',
+      alternates: {
+        canonical: `https://flipfilex.com/${slug}`,
+      }
     },
     'pdf-merge': {
       title: 'Merge PDF Files - Combine PDFs Online Free | FlipFileX',
       description: 'Merge multiple PDF files into one document online. Free PDF merger tool with drag-and-drop. Combine PDFs in any order. Fast and secure.',
-      keywords: 'merge pdf, combine pdf, pdf merger, join pdf, merge pdf files, combine pdf files, pdf combiner, merge multiple pdfs, pdf joiner, combine pdf online'
+      keywords: 'merge pdf, combine pdf, pdf merger, join pdf, merge pdf files, combine pdf files, pdf combiner, merge multiple pdfs, pdf joiner, combine pdf online',
+      alternates: {
+        canonical: `https://flipfilex.com/${slug}`,
+      }
     }
   };
 
@@ -2202,6 +2217,9 @@ export function getToolMetadata(slug: string) {
   return {
     title: `${title} - Free Online Tool | FlipFileX`,
     description: `Free online ${title.toLowerCase()} tool. Fast, secure, and easy to use. Professional-grade ${tool.type} tool with no registration required. Get started instantly.`,
-    keywords: `${slug}, ${slug.replace(/-/g, ' ')}, ${tool.type} tool, online ${tool.type}, free ${tool.type} tool, ${slug} online, free ${slug}, best ${slug} tool, flipfilex`
+    keywords: `${slug}, ${slug.replace(/-/g, ' ')}, ${tool.type} tool, online ${tool.type}, free ${tool.type} tool, ${slug} online, free ${slug}, best ${slug} tool, flipfilex`,
+    alternates: {
+      canonical: `https://flipfilex.com/${slug}`,
+    }
   };
 }

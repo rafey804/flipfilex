@@ -286,21 +286,19 @@ export default function PDFPasswordProtection() {
               <div className="bg-white rounded-2xl shadow-lg p-2 inline-flex">
                 <button
                   onClick={() => setMode('protect')}
-                  className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                    mode === 'protect'
+                  className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${mode === 'protect'
                       ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
                       : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
                   🔒 Lock PDF
                 </button>
                 <button
                   onClick={() => setMode('unprotect')}
-                  className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                    mode === 'unprotect'
+                  className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${mode === 'unprotect'
                       ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
                       : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
                   🔓 Unlock PDF
                 </button>
@@ -570,7 +568,7 @@ export default function PDFPasswordProtection() {
           onClose={closeProgressPopup}
           title={`${mode === 'protect' ? 'Protecting' : 'Unlocking'} ${currentFileName}`}
           operationId={currentOperationId}
-          checkStatusUrl={(id) => `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/convert/pdf-password/status/${id}`}
+          checkStatusUrl={(id) => `${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/convert/pdf-password/status/${id}`}
           onComplete={() => handleProgressComplete({})}
           onDownload={() => {
             setNotification({
@@ -583,12 +581,11 @@ export default function PDFPasswordProtection() {
 
         {/* Notification */}
         {notification && (
-          <div className={`fixed top-20 right-4 z-50 p-4 rounded-lg border shadow-lg max-w-md animate-slide-in ${
-            notification.type === 'success' ? 'bg-green-50 border-green-200 text-green-800' :
-            notification.type === 'error' ? 'bg-red-50 border-red-200 text-red-800' :
-            notification.type === 'warning' ? 'bg-yellow-50 border-yellow-200 text-yellow-800' :
-            'bg-blue-50 border-blue-200 text-blue-800'
-          }`}>
+          <div className={`fixed top-20 right-4 z-50 p-4 rounded-lg border shadow-lg max-w-md animate-slide-in ${notification.type === 'success' ? 'bg-green-50 border-green-200 text-green-800' :
+              notification.type === 'error' ? 'bg-red-50 border-red-200 text-red-800' :
+                notification.type === 'warning' ? 'bg-yellow-50 border-yellow-200 text-yellow-800' :
+                  'bg-blue-50 border-blue-200 text-blue-800'
+            }`}>
             <div className="flex justify-between items-start">
               <p className="text-sm font-medium">{notification.message}</p>
               <button onClick={notification.onClose} className="ml-2 text-gray-400 hover:text-gray-600">

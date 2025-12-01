@@ -75,222 +75,66 @@ async def convert_image(input_path: str, output_path: str, target_format: str) -
                 print(f"PDF processing error: {e}")
                 return False
         
-        # Handle SVG input - Canvas based rendering with proper dimensions
+        # Handle SVG input - Use multiple fallback methods
         elif input_path.lower().endswith('.svg'):
+            print(f"Converting SVG file: {input_path}")
+
+            svg_converted = False
+
+            # Method 1: Try using Wand (ImageMagick wrapper) - most reliable if ImageMagick is installed
             try:
-                from html2image import Html2Image
-                import tempfile
-                import shutil
-                from lxml import etree
-                import base64
+                from wand.image import Image as WandImage
 
-                print(f"Converting SVG file: {input_path}")
+                print("Trying Wand/ImageMagick for SVG conversion...")
+                with WandImage(filename=input_path, resolution=300) as wand_img:
+                    # Convert to PNG
+                    wand_img.format = 'png'
+                    wand_img.background_color = 'white'
+                    wand_img.alpha_channel = 'remove'
 
-                # Read SVG content
-                with open(input_path, 'r', encoding='utf-8') as f:
-                    svg_content = f.read()
+                    # Get the image data
+                    png_blob = wand_img.make_blob('png')
 
-                # Parse SVG to get exact dimensions from viewBox
+                    # Load with PIL
+                    from io import BytesIO
+                    img = Image.open(BytesIO(png_blob))
+                    img.load()
+
+                    print(f"[OK] SVG converted using Wand: {img.size} pixels")
+                    svg_converted = True
+
+            except (ImportError, Exception) as e:
+                print(f"Wand/ImageMagick not available or failed: {e}")
+
+            # Method 2: Try CairoSVG if Cairo DLLs are available
+            if not svg_converted:
                 try:
-                    root = etree.fromstring(svg_content.encode('utf-8'))
+                    import cairosvg
+                    import tempfile
+                    from io import BytesIO
 
-                    # Get viewBox - this is the most reliable source
-                    viewbox = root.get('viewBox')
-                    svg_width = root.get('width')
-                    svg_height = root.get('height')
+                    print("Trying CairoSVG for SVG conversion...")
 
-                    vb_width, vb_height = None, None
+                    # Convert SVG to PNG bytes
+                    png_data = cairosvg.svg2png(url=input_path, dpi=300)
 
-                    if viewbox:
-                        parts = viewbox.split()
-                        if len(parts) >= 4:
-                            vb_width = float(parts[2])
-                            vb_height = float(parts[3])
+                    # Load with PIL
+                    img = Image.open(BytesIO(png_data))
+                    img.load()
 
-                    # Parse width/height attributes
-                    def parse_dim(val):
-                        if not val or '%' in str(val):
-                            return None
-                        num = ''.join(c for c in str(val) if c.isdigit() or c == '.')
-                        return float(num) if num else None
+                    print(f"[OK] SVG converted using CairoSVG: {img.size} pixels")
+                    svg_converted = True
 
-                    # Get original dimensions
-                    orig_w = parse_dim(svg_width) or vb_width or 800
-                    orig_h = parse_dim(svg_height) or vb_height or 600
+                except (ImportError, Exception) as e:
+                    print(f"CairoSVG not available or failed: {e}")
 
-                    # Calculate aspect ratio
-                    aspect_ratio = orig_w / orig_h
-
-                    # Set minimum width for high quality (1920px)
-                    min_width = 1920
-
-                    # Calculate final dimensions maintaining aspect ratio
-                    if orig_w >= min_width:
-                        width = int(orig_w)
-                        height = int(orig_h)
-                    else:
-                        width = min_width
-                        height = int(min_width / aspect_ratio)
-
-                    print(f"Original SVG: {orig_w}x{orig_h}, Output: {width}x{height}")
-
-                except Exception as e:
-                    print(f"Could not parse SVG: {e}")
-                    width, height = 1920, 1080
-
-                # Create temp directory
-                temp_dir = tempfile.mkdtemp()
-
-                try:
-                    # Convert SVG to base64 data URL
-                    svg_base64 = base64.b64encode(svg_content.encode('utf-8')).decode('utf-8')
-                    svg_data_url = f"data:image/svg+xml;base64,{svg_base64}"
-
-                    # Create HTML - canvas matches SVG natural dimensions exactly
-                    html_file = os.path.join(temp_dir, 'render.html')
-                    html_content = f'''<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        * {{ margin: 0; padding: 0; }}
-        html, body {{
-            overflow: hidden;
-            background: #FFFFFF;
-        }}
-        canvas {{
-            display: block;
-            background: #FFFFFF;
-        }}
-    </style>
-</head>
-<body>
-    <canvas id="canvas"></canvas>
-    <script>
-        (function() {{
-            var canvas = document.getElementById('canvas');
-            var ctx = canvas.getContext('2d');
-            var img = new Image();
-
-            img.onload = function() {{
-                // Get natural dimensions
-                var naturalWidth = img.naturalWidth || img.width;
-                var naturalHeight = img.naturalHeight || img.height;
-
-                // HD UPSCALING: Scale factor for high quality output
-                var scaleFactor = 4;
-
-                // Calculate HD dimensions
-                var hdWidth = naturalWidth * scaleFactor;
-                var hdHeight = naturalHeight * scaleFactor;
-
-                // Set canvas to HD dimensions
-                canvas.width = hdWidth;
-                canvas.height = hdHeight;
-
-                // Update body/html size to match
-                document.body.style.width = hdWidth + 'px';
-                document.body.style.height = hdHeight + 'px';
-                document.documentElement.style.width = hdWidth + 'px';
-                document.documentElement.style.height = hdHeight + 'px';
-
-                // Enable high quality rendering
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
-
-                // Fill canvas with WHITE background
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                // Draw image at HD scale
-                ctx.drawImage(img, 0, 0, hdWidth, hdHeight);
-
-                // Mark as ready with actual dimensions
-                document.body.setAttribute('data-ready', 'true');
-                document.body.setAttribute('data-width', hdWidth);
-                document.body.setAttribute('data-height', hdHeight);
-            }};
-
-            img.onerror = function() {{
-                canvas.width = {width};
-                canvas.height = {height};
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                document.body.setAttribute('data-ready', 'error');
-            }};
-
-            img.src = "{svg_data_url}";
-        }})();
-    </script>
-</body>
-</html>'''
-
-                    with open(html_file, 'w', encoding='utf-8') as f:
-                        f.write(html_content)
-
-                    # Render using html2image with large viewport for HD output
-                    output_name = 'output.png'
-                    # 4x scale factor means we need larger viewport
-                    max_size = 8000  # Large enough for 4x scaled SVG
-
-                    hti = Html2Image(
-                        output_path=temp_dir,
-                        size=(max_size, max_size),
-                        custom_flags=['--default-background-color=FFFFFF', '--hide-scrollbars', '--force-device-scale-factor=1']
-                    )
-
-                    # Use file URL
-                    file_url = f'file:///{html_file.replace(os.sep, "/")}'
-                    hti.screenshot(url=file_url, save_as=output_name)
-
-                    # Load result
-                    rendered_path = os.path.join(temp_dir, output_name)
-                    if os.path.exists(rendered_path):
-                        img = Image.open(rendered_path)
-                        img.load()
-
-                        # Auto-crop to remove extra white space from large viewport
-                        from PIL import ImageOps
-
-                        # Convert to RGB first for processing
-                        if img.mode == 'RGBA':
-                            bg = Image.new('RGB', img.size, (255, 255, 255))
-                            bg.paste(img, mask=img.split()[3])
-                            img = bg
-                        elif img.mode != 'RGB':
-                            img = img.convert('RGB')
-
-                        # Find content bounds
-                        gray = img.convert('L')
-                        inverted = ImageOps.invert(gray)
-                        bbox = inverted.getbbox()
-
-                        if bbox:
-                            # Crop to content with small padding
-                            pad = 5
-                            bbox = (
-                                max(0, bbox[0] - pad),
-                                max(0, bbox[1] - pad),
-                                min(img.width, bbox[2] + pad),
-                                min(img.height, bbox[3] + pad)
-                            )
-                            img = img.crop(bbox)
-
-                        print(f"SVG converted: {img.size} pixels")
-                    else:
-                        print("ERROR: Failed to render SVG")
-                        return False
-
-                finally:
-                    shutil.rmtree(temp_dir, ignore_errors=True)
-
-            except ImportError as e:
-                print(f"ERROR: {e}")
-                return False
-            except Exception as svg_error:
-                print(f"ERROR: SVG conversion failed: {svg_error}")
-                import traceback
-                traceback.print_exc()
-                return False
+            # Method 3: Fallback - Return error message as SVG conversion requires system libraries
+            if not svg_converted:
+                print("ERROR: SVG conversion failed - no suitable library available")
+                print("SVG conversion requires either:")
+                print("  1. ImageMagick (https://imagemagick.org/script/download.php)")
+                print("  2. Cairo DLL (GTK runtime for Windows)")
+                raise Exception("SVG conversion requires ImageMagick or Cairo to be installed on the system. Please install ImageMagick and try again.")
         
         # Handle HEIC input (requires pillow-heif)
         elif input_path.lower().endswith('.heic'):

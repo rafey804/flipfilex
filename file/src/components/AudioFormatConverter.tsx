@@ -781,11 +781,12 @@ export default function AudioFormatConverter({
                 
                 const progressData = await progressResponse.json();
                 console.log('Progress data:', progressData);
-                
-                setFiles(prev => prev.map(f => 
-                  f.id === fileWithId.id 
-                    ? { 
-                        ...f, 
+                console.log('Download URL from progress:', progressData.download_url);
+
+                setFiles(prev => prev.map(f =>
+                  f.id === fileWithId.id
+                    ? {
+                        ...f,
                         status: progressData.status as any,
                         progress: progressData.progress || 0,
                         error: progressData.error,
@@ -795,6 +796,16 @@ export default function AudioFormatConverter({
                 ));
 
                 if (progressData.status === 'completed') {
+                  if (!progressData.download_url) {
+                    console.error('Conversion completed but download_url is missing!');
+                    showNotification('Conversion completed but download link is missing. Please try again.', 'error');
+                    setFiles(prev => prev.map(f =>
+                      f.id === fileWithId.id
+                        ? { ...f, status: 'error', error: 'Download URL not available' }
+                        : f
+                    ));
+                    return;
+                  }
                   showNotification(`${fileWithId.file.name} converted successfully!`, 'success');
                   return;
                 } else if (progressData.status === 'error') {
@@ -850,28 +861,32 @@ export default function AudioFormatConverter({
 
   // Download function
   const handleDownload = useCallback(async (fileWithId: FileWithId) => {
+    console.log('handleDownload called with fileWithId:', fileWithId);
+    console.log('downloadUrl value:', fileWithId.downloadUrl);
+
     if (!fileWithId.downloadUrl) {
-      showNotification('Download URL not available', 'error');
+      console.error('Download URL is missing:', fileWithId);
+      showNotification('Download URL not available. Please try converting again.', 'error');
       return;
     }
-    
+
     try {
       const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-      const fullUrl = fileWithId.downloadUrl.startsWith('http') 
-        ? fileWithId.downloadUrl 
+      const fullUrl = fileWithId.downloadUrl.startsWith('http')
+        ? fileWithId.downloadUrl
         : `${API_BASE_URL}${fileWithId.downloadUrl}`;
 
-      console.log('Download URL:', fullUrl);
+      console.log('Full download URL:', fullUrl);
 
       const link = document.createElement('a');
       link.href = fullUrl;
       link.download = `${fileWithId.file.name.split('.')[0]}_converted.${targetFormat}`;
       link.target = '_blank';
-      
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       showNotification('Download started', 'success');
     } catch (error: any) {
       console.error('Download error:', error);

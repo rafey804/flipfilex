@@ -6,7 +6,7 @@ export interface ToolStructuredDataProps {
   description: string;
   sourceFormat?: string;
   targetFormat?: string;
-  toolType: 'audio' | 'video' | 'document' | 'image' | 'pdf' | 'other';
+  toolType: 'audio' | 'video' | 'document' | 'image' | 'pdf' | 'ai' | 'other';
 }
 
 export function generateToolStructuredData(props: ToolStructuredDataProps) {

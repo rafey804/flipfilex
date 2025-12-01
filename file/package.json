@@ -23,6 +23,12 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/debug": "^4.1.12",
+    "@types/estree": "^1.0.8",
+    "@types/estree-jsx": "^1.0.5",
+    "@types/hast": "^3.0.4",
+    "@types/json-schema": "^7.0.15",
+    "@types/json5": "^0.0.30",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^19",

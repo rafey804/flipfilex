@@ -38,7 +38,7 @@ export default function ContactForm() {
       submitData.append('message', formData.message);
 
       // Submit to backend API
-      const response = await fetch('http://localhost:8000/api/contact-form', {
+      const response = await fetch('http://127.0.0.1:8000/api/contact-form', {
         method: 'POST',
         body: submitData,
       });

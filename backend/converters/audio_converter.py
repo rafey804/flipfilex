@@ -128,7 +128,7 @@ async def convert_audio(input_path: str, output_path: str, target_format: str,
         logger.info(f"FFmpeg command: {cmd_str}")
         
         # Execute conversion
-        print("⚡ Starting FFmpeg audio conversion...")
+        print("[*] Starting FFmpeg audio conversion...")
         process = subprocess.Popen(
             cmd,
             stdout=subprocess.PIPE,
@@ -144,10 +144,12 @@ async def convert_audio(input_path: str, output_path: str, target_format: str,
         def read_stderr():
             for line in iter(process.stderr.readline, ''):
                 if line.strip():
-                    stderr_lines.append(line.strip())
+                    # Encode-safe version for Windows console
+                    safe_line = line.strip().encode('ascii', errors='ignore').decode('ascii')
+                    stderr_lines.append(safe_line)
                     # Print progress and important messages
-                    if any(keyword in line.lower() for keyword in ['time=', 'error', 'warning']):
-                        print(f"FFmpeg: {line.strip()}")
+                    if any(keyword in safe_line.lower() for keyword in ['time=', 'error', 'warning']):
+                        print(f"FFmpeg: {safe_line}")
         
         # Start reading thread
         stderr_thread = threading.Thread(target=read_stderr)
@@ -190,8 +192,10 @@ async def convert_audio(input_path: str, output_path: str, target_format: str,
             return False
             
     except Exception as e:
-        print(f"[FAILED] Audio conversion error: {str(e)}")
-        logger.error(f"Audio conversion error: {str(e)}")
+        # Sanitize error message for Windows console
+        error_msg = str(e).encode('ascii', errors='replace').decode('ascii')
+        print(f"[FAILED] Audio conversion error: {error_msg}")
+        logger.error(f"Audio conversion error: {error_msg}")
         return False
 
 # All supported audio formats

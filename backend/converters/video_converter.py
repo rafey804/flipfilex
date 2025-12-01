@@ -75,11 +75,11 @@ async def convert_video(input_path: str, output_path: str, target_format: str,
     print(f"   Quality: {quality}")
     
     if not FFMPEG_AVAILABLE:
-        print("❌ FFmpeg not available - cannot convert video")
+        print("[ERROR] FFmpeg not available - cannot convert video")
         return False
     
     if not os.path.exists(input_path):
-        print(f"❌ Input file does not exist: {input_path}")
+        print(f"[ERROR] Input file does not exist: {input_path}")
         return False
     
     try:
@@ -155,7 +155,7 @@ async def convert_video(input_path: str, output_path: str, target_format: str,
         logger.info(f"FFmpeg command: {cmd_str}")
         
         # Execute conversion
-        print("⚡ Starting FFmpeg process...")
+        print("[*] Starting FFmpeg process...")
         process = subprocess.Popen(
             cmd,
             stdout=subprocess.PIPE,
@@ -171,10 +171,12 @@ async def convert_video(input_path: str, output_path: str, target_format: str,
         def read_stderr():
             for line in iter(process.stderr.readline, ''):
                 if line.strip():
-                    stderr_lines.append(line.strip())
+                    # Encode-safe version for Windows console
+                    safe_line = line.strip().encode('ascii', errors='ignore').decode('ascii')
+                    stderr_lines.append(safe_line)
                     # Only print progress and important messages
-                    if any(keyword in line.lower() for keyword in ['time=', 'error', 'warning']):
-                        print(f"FFmpeg: {line.strip()}")
+                    if any(keyword in safe_line.lower() for keyword in ['time=', 'error', 'warning']):
+                        print(f"FFmpeg: {safe_line}")
         
         # Start reading thread
         stderr_thread = threading.Thread(target=read_stderr)
@@ -197,11 +199,11 @@ async def convert_video(input_path: str, output_path: str, target_format: str,
                     logger.info(f"Video conversion successful: {input_path} -> {output_path}")
                     return True
                 else:
-                    print("❌ Output file is missing or empty")
+                    print("[ERROR] Output file is missing or empty")
                     logger.error("Output file missing or empty")
                     return False
             else:
-                print(f"❌ FFmpeg failed with return code: {return_code}")
+                print(f"[ERROR] FFmpeg failed with return code: {return_code}")
                 if stderr_lines:
                     print("Last error messages:")
                     for line in stderr_lines[-5:]:
@@ -210,15 +212,17 @@ async def convert_video(input_path: str, output_path: str, target_format: str,
                 return False
                 
         except subprocess.TimeoutExpired:
-            print("❌ Conversion timed out after 30 minutes")
+            print("[ERROR] Conversion timed out after 30 minutes")
             process.kill()
             stderr_thread.join(timeout=2)
             logger.error("Video conversion timed out")
             return False
             
     except Exception as e:
-        print(f"❌ Conversion error: {str(e)}")
-        logger.error(f"Video conversion error: {str(e)}")
+        # Sanitize error message for Windows console
+        error_msg = str(e).encode('ascii', errors='replace').decode('ascii')
+        print(f"[ERROR] Conversion error: {error_msg}")
+        logger.error(f"Video conversion error: {error_msg}")
         return False
 
 async def get_video_info(input_path: str) -> Optional[dict]:

@@ -120,7 +120,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 // Helper function to check if it's a shortened URL
 async function checkShortUrl(shortCode: string): Promise<string | null> {
   try {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
     const response = await fetch(`${API_URL}/api/url/redirect/${shortCode}`, {
       cache: 'no-store' // Don't cache redirects
     });

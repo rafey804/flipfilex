@@ -2,7 +2,7 @@
 // Updated: 2025-11-14 12:30 - Fixed document conversion polling
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 
 interface RequestConfig {
   headers?: Record<string, string>;
